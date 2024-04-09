@@ -1,8 +1,14 @@
 import "./app.css";
 import App from './App.svelte';
-import { initClient } from "./lib/client";
+import { login } from "./lib/client";
+import { getLogin } from "./lib/util";
 
-initClient();
+const auth = getLogin();
+
+if (auth) {
+	login(auth);
+	console.log('yes')
+}
 
 const app = new App({
   target: document.getElementById('app')!,

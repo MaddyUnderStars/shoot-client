@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { channels, user, client } from "./lib/client";
-
 	import GameIconsFastArrow from "~icons/game-icons/fast-arrow";
 
 	import FluentChannel16Regular from "~icons/fluent/channel-16-regular";
 	import { Link } from "svelte-routing";
-	import type { Channel } from "shoot.ts/dist/lib/channel";
+	import { Channel, channels, user } from "./lib/client";
+	import { derived, get } from "svelte/store";
 
 	export let channel_id: string = "@me";
 
-	let channel: Channel | undefined = undefined;
-	$: {
-		channel = client?.channels.get(channel_id);
-	}
+	const channel = channels.get(channel_id);
+
+	const channelMessages = channel?.messages;
+
+	$: channel?.getMessages({});
 
 	let sendContent: string;
 </script>
@@ -27,13 +27,13 @@
 					</Link>
 				</div>
 
-				{#each { length: 10 } as i, i}
+				<!-- {#each { length: 10 } as i, i}
 					<div class="guild">{i + 1}</div>
-				{/each}
+				{/each} -->
 			</div>
 
 			<div class="channelList">
-				{#each $channels as [id, channel], id}
+				{#each channels as [id, channel]}
 					<div class="channel">
 						<Link to="/channel/{channel.mention}"
 							>{channel.name}</Link
@@ -48,8 +48,8 @@
 		</div>
 
 		<div class="user">
-			<span class="user-name">{$user.display_name}</span>
-			<span class="user-domain">@{$user.domain}</span>
+			<span class="user-name">{user?.display_name}</span>
+			<span class="user-domain">@{user?.domain}</span>
 		</div>
 	</div>
 
@@ -60,31 +60,35 @@
 			</div>
 
 			<div class="messages">
-				{#if channel}
-					{#await channel.getMessages({})}
-						<div>loading</div>
-					{:then messages}
-						{#each messages as [id, message]}
-							<div class="message">
-								<div class="author">
-									{message.author_id}
-								</div>
+				<!-- {#each $messages as [id, message]}
+					<div class="message">
+						<div class="author">
+							{message.author_id}
+						</div>
 
-								<div class="content">
-									{message.content}
-								</div>
+						<div class="content">
+							{message.content}
+						</div>
+					</div>
+				{/each} -->
+
+				{#if channelMessages}
+					{#each channelMessages as [id, message]}
+						<div class="message">
+							<div class="author">
+								{message.author_id}
 							</div>
-						{/each}
-					{:catch e}
-						<div>{e}</div>
-					{/await}
-				{:else}
-					<div>Nothing to see here</div>
+
+							<div class="content">
+								{message.content}
+							</div>
+						</div>
+					{/each}
 				{/if}
 			</div>
 		</div>
 
-		{#if channel}
+		<!-- {#if channel}
 			<form
 				class="box"
 				on:submit|preventDefault={(ev) => {
@@ -94,7 +98,7 @@
 			>
 				<input bind:value={sendContent} type="text" />
 			</form>
-		{/if}
+		{/if} -->
 	</div>
 
 	<div class="right">

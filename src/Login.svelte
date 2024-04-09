@@ -1,25 +1,26 @@
 <script lang="ts">
-	import { REST } from "shoot.ts";
-	import { getFormData } from "./lib/util";
-	import { loginPw } from "./lib/client";
+	import { discoverEndpoints, loginPassword } from "./lib/client";
+	import { getFormData, getLogin } from "./lib/util";
 	import { navigate } from "svelte-routing";
 
 	type LoginFormData = {
 		instance: string;
 		username: string;
 		password: string;
-	}
+	};
 
 	const login = async (ret: SubmitEvent) => {
 		const input = getFormData<LoginFormData>(ret.target as HTMLFormElement);
 
-		const client = await loginPw(input);
+		const endpoints = await discoverEndpoints(input.instance);
 
+		await loginPassword(endpoints, input.username, input.password);
+		
 		navigate("/@me", { replace: true });
-	}
+	};
 
-	if (!!window.localStorage.getItem("token"))
-		navigate("/@me", { replace: true })
+	if (!!getLogin())
+		navigate("/@me", { replace: true });
 </script>
 
 <div class="container">

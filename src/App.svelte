@@ -2,15 +2,15 @@
 	import { Router, Link, Route } from "svelte-routing";
 	import Login from "./Login.svelte";
 	import Home from "./Home.svelte";
-	import { getLoginInstance } from "./lib/util";
+	import { getLogin } from "./lib/util";
 	import { ready } from "./lib/client";
 
-	const loggedIn = !!getLoginInstance();
+	const loggedIn = !!getLogin();
 
 	export let url = loggedIn ? "/@me" : "/login";
 </script>
 
-{#if !$ready}
+{#if !ready && loggedIn}
 	<div class="connecting">Connecting</div>
 {:else}
 	<Router {url}>
