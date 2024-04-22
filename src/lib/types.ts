@@ -1,4 +1,4 @@
-import type { components } from "../../http";
+import { components } from "./http/generated/v1";
 
 export type GATEWAY_PAYLOAD = {
 	/**
@@ -14,7 +14,7 @@ export type GATEWAY_PAYLOAD = {
 	/**
 	 * The payload for this event
 	 */
-	d: Omit<GATEWAY_EVENT, "type">;
+	d: GATEWAY_EVENT;
 };
 
 export type MESSAGE_CREATE = {

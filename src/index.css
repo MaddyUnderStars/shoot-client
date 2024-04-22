@@ -1,8 +1,9 @@
-body, html {
-	margin: 0;
+html, body {
 	padding: 0;
+	margin: 0;
 
-	overflow: hidden;
+	background-color: rgb(2, 2, 2);
+	color: rgb(240, 240, 240);
 
 	font-family: "Montserrat", sans-serif;
 	font-optical-sizing: auto;
@@ -10,11 +11,11 @@ body, html {
 	font-style: normal;
 }
 
-* {
-	box-sizing: border-box;
+#root {
+	width: 100vw;
+	height: 100vh;
 }
 
-h1, h2, h3, p {
-	padding: 0;
+h1, h2, h3, h4, p {
 	margin: 0;
 }
