@@ -3,12 +3,13 @@ import { Channel } from "./entities";
 import { GATEWAY_PAYLOAD, READY } from "./types";
 import { createLogger } from "./util";
 
-export type InstanceOptions =
-	| string
-	| { http: { url: string }; gateway: { url: string } };
+export type InstanceOptions = {
+	http: URL;
+	gateway: URL;
+};
 
 export type ClientOptions = {
-	instance: InstanceOptions;
+	instance: InstanceOptions | string;
 	token: string;
 };
 
@@ -16,8 +17,13 @@ const Log = createLogger("gateway");
 
 class Shoot extends EventEmitter {
 	private socket!: WebSocket;
-	private token?: string;
-	private instance?: InstanceOptions;
+	private _token?: string;
+	get token() { return this._token; }
+	private _instance?: InstanceOptions;
+
+	get instance() {
+		return this._instance;
+	}
 
 	private sequence: number = 0;
 	private heartbeatTimeout?: number;
@@ -30,22 +36,26 @@ class Shoot extends EventEmitter {
 	public channels = new Map<string, Channel>();
 
 	login = (opts: ClientOptions) => {
-		this.instance = opts.instance;
-		this.token = opts.token;
+		this._token = opts.token;
 
 		const http = new URL(
-			typeof this.instance == "string"
-				? this.instance
-				: this.instance.http.url,
+			typeof opts.instance == "string"
+				? opts.instance
+				: opts.instance.http,
 		);
 		// http.protocol = "https";
 
 		const gw = new URL(
-			typeof this.instance == "string"
-				? this.instance
-				: this.instance.gateway.url,
+			typeof opts.instance == "string"
+				? opts.instance
+				: opts.instance.gateway,
 		);
 		gw.protocol = http.protocol == "http:" ? "ws" : "wss";
+
+		this._instance = {
+			http,
+			gateway: gw,
+		};
 
 		this.socket = new WebSocket(gw);
 
@@ -81,7 +91,7 @@ class Shoot extends EventEmitter {
 
 	onOpen = () => {
 		Log.verbose("opened");
-		this.send({ t: "identify", token: this.token! });
+		this.send({ t: "identify", token: this._token! });
 		this._connected = true;
 		this.emit("open");
 	};
