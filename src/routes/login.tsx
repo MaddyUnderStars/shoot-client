@@ -5,6 +5,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import debounce from "debounce";
 import { useState } from "react";
+import { LoginStore } from "../lib/loginStore";
+import { useLocation } from "wouter";
+
+const DEFAULT_INSTANCE = "https://chat.understars.dev";
 
 const Container = styled.div`
 	width: 100%;
@@ -105,6 +109,8 @@ export function Login() {
 
 	const [checkingInstance, setCheckingInstance] = useState(false);
 
+	const [, setLocation] = useLocation();
+
 	const onSubmit: SubmitHandler<LoginFormInputs> = async (input) => {
 		const { instance, username, password } = input;
 
@@ -123,10 +129,15 @@ export function Login() {
 
 		if (!data?.token) return;
 
-		await shoot.login({
+		const opts ={
 			instance: url,
 			token: data.token,
-		});
+		};
+
+		LoginStore.save(opts)
+		await shoot.login(opts);
+
+		setLocation("/channels/@me");
 	};
 
 	return (
@@ -147,7 +158,7 @@ export function Login() {
 						)}
 						<Input
 							id="instance"
-							defaultValue="https://chat.understars.dev"
+							defaultValue={DEFAULT_INSTANCE}
 							{...register("instance", {
 								required: true,
 								onChange: debounce((event) => {
