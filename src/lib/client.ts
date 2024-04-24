@@ -70,6 +70,8 @@ class Shoot extends EventEmitter {
 				const ch = new Channel(channel);
 				this.channels.set(ch.mention, ch);
 			}
+
+			this.channels = new Map(this.channels);
 		}
 
 		Log.verbose(`<- ${json.t}`);

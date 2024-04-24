@@ -1,4 +1,4 @@
-import React, { useSyncExternalStore } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { Channels, Login } from "./routes";
 import "./index.css";
@@ -6,29 +6,14 @@ import { Fallback } from "./fallback";
 import { Redirect, Route, Router, Switch } from "wouter";
 import { LoginStore } from "./lib/loginStore";
 import { shoot } from "./lib";
+import { useShootConnected } from "./lib/hooks";
 
 const login = LoginStore.load();
 if (login) shoot.login(login);
 
-const subscribe = (callback: () => void) => {
-	shoot.addListener("open", callback);
-	shoot.addListener("close", callback);
-	shoot.addListener("HEARTBEAT_ACK", callback);
-
-	return () => {
-		shoot.removeListener("open", callback);
-		shoot.removeListener("close", callback);
-		shoot.removeListener("HEARTBEAT_ACK", callback);
-	};
-};
-
-const useShoot = () => {
-	return useSyncExternalStore(subscribe, () => shoot.connected);
-};
-
 // eslint-disable-next-line react-refresh/only-export-components
 const Container = () => {
-	const loggedIn = useShoot();
+	const loggedIn = useShootConnected();
 	const hasToken = !!login;
 
 	if (hasToken && !loggedIn) {
