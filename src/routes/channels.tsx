@@ -2,12 +2,17 @@ import { GiPocketBow } from "react-icons/gi";
 import styled from "styled-components";
 import { Link, useParams } from "wouter";
 import { useShootChannels } from "../lib/hooks";
-import { useEffect, useState } from "react";
+
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useState } from "react";
 import { Message } from "../lib/entities";
+import { observer } from "mobx-react-lite";
+import { shoot } from "../lib";
 
 const Container = styled.div`
 	display: flex;
 	padding-top: 20px;
+	flex: 1;
 `;
 
 const LeftBar = styled.div`
@@ -42,32 +47,61 @@ const Channel = styled.a`
 	padding: 5px;
 `;
 
-const Chat = styled.div``;
+const ChatContainer = styled.div`
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+`;
 
-const Message = styled.div``;
+const Chat = styled.div`
+	overflow: auto;
+	flex: 1;
+	display: flex;
+	flex-direction: column-reverse;
+`;
 
-const RightBar = styled.div``;
+const ChatMessage = styled.div`
+	margin: 5px 0 5px 0;
+`;
 
-export function Channels() {
+const ChatInput = styled.input`
+	margin-top: 10px;
+	padding: 10px;
+	background-color: rgb(10, 10, 10);
+	border: 1px solid white;
+`;
+
+const RightBar = styled.div`
+	width: 250px;
+`;
+
+export const Channels = observer(() => {
 	const params = useParams();
 	const id = params.id;
 
 	const channels = useShootChannels();
 
+	const guilds = shoot.guilds;
+
 	const channel = id ? channels.get(id) : undefined;
 
-	const [messages, setMessages] = useState(new Map<string, Message>());
+	const MESSAGES_PER_PAGE = 50;
 
-	useEffect(() => {
-		(async () => {
-			const ret = await channel?.getMessages({});
-			if (!ret) return;
+	const [messages, setMessages] = useState<Message[]>([]);
+	const [hasNext, setHasNext] = useState(true);
 
-			setMessages(ret);
-		})();
-	}, [channel]);
+	const getNext = async () => {
+		const msgs = await channel?.getMessages({});
+		if (!msgs) return;
 
-	if (!id) throw new Error("Invalid channel");
+		setHasNext(msgs.size > MESSAGES_PER_PAGE);
+
+		setMessages(
+			[...msgs.values()].sort((a, b) =>
+				a.published > b.published ? 0 : 1,
+			),
+		);
+	};
 
 	return (
 		<Container>
@@ -79,10 +113,15 @@ export function Channels() {
 						</Guild>
 					</Link>
 
-					{[0, 1, 2, 3, 4].map((x) => (
-						<Link key={x} to="">
-							<Guild>{x}</Guild>
-						</Link>
+					{guilds.map((x) => (
+						<Link to={`/channels/${x.id}@${x.domain}/${x.channels[0]?.mention}`}>
+												<Guild>
+							{x.name
+								.split(" ")
+								.slice(0, 4)
+								.map((x) => x.charAt(0).toUpperCase())
+								.join("")}
+						</Guild></Link>
 					))}
 				</GuildsList>
 
@@ -97,13 +136,40 @@ export function Channels() {
 				</ChannelsList>
 			</LeftBar>
 
-			<Chat>
-				{[...messages].map(([id, msg]) => (
-					<Message key={id}>{msg.content}</Message>
-				))}
-			</Chat>
+			{channel && (
+				<>
+					<ChatContainer>
+						<Chat id="chat-scroll">
+							<InfiniteScroll
+								dataLength={messages.length}
+								next={getNext}
+								hasMore={hasNext}
+								loader={<h4>Loading</h4>}
+								endMessage={<h4>Thats the end!</h4>}
+								inverse={true}
+								scrollableTarget="chat-scroll"
+								style={{
+									display: "flex",
+									flexDirection: "column-reverse",
+								}}
+							>
+								{[...messages].map((msg) => (
+									<ChatMessage key={id}>
+										<div>{msg.author_id}</div>
+										<div>{msg.content}</div>
+									</ChatMessage>
+								))}
+							</InfiniteScroll>
+						</Chat>
 
-			<RightBar>{/* members */}</RightBar>
+						<ChatInput />
+					</ChatContainer>
+
+					<RightBar>
+						<div>Members</div>
+					</RightBar>
+				</>
+			)}
 		</Container>
 	);
-}
+});

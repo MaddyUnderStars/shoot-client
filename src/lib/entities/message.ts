@@ -25,6 +25,9 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
 		this.updated = new Date(data.updated);
 
 		const channel = shoot.channels.get(data.channel_id);
-		if (channel) this.channel = channel;
+		if (channel) {
+			this.channel = channel;
+			this.channel.addMessage(this);
+		}
 	}
 }

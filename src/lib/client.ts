@@ -1,6 +1,8 @@
 import { EventEmitter } from "events";
-import { Channel } from "./entities";
-import { GATEWAY_PAYLOAD, READY } from "./types";
+import { Channel, Message } from "./entities";
+import { Guild } from "./entities/guild";
+import { LoginStore } from "./loginStore";
+import { CLOSE_CODES, GATEWAY_EVENT } from "./types";
 import { createLogger } from "./util";
 
 export type InstanceOptions = {
@@ -16,10 +18,14 @@ export type ClientOptions = {
 const Log = createLogger("gateway");
 
 class Shoot extends EventEmitter {
-	private socket!: WebSocket;
+	private socket: WebSocket | null = null;
 	private _token?: string;
-	get token() { return this._token; }
+	get token() {
+		return this._token;
+	}
 	private _instance?: InstanceOptions;
+
+	private reconnectAttempt = 0;
 
 	get instance() {
 		return this._instance;
@@ -27,6 +33,7 @@ class Shoot extends EventEmitter {
 
 	private sequence: number = 0;
 	private heartbeatTimeout?: number;
+	private reconnectTimeout?: number;
 
 	private _connected = false;
 	get connected() {
@@ -34,6 +41,8 @@ class Shoot extends EventEmitter {
 	}
 
 	public channels = new Map<string, Channel>();
+
+	public guilds: Guild[] = [];
 
 	login = (opts: ClientOptions) => {
 		this._token = opts.token;
@@ -57,53 +66,89 @@ class Shoot extends EventEmitter {
 			gateway: gw,
 		};
 
+		this.sequence = 0;
+
 		this.socket = new WebSocket(gw);
 
 		this.socket.onopen = this.onOpen.bind(this);
 		this.socket.onmessage = this.onMessage.bind(this);
 		this.socket.onclose = this.onClose.bind(this);
+		this.socket.onerror = this.onError.bind(this);
 	};
 
 	onMessage = ({ data }: MessageEvent) => {
 		this._connected = true;
 
-		const json = JSON.parse(data) as GATEWAY_PAYLOAD;
-
+		const json = JSON.parse(data) as GATEWAY_EVENT;
 		this.sequence++;
 
-		if (json.t == "READY") {
-			this.startHeartbeat();
+		if (json.t != "HEARTBEAT_ACK")
+			Log.verbose(`<- [${this.sequence}] ${json.t}`);
 
-			const ready = json.d as READY;
+		switch (json.t) {
+			case "READY":
+				this.startHeartbeat();
 
-			for (const channel of ready.channels) {
-				const ch = new Channel(channel);
-				this.channels.set(ch.mention, ch);
-			}
+				for (const channel of json.d.channels) {
+					const ch = new Channel(channel);
+					this.channels.set(ch.mention, ch);
+				}
 
-			this.channels = new Map(this.channels);
+				this.channels = new Map(this.channels);
+
+				this.guilds = json.d.guilds.map(x => new Guild(x));
+
+				this.emit("READY");
+				break;
+			case "MESSAGE_CREATE":
+				this.emit("MESSAGE_CREATE", new Message(json.d.message));
+				break;
 		}
-
-		Log.verbose(`<- ${json.t}`);
-
-		this.emit(json.t, json.d);
 	};
 
 	onOpen = () => {
+		this._connected = true;
+		this.reconnectAttempt = 0;
 		Log.verbose("opened");
 		this.send({ t: "identify", token: this._token! });
-		this._connected = true;
 		this.emit("open");
 	};
 
-	onClose = () => {
+	onClose = (event: CloseEvent) => {
 		Log.verbose("closed");
 		this._connected = false;
 		this.emit("close");
 		clearTimeout(this.heartbeatTimeout);
+
+		this.socket = null;
+
+		// don't reconnect if our token is bad
+		if (event.code == CLOSE_CODES.BAD_TOKEN) {
+			LoginStore.save(null);
+			return;
+		}
+
+		if (!this.reconnectTimeout) {
+			// auto reconnect
+			this.reconnectTimeout = setTimeout(() => {
+				Log.verbose("trying reconnect");
+				this.reconnectAttempt++;
+				this.reconnectTimeout = undefined;
+				this.login({
+					instance: this.instance!,
+					token: this.token!,
+				});
+			}, 1000 * this.reconnectAttempt);
+		}
+	};
+
+	onError = () => {
+		Log.verbose(`closed due to error`);
+		// this.onClose();
 	};
 
 	startHeartbeat = () => {
+		Log.verbose("starting heartbeater");
 		const heartbeat = () => {
 			this.send({ t: "heartbeat", s: this.sequence });
 
@@ -118,7 +163,7 @@ class Shoot extends EventEmitter {
 			if (!this.socket || this.socket.readyState != this.socket.OPEN)
 				throw new Error("gateway socket isn't open");
 
-			Log.verbose(`-> ${data.t}`);
+			if (data.t != "heartbeat") Log.verbose(`-> ${data.t}`);
 
 			try {
 				//@ts-expect-error TODO

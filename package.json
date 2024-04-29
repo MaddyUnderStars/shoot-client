@@ -7,17 +7,21 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+	"openapi": "npx openapi-typescript ./assets/client.json -o ./src/lib/http/generated/v1.d.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "debounce": "^2.0.0",
     "events": "^3.3.0",
+    "mobx": "^6.12.3",
+    "mobx-react-lite": "^4.0.7",
     "openapi-fetch": "^0.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.2",
     "react-icons": "^5.1.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "styled-components": "^6.1.8",
     "wouter": "^3.1.2",
     "zod": "^3.22.4"

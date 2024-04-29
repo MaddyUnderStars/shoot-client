@@ -1,3 +1,4 @@
+import { action, observable } from "mobx";
 import { createHttpClient } from "../http";
 import { components, paths } from "../http/generated/v1";
 import { Message } from "./message";
@@ -18,7 +19,7 @@ export class Channel implements ChannelSchema {
 	public name: string;
 	public domain: string;
 
-	public messages = new Map<string, Message>();
+	@observable messages = new Map<string, Message>();
 
 	get mention() {
 		return `${this.id}@${this.domain}`;
@@ -30,6 +31,12 @@ export class Channel implements ChannelSchema {
 		this.domain = data.domain;
 	}
 
+	@action
+	addMessage = (msg: Message) => {
+		this.messages.set(msg.id, msg);
+	};
+
+	@action
 	getMessages = async (opts: MessageFetchOptions) => {
 		const { data, error } = await createHttpClient().GET(
 			"/channel/{channel_id}/messages/",

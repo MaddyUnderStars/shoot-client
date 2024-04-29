@@ -389,6 +389,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/guild/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuild"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/channel/{channel_id}/": {
         parameters: {
             query?: never;
@@ -577,6 +617,12 @@ export interface components {
             from_id: string;
             to_id: string;
             type: number;
+        };
+        PublicGuild: {
+            id: string;
+            name: string;
+            domain: string;
+            channels?: components["schemas"]["PublicChannel"][];
         };
         PublicMessage: {
             id: string;

@@ -1,7 +1,12 @@
 import { ClientOptions } from "./client";
 
 export class LoginStore {
-	static save = (data: ClientOptions) => {
+	static save = (data: ClientOptions | null) => {
+		if (!data) {
+			localStorage.removeItem("LoginStore");
+			return;
+		}
+		
 		localStorage.setItem("LoginStore", JSON.stringify(data));
 	};
 
