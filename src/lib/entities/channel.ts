@@ -58,4 +58,25 @@ export class Channel implements ChannelSchema {
 
 		return ret;
 	};
+
+	sendMessage = async (message: MessageSendOptions) => {
+		const { data, error } = await createHttpClient().POST(
+			"/channel/{channel_id}/messages/",
+			{
+				params: {
+					path: { channel_id: this.mention },
+				},
+				body: {
+					content:
+						typeof message == "string" ? message : message.content,
+				},
+			},
+		);
+
+		if (error) throw error;
+
+		this.addMessage(new Message(data));
+		
+		return data;
+	};
 }

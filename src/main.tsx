@@ -30,7 +30,9 @@ const Container = () => {
 
 			<Switch>
 				<Route path="/login" component={() => <Login />} />
-				<Route path="/channels/:id" component={() => <Channels />} />
+				<Route path="/channels/@me" component={() => <Channels />} />
+				<Route path="/channels/:channel_id" component={() => <Channels />} />
+				<Route path="/channels/:guild_id/:channel_id" component={() => <Channels />} />
 
 				<Route component={() => <Fallback />} />
 			</Switch>

@@ -1,5 +1,43 @@
-import { useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { shoot } from "./client";
+
+export const useChannel = (channel_id: string, guild_id?: string) => {
+	const channels = useShootChannels();
+	const guild = useGuild(guild_id);
+
+	const channel = useMemo(
+		() =>
+			guild
+				? guild.channels?.find((x) => x.mention == channel_id)
+				: channels.get(channel_id),
+		[guild, channels, channel_id],
+	);
+
+	return channel;
+};
+
+export const useGuild = (guild_id?: string) => {
+	const guilds = useShootGuilds();
+	const guild = useMemo(
+		() => guilds.find((x) => x.mention == guild_id),
+		[guilds, guild_id],
+	);
+
+	return guild;
+};
+
+const subscribeShootGuilds = (callback: () => void) => {
+	shoot.addListener("READY", callback);
+	shoot.addListener("GUILD_CREATE", callback);
+
+	return () => {
+		shoot.removeListener("READY", callback);
+		shoot.removeListener("GUILD_CREATE", callback);
+	};
+};
+
+export const useShootGuilds = () =>
+	useSyncExternalStore(subscribeShootGuilds, () => shoot.guilds);
 
 const subscribeShootChannels = (callback: () => void) => {
 	shoot.addListener("READY", callback);
