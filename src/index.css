@@ -9,6 +9,8 @@ html, body {
 	font-optical-sizing: auto;
 	font-weight: normal;
 	font-style: normal;
+
+	box-sizing: border-box;
 }
 
 #root {
@@ -19,4 +21,13 @@ html, body {
 
 h1, h2, h3, h4, p {
 	margin: 0;
+}
+
+#modal-container {
+	display: none;
+}
+
+#modal-container .show {
+	display: block;
+	position: absolute;
 }

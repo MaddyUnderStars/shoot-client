@@ -1,9 +1,9 @@
-import { createHttpClient, shoot } from "../lib";
-import { LoginStore } from "../lib/loginStore";
 import { useLocation } from "wouter";
 import { Authbox, AuthboxSubmitHandler } from "../components/authbox";
+import { createHttpClient, shoot } from "../lib";
+import { LoginStore } from "../lib/loginStore";
 
-export function Login() {
+export function Register() {
 	const [, setLocation] = useLocation();
 
 	const onSubmit: AuthboxSubmitHandler = async (input, setError) => {
@@ -15,10 +15,10 @@ export function Login() {
 
 		const client = createHttpClient(new URL(url));
 
-		const { data, error } = await client.POST("/auth/login", {
+		const { data, error } = await client.POST("/auth/register", {
 			body: {
-				password,
 				username,
+				password,
 			},
 		});
 
@@ -29,7 +29,7 @@ export function Login() {
 			});
 		}
 
-		if (!data?.token) return;
+		if (!data.token) return;
 
 		const opts = {
 			instance: url,
@@ -42,5 +42,5 @@ export function Login() {
 		setLocation("/channels/@me");
 	};
 
-	return <Authbox onSubmit={onSubmit} header={"Login"} />;
+	return <Authbox onSubmit={onSubmit} header={"Register"} />;
 }

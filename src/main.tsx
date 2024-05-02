@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { Channels, Login } from "./routes";
+import ReactModal from "react-modal";
+import { Channels, Login, Register } from "./routes";
 import "./index.css";
 import { Fallback } from "./fallback";
-import { Redirect, Route, Router, Switch } from "wouter";
+import { Route, Router, Switch, useLocation } from "wouter";
 import { LoginStore } from "./lib/loginStore";
 import { shoot } from "./lib";
 import { useShootConnected } from "./lib/hooks";
@@ -16,29 +17,46 @@ const Container = () => {
 	const loggedIn = useShootConnected();
 	const hasToken = !!login;
 
+	const [location, setLocation] = useLocation();
+
+	useEffect(() => {
+		if (loggedIn) setLocation("/channels/@me");
+		else if (location != "/login" && location != "/register")
+			setLocation("/login");
+	}, [loggedIn, setLocation, location]);
+
 	if (hasToken && !loggedIn) {
 		return <Fallback />;
 	}
 
 	return (
-		<Router>
-			{!loggedIn ? (
-				<Redirect to="/login" />
-			) : (
-				<Redirect to="/channels/@me" />
-			)}
+		<>
+			<Router>
+				<Switch>
+					<Route path="/login" component={() => <Login />} />
+					<Route path="/register" component={() => <Register />} />
 
-			<Switch>
-				<Route path="/login" component={() => <Login />} />
-				<Route path="/channels/@me" component={() => <Channels />} />
-				<Route path="/channels/:channel_id" component={() => <Channels />} />
-				<Route path="/channels/:guild_id/:channel_id" component={() => <Channels />} />
+					<Route
+						path="/channels/@me"
+						component={() => <Channels />}
+					/>
+					<Route
+						path="/channels/:channel_id"
+						component={() => <Channels />}
+					/>
+					<Route
+						path="/channels/:guild_id/:channel_id"
+						component={() => <Channels />}
+					/>
 
-				<Route component={() => <Fallback />} />
-			</Switch>
-		</Router>
+					<Route component={() => <Fallback />} />
+				</Switch>
+			</Router>
+		</>
 	);
 };
+
+ReactModal.setAppElement("#root");
 
 // TODO: react-error-boundary
 ReactDOM.createRoot(document.getElementById("root")!).render(

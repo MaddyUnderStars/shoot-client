@@ -1,0 +1,13 @@
+.modal {
+	background-color: rgb(20, 20, 20);
+	border: 1px solid grey;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.overlay {
+	background-color: rgba(0, 0, 0, 0.2);
+}
