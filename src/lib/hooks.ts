@@ -26,6 +26,30 @@ export const useGuild = (guild_id?: string) => {
 	return guild;
 };
 
+export const useRelationships = () =>
+	useSyncExternalStore(subscribeRelationships, () => shoot.relationships);
+
+const subscribeRelationships = (callback: () => void) => {
+	shoot.addListener("RELATIONSHIP_CREATE", callback);
+	shoot.addListener("READY", callback);
+
+	return () => {
+		shoot.removeListener("READY", callback);
+		shoot.removeListener("RELATIONSHIP_CREATE", callback);
+	};
+};
+
+const subscribeShootProfile = (callback: () => void) => {
+	shoot.addListener("READY", callback);
+
+	return () => {
+		shoot.removeListener("READY", callback);
+	};
+};
+
+export const useProfile = () =>
+	useSyncExternalStore(subscribeShootProfile, () => shoot.user);
+
 const subscribeShootGuilds = (callback: () => void) => {
 	shoot.addListener("READY", callback);
 	shoot.addListener("GUILD_CREATE", callback);

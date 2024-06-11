@@ -1,8 +1,9 @@
-html, body {
+html,
+body {
 	padding: 0;
 	margin: 0;
 
-	background-color: rgb(2, 2, 2);
+	background-color: rgb(18, 16, 20);
 	color: rgb(240, 240, 240);
 
 	font-family: "Montserrat", sans-serif;
@@ -19,7 +20,11 @@ html, body {
 	display: flex;
 }
 
-h1, h2, h3, h4, p {
+h1,
+h2,
+h3,
+h4,
+p {
 	margin: 0;
 }
 
@@ -30,4 +35,9 @@ h1, h2, h3, h4, p {
 #modal-container .show {
 	display: block;
 	position: absolute;
+}
+
+a,
+a:visited {
+	color: white;
 }

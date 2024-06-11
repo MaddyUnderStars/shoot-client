@@ -1,9 +1,13 @@
 import { action, observable } from "mobx";
+import { shoot } from "../client";
 import { createHttpClient } from "../http";
 import { components, paths } from "../http/generated/v1";
+import { Guild } from "./guild";
 import { Message } from "./message";
 
-export type ChannelSchema = components["schemas"]["PublicChannel"];
+export type ChannelSchema = components["schemas"]["PublicChannel"] & {
+	guild_id?: string;
+} & { owner_id?: string; recipients?: string[] };
 
 export type MessageSendOptions = Message | string;
 
@@ -19,6 +23,8 @@ export class Channel implements ChannelSchema {
 	public name: string;
 	public domain: string;
 
+	public guild?: Guild;
+
 	@observable messages = new Map<string, Message>();
 
 	get mention() {
@@ -29,6 +35,8 @@ export class Channel implements ChannelSchema {
 		this.id = data.id;
 		this.name = data.name;
 		this.domain = data.domain;
+		this.guild = shoot.guilds.find((x) => x.id == data.guild_id);
+		this.guild?.channels?.push(this);
 	}
 
 	@action
@@ -76,7 +84,7 @@ export class Channel implements ChannelSchema {
 		if (error) throw error;
 
 		this.addMessage(new Message(data));
-		
+
 		return data;
 	};
 }

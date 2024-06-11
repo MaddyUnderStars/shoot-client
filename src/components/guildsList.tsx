@@ -6,6 +6,7 @@ import ReactModal from "react-modal";
 import { useState } from "react";
 
 import "./guildsList.css";
+import { CreateGuildModal } from "./modals/createGuild";
 
 const Container = styled.div``;
 
@@ -14,7 +15,7 @@ const Guild = styled.div`
 	margin: 0 10px 10px 10px;
 	width: 40px;
 	height: 40px;
-	background-color: rgb(10, 10, 10);
+	background-color: rgb(29, 3, 36);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -71,12 +72,7 @@ export const GuildsList = () => {
 				isOpen={modalIsOpen}
 				onRequestClose={() => setIsOpen(false)}
 			>
-				<h1>Create Guild</h1>
-
-				<form>
-					<label>Name</label>
-					<input type="text" />
-				</form>
+				<CreateGuildModal close={() => setIsOpen(false)} />
 			</ReactModal>
 		</>
 	);

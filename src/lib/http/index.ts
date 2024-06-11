@@ -12,3 +12,5 @@ export const createHttpClient = (baseUrl?: URL) => {
 		},
 	});
 };
+
+export type HttpClient = ReturnType<typeof createHttpClient>;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
 import { FormEvent, useEffect, useState } from "react";
 import { Message } from "../lib/entities";
+import { Friends } from "./friends";
 
 const Container = styled.div`
 	display: flex;
@@ -22,12 +23,19 @@ const ChatMessage = styled.div`
 `;
 
 const ChatInput = styled.input`
-	margin-top: 10px;
+	margin: 20px 0 20px 0;
 	padding: 10px;
 	background-color: rgb(10, 10, 10);
 	border: 1px solid white;
 	color: white;
 	width: 100%;
+`;
+
+const NoChannelSelected = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
 `;
 
 interface ChatProps {
@@ -61,7 +69,6 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [channel]);
 
-	
 	const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -72,6 +79,8 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 
 		await channel?.sendMessage(content!);
 	};
+
+	if (!channel) return <Friends />;
 
 	return (
 		<Container>

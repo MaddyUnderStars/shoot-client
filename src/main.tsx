@@ -20,10 +20,11 @@ const Container = () => {
 	const [location, setLocation] = useLocation();
 
 	useEffect(() => {
-		if (loggedIn) setLocation("/channels/@me");
-		else if (location != "/login" && location != "/register")
+		if (!loggedIn && location != "/login" && location != "/register")
 			setLocation("/login");
-	}, [loggedIn, setLocation, location]);
+		else setLocation("/channels/@me");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loggedIn]);
 
 	if (hasToken && !loggedIn) {
 		return <Fallback />;

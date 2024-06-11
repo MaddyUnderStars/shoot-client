@@ -3,6 +3,8 @@ import { useParams } from "wouter";
 import { ChannelList, GuildsList } from "../components";
 import { Chat } from "../components/chat";
 import { observer } from "mobx-react-lite";
+import { Profile } from "../components/profile";
+import { MembersList } from "../components/membersList";
 
 const Container = styled.div`
 	display: flex;
@@ -18,6 +20,11 @@ const RightBar = styled.div`
 	width: 250px;
 `;
 
+const LeftBarInner = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
 export const Channels = observer(() => {
 	const params = useParams<{
 		channel_id: string;
@@ -30,13 +37,17 @@ export const Channels = observer(() => {
 			<LeftBar>
 				<GuildsList />
 
-				<ChannelList guild_id={guild_id} />
+				<LeftBarInner>
+					<ChannelList guild_id={guild_id} />
+
+					<Profile />
+				</LeftBarInner>
 			</LeftBar>
 
 			<Chat channel_id={channel_id} guild_id={guild_id} />
 
 			<RightBar>
-				<div>Members</div>
+				<MembersList guild_id={guild_id} />
 			</RightBar>
 		</Container>
 	);

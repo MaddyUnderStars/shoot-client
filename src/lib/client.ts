@@ -1,6 +1,8 @@
 import { EventEmitter } from "events";
 import { Channel, Message } from "./entities";
 import { Guild } from "./entities/guild";
+import { Relationship } from "./entities/relationship";
+import { User } from "./entities/user";
 import { LoginStore } from "./loginStore";
 import { CLOSE_CODES, GATEWAY_EVENT } from "./types";
 import { createLogger } from "./util";
@@ -43,6 +45,10 @@ class Shoot extends EventEmitter {
 	public channels = new Map<string, Channel>();
 
 	public guilds: Guild[] = [];
+
+	public user?: User = undefined;
+
+	public relationships: Relationship[] = [];
 
 	login = (opts: ClientOptions) => {
 		this._token = opts.token;
@@ -96,13 +102,37 @@ class Shoot extends EventEmitter {
 
 				this.channels = new Map(this.channels);
 
-				this.guilds = json.d.guilds.map(x => new Guild(x));
+				this.guilds = json.d.guilds.map((x) => new Guild(x));
+
+				this.user = new User(json.d.user);
+
+				for (const rel of json.d.relationships) {
+					this.relationships.push(new Relationship(rel));
+				}
 
 				this.emit("READY");
 				break;
 			case "MESSAGE_CREATE":
 				this.emit("MESSAGE_CREATE", new Message(json.d.message));
 				break;
+			case "GUILD_CREATE": {
+				const guild = new Guild(json.guild);
+				this.guilds.push(guild);
+				this.emit("GUILD_CREATE", guild);
+				break;
+			}
+			case "RELATIONSHIP_CREATE": {
+				const rel = new Relationship(json.relationship);
+				this.relationships.push(rel);
+				this.emit("RELATIONSHIP_CREATE", rel);
+				break;
+			}
+			case "CHANNEL_CREATE": {
+				const ch = new Channel(json.channel);
+				if (!ch.guild) this.channels.set(ch.id, ch);
+				this.emit("CHANNEL_CREATE", ch);
+				break;
+			}
 		}
 	};
 
@@ -116,11 +146,14 @@ class Shoot extends EventEmitter {
 
 	onClose = (event: CloseEvent) => {
 		Log.verbose("closed");
-		this._connected = false;
 		this.emit("close");
+		this.socket?.close();
+		this._connected = false;
 		clearTimeout(this.heartbeatTimeout);
 
 		this.socket = null;
+
+		this.sequence = 0;
 
 		// don't reconnect if our token is bad
 		if (event.code == CLOSE_CODES.BAD_TOKEN) {
@@ -140,6 +173,12 @@ class Shoot extends EventEmitter {
 				});
 			}, 1000 * this.reconnectAttempt);
 		}
+	};
+
+	logout = () => {
+		LoginStore.save(null);
+		this.socket?.close();
+		this._connected = false;
 	};
 
 	onError = () => {

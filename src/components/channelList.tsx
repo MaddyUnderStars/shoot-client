@@ -2,15 +2,20 @@ import { useMemo } from "react";
 import { useGuild, useShootChannels } from "../lib/hooks";
 import { Link } from "wouter";
 import styled from "styled-components";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 const ChannelsList = styled.div`
 	width: 250px;
 	margin-right: 10px;
+	flex: 1;
 `;
 
 const ChannelsHeader = styled.div`
 	margin-left: 5px;
 	border-bottom: 1px solid white;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
 const Channel = styled.a`
@@ -34,7 +39,10 @@ export const ChannelList = ({ guild_id }: ChannelListProps) => {
 
 	return (
 		<ChannelsList>
-			<ChannelsHeader>{guild?.name ?? "Private channels"}</ChannelsHeader>
+			<ChannelsHeader>
+				{guild?.name ?? "Private channels"}
+				<RiArrowDropDownLine size={20} />
+			</ChannelsHeader>
 			{channels.map((ch) => (
 				<Link
 					key={ch.mention}

@@ -195,6 +195,40 @@ export interface paths {
         };
         trace?: never;
     };
+    "/users/@me/guilds/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuild"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/@me/channels/": {
         parameters: {
             query?: never;
@@ -348,7 +382,7 @@ export interface paths {
             requestBody?: {
                 content: {
                     "application/json": {
-                        type: "blocked" | "pending";
+                        type?: "blocked" | "pending";
                     };
                 };
             };
@@ -419,6 +453,84 @@ export interface paths {
                     };
                     content: {
                         "application/json": components["schemas"]["PublicGuild"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/{guild_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuild"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/{guild_id}/invite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        expiry?: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
                     };
                 };
             };
@@ -612,17 +724,24 @@ export interface components {
             name: string;
             domain: string;
         };
-        PrivateRelationship: {
-            created: string;
-            from_id: string;
-            to_id: string;
-            type: number;
-        };
         PublicGuild: {
             id: string;
             name: string;
             domain: string;
             channels?: components["schemas"]["PublicChannel"][];
+            roles?: {
+                id: string;
+                name: string;
+                allow: number[];
+                deny: number[];
+                guild_id?: string;
+            }[];
+        };
+        PrivateRelationship: {
+            created: string;
+            user: components["schemas"]["PublicUser"];
+            /** @enum {integer} */
+            type: 0 | 1 | 2;
         };
         PublicMessage: {
             id: string;
