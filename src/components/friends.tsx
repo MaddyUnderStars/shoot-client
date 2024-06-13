@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import { UserPopout } from "./modals/userPopout";
 import { useState } from "react";
 import { Relationship, User as UserType } from "../lib/entities";
+import { AddFriend } from "./addFriend";
 
 const Container = styled.div`
 	flex: 1;
@@ -49,7 +50,10 @@ export const Friends = () => {
 	return (
 		<>
 			<Container>
-				Friends
+				<div style={{ display: "flex" }}>
+					Friends
+					<AddFriend />
+				</div>
 				<div>
 					{relationships.map((x) => (
 						<User
