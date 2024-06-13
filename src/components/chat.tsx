@@ -4,6 +4,7 @@ import { useChannel } from "../lib/hooks";
 import { FormEvent, useEffect, useState } from "react";
 import { Message } from "../lib/entities";
 import { Friends } from "./friends";
+import { shoot } from "../lib";
 
 const Container = styled.div`
 	display: flex;
@@ -29,13 +30,6 @@ const ChatInput = styled.input`
 	border: 1px solid white;
 	color: white;
 	width: 100%;
-`;
-
-const NoChannelSelected = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 1;
 `;
 
 interface ChatProps {
@@ -69,6 +63,20 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [channel]);
 
+	useEffect(() => {
+		const cb = (msg: Message) => {
+			if (msg.channel_id != channel_id) return;
+
+			setMessages((value) => [msg, ...value]);
+		};
+
+		shoot.addListener("MESSAGE_CREATE", cb);
+
+		return () => {
+			shoot.removeListener("MESSAGE_CREATE", cb);
+		};
+	}, []);
+
 	const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -76,6 +84,8 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		const formData = new FormData(form);
 
 		const content = formData.get("content")?.toString();
+
+		form.reset();
 
 		await channel?.sendMessage(content!);
 	};

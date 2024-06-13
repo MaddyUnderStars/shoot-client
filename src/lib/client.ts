@@ -50,6 +50,8 @@ class Shoot extends EventEmitter {
 
 	public relationships: Relationship[] = [];
 
+	public users: Map<string, User> = new Map();
+
 	login = (opts: ClientOptions) => {
 		this._token = opts.token;
 
@@ -95,6 +97,12 @@ class Shoot extends EventEmitter {
 			case "READY":
 				this.startHeartbeat();
 
+				this.user = new User(json.d.user);
+
+				for (const rel of json.d.relationships) {
+					this.relationships.push(new Relationship(rel));
+				}
+
 				for (const channel of json.d.channels) {
 					const ch = new Channel(channel);
 					this.channels.set(ch.mention, ch);
@@ -104,31 +112,32 @@ class Shoot extends EventEmitter {
 
 				this.guilds = json.d.guilds.map((x) => new Guild(x));
 
-				this.user = new User(json.d.user);
-
-				for (const rel of json.d.relationships) {
-					this.relationships.push(new Relationship(rel));
-				}
-
 				this.emit("READY");
 				break;
-			case "MESSAGE_CREATE":
+			case "MESSAGE_CREATE": {
+				const channel =
+					this.channels.get(json.d.message.channel_id) ??
+					this.guilds
+						.flatMap((x) => x.channels)
+						.find((x) => x?.mention == json.d.message.channel_id);
+				channel?.addMessage(new Message(json.d.message));
 				this.emit("MESSAGE_CREATE", new Message(json.d.message));
 				break;
+			}
 			case "GUILD_CREATE": {
-				const guild = new Guild(json.guild);
+				const guild = new Guild(json.d.guild);
 				this.guilds.push(guild);
 				this.emit("GUILD_CREATE", guild);
 				break;
 			}
 			case "RELATIONSHIP_CREATE": {
-				const rel = new Relationship(json.relationship);
+				const rel = new Relationship(json.d.relationship);
 				this.relationships.push(rel);
 				this.emit("RELATIONSHIP_CREATE", rel);
 				break;
 			}
 			case "CHANNEL_CREATE": {
-				const ch = new Channel(json.channel);
+				const ch = new Channel(json.d.channel);
 				if (!ch.guild) this.channels.set(ch.id, ch);
 				this.emit("CHANNEL_CREATE", ch);
 				break;

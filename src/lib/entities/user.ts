@@ -1,3 +1,4 @@
+import { shoot } from "../client";
 import { components } from "../http/generated/v1";
 
 export type UserSchema = components["schemas"]["PublicUser"] & {
@@ -21,5 +22,6 @@ export class User implements UserSchema {
 		this.display_name = data.display_name;
 		this.domain = data.domain;
 		this.email = data?.email;
+		shoot.users.set(this.mention, this);
 	}
 }

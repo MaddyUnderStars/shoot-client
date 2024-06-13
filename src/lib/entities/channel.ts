@@ -4,6 +4,7 @@ import { createHttpClient } from "../http";
 import { components, paths } from "../http/generated/v1";
 import { Guild } from "./guild";
 import { Message } from "./message";
+import { User } from "./user";
 
 export type ChannelSchema = components["schemas"]["PublicChannel"] & {
 	guild_id?: string;
@@ -18,12 +19,14 @@ export type MessageFetchOptions = Partial<
 	>
 >;
 
-export class Channel implements ChannelSchema {
+export class Channel {
 	public id: string;
 	public name: string;
 	public domain: string;
 
 	public guild?: Guild;
+
+	public recipients?: User[];
 
 	@observable messages = new Map<string, Message>();
 
@@ -37,6 +40,7 @@ export class Channel implements ChannelSchema {
 		this.domain = data.domain;
 		this.guild = shoot.guilds.find((x) => x.id == data.guild_id);
 		this.guild?.channels?.push(this);
+		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
 	}
 
 	@action

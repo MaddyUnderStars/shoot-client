@@ -11,20 +11,26 @@ export type MESSAGE_CREATE = {
 
 export type CHANNEL_CREATE = {
 	t: "CHANNEL_CREATE";
-	channel: components["schemas"]["PublicChannel"] & {
-		owner_id: string;
-		recipients: string[];
+	d: {
+		channel: components["schemas"]["PublicChannel"] & {
+			owner_id: string;
+			recipients: string[];
+		};
 	};
 };
 
 export type GUILD_CREATE = {
 	t: "GUILD_CREATE";
-	guild: components["schemas"]["PublicGuild"];
+	d: {
+		guild: components["schemas"]["PublicGuild"];
+	};
 };
 
 export type RELATIONSHIP_CREATE = {
 	t: "RELATIONSHIP_CREATE";
-	relationship: components["schemas"]["PrivateRelationship"];
+	d: {
+		relationship: components["schemas"]["PrivateRelationship"];
+	};
 };
 
 /** Sent by gateway after a user has been authenticated with IDENTIFY */

@@ -1,3 +1,4 @@
+import { shoot } from "../client";
 import { components } from "../http/generated/v1";
 import { User } from "./user";
 
@@ -18,5 +19,6 @@ export class Relationship {
 		this.created = new Date(data.created);
 		this.user = new User(data.user);
 		this.type = data.type;
+		shoot.users.set(this.user.mention, this.user);
 	}
 }
