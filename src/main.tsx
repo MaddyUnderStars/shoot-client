@@ -8,6 +8,7 @@ import { Route, Router, Switch, useLocation } from "wouter";
 import { LoginStore } from "./lib/loginStore";
 import { shoot } from "./lib";
 import { useShootConnected } from "./lib/hooks";
+import { WebrtcTest } from "./routes/webrtc";
 
 const login = LoginStore.load();
 if (login) shoot.login(login);
@@ -17,14 +18,14 @@ const Container = () => {
 	const loggedIn = useShootConnected();
 	const hasToken = !!login;
 
-	const [location, setLocation] = useLocation();
+	// const [location, setLocation] = useLocation();
 
-	useEffect(() => {
-		if (!loggedIn && location != "/login" && location != "/register")
-			setLocation("/login");
-		else setLocation("/channels/@me");
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [loggedIn]);
+	// useEffect(() => {
+	// 	if (!loggedIn && location != "/login" && location != "/register")
+	// 		setLocation("/login");
+	// 	else setLocation("/channels/@me");
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [loggedIn]);
 
 	if (hasToken && !loggedIn) {
 		return <Fallback />;
@@ -36,6 +37,8 @@ const Container = () => {
 				<Switch>
 					<Route path="/login" component={() => <Login />} />
 					<Route path="/register" component={() => <Register />} />
+
+					<Route path="/webrtc" component={() => <WebrtcTest />} />
 
 					<Route
 						path="/channels/@me"

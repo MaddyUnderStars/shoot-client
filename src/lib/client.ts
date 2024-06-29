@@ -6,6 +6,7 @@ import { User } from "./entities/user";
 import { LoginStore } from "./loginStore";
 import { CLOSE_CODES, GATEWAY_EVENT } from "./types";
 import { createLogger } from "./util";
+import { WebrtcClient } from "./webrtc";
 
 export type InstanceOptions = {
 	http: URL;
@@ -26,6 +27,8 @@ class Shoot extends EventEmitter {
 		return this._token;
 	}
 	private _instance?: InstanceOptions;
+
+	public webrtc: WebrtcClient = new WebrtcClient();
 
 	private reconnectAttempt = 0;
 
