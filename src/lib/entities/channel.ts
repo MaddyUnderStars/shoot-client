@@ -34,12 +34,11 @@ export class Channel {
 		return `${this.id}@${this.domain}`;
 	}
 
-	constructor(data: ChannelSchema) {
+	constructor(data: ChannelSchema, guild?: Guild) {
 		this.id = data.id;
 		this.name = data.name;
 		this.domain = data.domain;
-		this.guild = shoot.guilds.find((x) => x.id == data.guild_id);
-		this.guild?.channels?.push(this);
+		this.guild = guild ?? shoot.guilds.find((x) => x.id == data.guild_id);
 		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
 	}
 

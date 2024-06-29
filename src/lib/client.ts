@@ -99,6 +99,8 @@ class Shoot extends EventEmitter {
 
 				this.user = new User(json.d.user);
 
+				this.guilds = json.d.guilds.map((x) => new Guild(x));
+
 				for (const rel of json.d.relationships) {
 					this.relationships.push(new Relationship(rel));
 				}
@@ -109,8 +111,6 @@ class Shoot extends EventEmitter {
 				}
 
 				this.channels = new Map(this.channels);
-
-				this.guilds = json.d.guilds.map((x) => new Guild(x));
 
 				this.emit("READY");
 				break;

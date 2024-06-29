@@ -71,6 +71,8 @@ export const GuildsList = () => {
 				overlayClassName="overlay"
 				isOpen={modalIsOpen}
 				onRequestClose={() => setIsOpen(false)}
+				shouldCloseOnEsc={true}
+				shouldCloseOnOverlayClick={true}
 			>
 				<CreateGuildModal close={() => setIsOpen(false)} />
 			</ReactModal>

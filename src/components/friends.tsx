@@ -3,35 +3,9 @@ import { useRelationships } from "../lib/hooks";
 import ReactModal from "react-modal";
 import { UserPopout } from "./modals/userPopout";
 import { useState } from "react";
-import { Relationship, User as UserType } from "../lib/entities";
+import { Relationship as RelType, User as UserType } from "../lib/entities";
 import { AddFriend } from "./addFriend";
-
-const Container = styled.div`
-	flex: 1;
-`;
-
-const User = styled.div`
-	display: flex;
-	align-items: center;
-	margin-top: 10px;
-`;
-
-const ProfilePicture = styled.img`
-	width: 30px;
-	height: 30px;
-	border-radius: 100%;
-	margin-right: 10px;
-`;
-
-const Username = styled.div``;
-
-const NamePart = styled.p`
-	font-weight: bold;
-`;
-
-const DomainPart = styled.p`
-	font-size: 0.8rem;
-`;
+import { FriendActions } from "./friendActions";
 
 export const Friends = () => {
 	const relationships = useRelationships();
@@ -42,7 +16,7 @@ export const Friends = () => {
 		y: 0,
 	});
 
-	const openUserPopup = (u: Relationship) => {
+	const openUserPopup = (u: RelType) => {
 		setPopup(true);
 		setUser(u.user);
 	};
@@ -50,28 +24,38 @@ export const Friends = () => {
 	return (
 		<>
 			<Container>
-				<div style={{ display: "flex" }}>
+				<div
+					style={{
+						display: "flex",
+						marginBottom: "10px",
+						borderBottom: "1px solid grey",
+					}}
+				>
 					Friends
 					<AddFriend />
 				</div>
 				<div>
 					{relationships.map((x) => (
-						<User
-							onClick={(event) => {
-								setPosition({
-									x: event.clientX,
-									y: event.clientY,
-								});
-								openUserPopup(x);
-							}}
-							key={`${x.user.mention}-${x.created}-${x.type}`}
-						>
-							<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
-							<Username>
-								<NamePart>{x.user.name}</NamePart>
-								<DomainPart>{x.user.domain}</DomainPart>
-							</Username>
-						</User>
+						<Relationship>
+							<User
+								onClick={(event) => {
+									setPosition({
+										x: event.clientX,
+										y: event.clientY,
+									});
+									openUserPopup(x);
+								}}
+								key={`${x.user.mention}-${x.created}-${x.type}`}
+							>
+								<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+								<Username>
+									<NamePart>{x.user.name}</NamePart>
+									<DomainPart>{x.user.domain}</DomainPart>
+								</Username>
+							</User>
+
+							<FriendActions relationship={x} />
+						</Relationship>
 					))}
 				</div>
 			</Container>
@@ -101,3 +85,38 @@ export const Friends = () => {
 		</>
 	);
 };
+
+const Relationship = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid grey;
+	padding-bottom: 20px;
+`;
+
+const Container = styled.div`
+	flex: 1;
+`;
+
+const User = styled.div`
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+`;
+
+const ProfilePicture = styled.img`
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+	margin-right: 10px;
+`;
+
+const Username = styled.div``;
+
+const NamePart = styled.p`
+	font-weight: bold;
+`;
+
+const DomainPart = styled.p`
+	font-size: 0.8rem;
+`;

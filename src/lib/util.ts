@@ -1,16 +1,19 @@
 export const tryParseUrl = (str: string) => {
 	try {
 		return new URL(str);
-	}
-	catch (e) {
+	} catch (e) {
 		return null;
 	}
-}
+};
 
 export const createLogger = (context: string) => {
 	context = context.toUpperCase();
 	const doLog = (level: "error" | "warn" | "log", ...args: unknown[]) => {
-		console[level](`[${context} ${new Date().toISOString()}] ${args.join(" ")}`);
+		console[level](
+			`[${context} ${new Date().toISOString()}] ${args
+				.map((x) => JSON.stringify(x))
+				.join(" ")}`,
+		);
 		return args.join(" ");
 	};
 
