@@ -1,4 +1,4 @@
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Authbox, AuthboxSubmitHandler } from "../components/authbox";
 import { createHttpClient, shoot } from "../lib";
 import { LoginStore } from "../lib/loginStore";
@@ -42,5 +42,17 @@ export function Register() {
 		setLocation("/channels/@me");
 	};
 
-	return <Authbox onSubmit={onSubmit} header={"Register"} />;
+	return (
+		<Authbox
+			onSubmit={onSubmit}
+			header={
+				<>
+					<h1>Register</h1>
+					<p>
+						Been here before? <Link to="/login">Login</Link>
+					</p>
+				</>
+			}
+		/>
+	);
 }

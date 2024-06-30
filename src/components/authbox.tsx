@@ -15,7 +15,7 @@ export type AuthboxSubmitHandler = (
 
 type AuthboxProps = {
 	onSubmit: AuthboxSubmitHandler;
-	header: string;
+	header: JSX.Element;
 };
 
 export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
@@ -34,7 +34,7 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 	return (
 		<Container>
 			<Modal>
-				<h1>{header}</h1>
+				<Header>{header}</Header>
 
 				<Form
 					onSubmit={handleSubmit((data) => onSubmit(data, setError))}
@@ -96,7 +96,7 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 						/>
 					</InputContainer>
 
-					<Input type="submit" />
+					<Input type="submit" value="Submit" />
 				</Form>
 			</Modal>
 		</Container>
@@ -155,6 +155,10 @@ const Container = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`;
+
+const Header = styled.div`
+	margin-bottom: 20px;
 `;
 
 const Modal = styled.div`
