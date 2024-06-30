@@ -1,9 +1,12 @@
 import { EventEmitter } from "events";
 import { shoot } from "./client";
+import { Channel } from "./entities";
 import { createLogger } from "./util";
 
 type WebrtcClientOptions = {
 	address: string;
+	token: string;
+	channel_id: string;
 };
 
 const Log = createLogger("media");
@@ -13,15 +16,36 @@ export class WebrtcClient extends EventEmitter {
 	private sequence = 0;
 	private pc: RTCPeerConnection | null = null;
 	private heartbeatTimeout?: number;
+	private token?: string = undefined;
 
 	private sendBuffer: WEBRTC_PAYLOAD[] = [];
 
 	private candidates: RTCIceCandidate[] = [];
 
 	private isReady = false;
+	public isTrying = false;
 
-	login = (opts: WebrtcClientOptions) => {
+	private _remote_stream?: MediaStream;
+
+	public connected_channel?: Channel;
+
+	public voiceElement: HTMLAudioElement | null = null;
+
+	get remote_stream() {
+		return this._remote_stream;
+	}
+
+	private local_stream?: MediaStream;
+
+	login = async (opts: WebrtcClientOptions) => {
+		this.local_stream = await navigator.mediaDevices.getUserMedia({
+			audio: true,
+		});
+
+		this.token = opts.token;
 		this.socket = new WebSocket(new URL(opts.address));
+
+		this.connected_channel = shoot.channels.get(opts.channel_id);
 
 		this.socket.onopen = this.onOpen.bind(this);
 		this.socket.onmessage = this.onMessage.bind(this);
@@ -29,7 +53,27 @@ export class WebrtcClient extends EventEmitter {
 		this.socket.onerror = this.onError.bind(this);
 	};
 
-	doOffer = async () => {
+	public leave = async () => {
+		this.closePc();
+		this.emit("leave");
+		this.socket?.close();
+	};
+
+	private closePc = () => {
+		if (!this.pc) return;
+
+		[...this.pc.getSenders(), ...this.pc.getReceivers()].forEach((x) => {
+			if (x.track) x.track.stop();
+		});
+
+		this.pc.onnegotiationneeded = null;
+		this.pc.onicecandidate = null;
+		this.pc.oniceconnectionstatechange = null;
+		this.pc.ontrack = null;
+		this.pc.close();
+	};
+
+	private doOffer = async () => {
 		this.pc = new RTCPeerConnection({
 			// iceServers: [
 			// 	{
@@ -48,28 +92,24 @@ export class WebrtcClient extends EventEmitter {
 			Log.verbose(this.pc!.iceConnectionState);
 		this.pc.ontrack = (event) => {
 			Log.verbose("pc.ontrack", event);
-			const remoteStream = event.streams[0];
-			this.emit("remoteStream", remoteStream);
+			this._remote_stream = event.streams[0];
+			this.emit("stream", this._remote_stream);
+			console.log(this.voiceElement);
+			if (this.voiceElement)
+				this.voiceElement.srcObject = event.streams[0]!;
 		};
 
-		const stream = await navigator.mediaDevices.getUserMedia({
-			audio: true,
-			video: true,
-		});
-
-		stream.getTracks().forEach((track) => {
+		this.local_stream!.getTracks().forEach((track) => {
 			Log.verbose("adding track", track);
 			this.pc!.addTrack(track);
 		});
-
-		this.emit("stream", stream);
 
 		const offer = await this.pc.createOffer();
 		await this.pc.setLocalDescription(offer);
 		return offer;
 	};
 
-	onMessage = async ({ data }: MessageEvent) => {
+	private onMessage = async ({ data }: MessageEvent) => {
 		this.sequence++;
 
 		const json = JSON.parse(data);
@@ -84,19 +124,29 @@ export class WebrtcClient extends EventEmitter {
 		console.log(json);
 	};
 
-	onClose = () => {};
+	private onClose = () => {
+		this.isReady = false;
+		this.isTrying = false;
+		this.connected_channel = undefined;
+		clearTimeout(this.heartbeatTimeout);
+		this.emit("close");
+	};
 
-	onError = () => {};
+	private onError = () => {
+		this.onClose();
+	};
 
-	onOpen = async () => {
+	private onOpen = async () => {
 		Log.verbose("connected");
 		this.emit("open");
+		this.isTrying = true;
+		this.emit("login");
 		const offer = await this.doOffer();
 
 		this.addListener("trickle_done", () => {
 			this.send({
 				t: "identify",
-				token: shoot.token!,
+				token: this.token!,
 				offer: {
 					sdp: offer.sdp!,
 					type: offer.type,
@@ -131,7 +181,7 @@ export class WebrtcClient extends EventEmitter {
 		});
 	};
 
-	startHeartbeat = () => {
+	private startHeartbeat = () => {
 		Log.verbose("starting heartbeater");
 		const heartbeat = () => {
 			this.send({ t: "heartbeat", s: this.sequence });

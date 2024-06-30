@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import ReactModal from "react-modal";
 import { Channels, Login, Register } from "./routes";
@@ -18,14 +18,18 @@ const Container = () => {
 	const loggedIn = useShootConnected();
 	const hasToken = !!login;
 
-	// const [location, setLocation] = useLocation();
+	const [location, setLocation] = useLocation();
 
-	// useEffect(() => {
-	// 	if (!loggedIn && location != "/login" && location != "/register")
-	// 		setLocation("/login");
-	// 	else setLocation("/channels/@me");
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [loggedIn]);
+	const voiceCallRef = useCallback((ref: HTMLAudioElement) => {
+		if (ref) shoot.webrtc.voiceElement = ref;
+	}, []);
+
+	useEffect(() => {
+		if (!loggedIn && location != "/login" && location != "/register")
+			setLocation("/login");
+		else setLocation("/channels/@me");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loggedIn]);
 
 	if (hasToken && !loggedIn) {
 		return <Fallback />;
@@ -33,6 +37,7 @@ const Container = () => {
 
 	return (
 		<>
+			<audio autoPlay ref={voiceCallRef}></audio>
 			<Router>
 				<Switch>
 					<Route path="/login" component={() => <Login />} />

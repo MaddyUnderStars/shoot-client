@@ -51,15 +51,7 @@ export const ChannelList = ({ guild_id }: ChannelListProps) => {
 					}`}
 					asChild
 				>
-					<Channel>
-						{(() => {
-							if (ch.guild) return ch.name;
-
-							return ch.recipients!.length > 1
-								? ch.name
-								: ch.recipients![0]!.name;
-						})()}
-					</Channel>
+					<Channel>{ch.name}</Channel>
 				</Link>
 			))}
 		</ChannelsList>

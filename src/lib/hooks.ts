@@ -39,6 +39,19 @@ const subscribeRelationships = (callback: () => void) => {
 	};
 };
 
+const subscribeWebrtcConnected = (callback: () => void) => {
+	shoot.webrtc.addListener("login", callback);
+	shoot.webrtc.addListener("close", callback);
+
+	return () => {
+		shoot.removeListener("login", callback);
+		shoot.removeListener("close", callback);
+	};
+};
+
+export const useWebrtcConnected = () =>
+	useSyncExternalStore(subscribeWebrtcConnected, () => shoot.webrtc.isTrying);
+
 const subscribeShootProfile = (callback: () => void) => {
 	shoot.addListener("READY", callback);
 

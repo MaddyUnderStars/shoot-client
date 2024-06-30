@@ -40,6 +40,9 @@ export class Channel {
 		this.domain = data.domain;
 		this.guild = guild ?? shoot.guilds.find((x) => x.id == data.guild_id);
 		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
+
+		this.name =
+			this.recipients!.length > 1 ? this.name : this.recipients![0]!.name;
 	}
 
 	@action

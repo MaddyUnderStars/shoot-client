@@ -19,6 +19,14 @@ export type CHANNEL_CREATE = {
 	};
 };
 
+export type MEDIA_TOKEN_RECEIVED = {
+	t: "MEDIA_TOKEN_RECEIVED";
+	d: {
+		token: string;
+		endpoint: string;
+	};
+};
+
 export type GUILD_CREATE = {
 	t: "GUILD_CREATE";
 	d: {
@@ -57,6 +65,7 @@ export type HEARTBEAT_ACK = {
 export type GATEWAY_EVENT =
 	| MESSAGE_CREATE
 	| CHANNEL_CREATE
+	| MEDIA_TOKEN_RECEIVED
 	| GUILD_CREATE
 	| RELATIONSHIP_CREATE
 	| READY

@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Message } from "../lib/entities";
 import { Friends } from "./friends";
 import { shoot } from "../lib";
+import { ChatHeader } from "./chatheader";
 
 const Container = styled.div`
 	display: flex;
@@ -94,6 +95,8 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 
 	return (
 		<Container>
+			<ChatHeader channel_id={channel_id} guild_id={guild_id} />
+
 			<Messages id="chat-scroll">
 				<InfiniteScroll
 					dataLength={messages.length}
