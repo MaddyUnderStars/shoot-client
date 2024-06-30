@@ -8,7 +8,6 @@ import { Route, Router, Switch, useLocation } from "wouter";
 import { LoginStore } from "./lib/loginStore";
 import { shoot } from "./lib";
 import { useShootConnected } from "./lib/hooks";
-import { WebrtcTest } from "./routes/webrtc";
 
 const login = LoginStore.load();
 if (login) shoot.login(login);
@@ -42,8 +41,6 @@ const Container = () => {
 				<Switch>
 					<Route path="/login" component={() => <Login />} />
 					<Route path="/register" component={() => <Register />} />
-
-					<Route path="/webrtc" component={() => <WebrtcTest />} />
 
 					<Route
 						path="/channels/@me"
