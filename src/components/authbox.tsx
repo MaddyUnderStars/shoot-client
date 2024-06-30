@@ -79,6 +79,7 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 						)}
 						<Input
 							id="username"
+							style={{ textTransform: "lowercase" }}
 							{...register("username", { required: true })}
 						/>
 					</InputContainer>
@@ -90,6 +91,7 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 						)}
 						<Input
 							id="password"
+							type="password"
 							{...register("password", { required: true })}
 						/>
 					</InputContainer>
