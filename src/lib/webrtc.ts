@@ -37,9 +37,16 @@ export class WebrtcClient extends EventEmitter {
 
 	private local_stream?: MediaStream;
 
+	private local_offer: RTCSessionDescriptionInit | null = null;
+
 	login = async (opts: WebrtcClientOptions) => {
 		this.local_stream = await navigator.mediaDevices.getUserMedia({
-			audio: true,
+			audio: {
+				autoGainControl: false,
+				echoCancellation: false,
+				noiseSuppression: false,
+				channelCount: 2,
+			},
 		});
 
 		this.token = opts.token;
@@ -74,29 +81,24 @@ export class WebrtcClient extends EventEmitter {
 	};
 
 	private doOffer = async () => {
-		this.pc = new RTCPeerConnection({
-			// iceServers: [
-			// 	{
-			// 		urls: "stun:stun.l.google.com:19302",
-			// 	},
-			// ],
-		});
+		this.pc = new RTCPeerConnection();
 
 		this.pc.onnegotiationneeded = (event) =>
 			Log.verbose(`pc.onnegotiationneeded`, event);
 		this.pc.onicecandidate = (event) =>
 			event.candidate
 				? this.candidates.push(event.candidate)
-				: this.emit("trickle_done");
+				: this.identify();
 		this.pc.oniceconnectionstatechange = () =>
 			Log.verbose(this.pc!.iceConnectionState);
 		this.pc.ontrack = (event) => {
 			Log.verbose("pc.ontrack", event);
 			this._remote_stream = event.streams[0];
 			this.emit("stream", this._remote_stream);
-			console.log(this.voiceElement);
-			if (this.voiceElement)
+
+			if (this.voiceElement) {
 				this.voiceElement.srcObject = event.streams[0]!;
+			}
 		};
 
 		this.local_stream!.getTracks().forEach((track) => {
@@ -113,21 +115,28 @@ export class WebrtcClient extends EventEmitter {
 		this.sequence++;
 
 		const json = JSON.parse(data);
-		console.log(json.t);
+
+		Log.verbose(`<- [${this.sequence}] ${json.t}`);
 
 		if (json.t == "READY") {
 			this.isReady = true;
 			this.startHeartbeat();
 			this.pc!.setRemoteDescription(json.d.answer.jsep);
 		}
-
-		console.log(json);
 	};
 
 	private onClose = () => {
 		this.isReady = false;
 		this.isTrying = false;
+		this.sequence = 0;
+		this.closePc();
+		this.socket!.onclose = null;
+		this.socket!.onopen = null;
+		this.socket!.onmessage = null;
+		this.socket!.onerror = null;
+		this.socket = null;
 		this.connected_channel = undefined;
+		this.local_stream = undefined;
 		clearTimeout(this.heartbeatTimeout);
 		this.emit("close");
 	};
@@ -141,18 +150,19 @@ export class WebrtcClient extends EventEmitter {
 		this.emit("open");
 		this.isTrying = true;
 		this.emit("login");
-		const offer = await this.doOffer();
+		this.local_offer = await this.doOffer();
+	};
 
-		this.addListener("trickle_done", () => {
-			this.send({
-				t: "identify",
-				token: this.token!,
-				offer: {
-					sdp: offer.sdp!,
-					type: offer.type,
-				},
-				candidates: this.candidates,
-			});
+	identify = () => {
+		if (!this.local_offer) return;
+		this.send({
+			t: "identify",
+			token: this.token!,
+			offer: {
+				sdp: this.local_offer.sdp!,
+				type: this.local_offer.type,
+			},
+			candidates: this.candidates,
 		});
 	};
 
