@@ -11,7 +11,7 @@ export const createLogger = (context: string) => {
 	const doLog = (level: "error" | "warn" | "log", ...args: unknown[]) => {
 		console[level](
 			`[${context} ${new Date().toISOString()}] ${args
-				.map((x) => JSON.stringify(x))
+				.map((x) => (typeof x == "object" ? JSON.stringify(x) : x))
 				.join(" ")}`,
 		);
 		return args.join(" ");
