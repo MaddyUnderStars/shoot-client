@@ -36,7 +36,7 @@ export const Friends = () => {
 				</div>
 				<div>
 					{relationships.map((x) => (
-						<Relationship>
+						<Relationship key={x.user.mention}>
 							<User
 								onClick={(event) => {
 									setPosition({
