@@ -76,7 +76,7 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		return () => {
 			shoot.removeListener("MESSAGE_CREATE", cb);
 		};
-	}, []);
+	}, [channel_id]);
 
 	const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();

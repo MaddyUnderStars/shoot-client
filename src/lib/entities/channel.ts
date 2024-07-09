@@ -41,8 +41,13 @@ export class Channel {
 		this.guild = guild ?? shoot.guilds.find((x) => x.id == data.guild_id);
 		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
 
+		if (this.guild) {
+			this.guild.channels = [...(this.guild.channels || []), this];
+		}
+
+		if (this.recipients)
 		this.name =
-			this.recipients!.length > 1 ? this.name : this.recipients![0]!.name;
+			this.recipients.length > 1 ? this.name : this.recipients[0]!.name;
 	}
 
 	@action

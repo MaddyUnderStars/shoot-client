@@ -129,7 +129,7 @@ class Shoot extends EventEmitter {
 			}
 			case "GUILD_CREATE": {
 				const guild = new Guild(json.d.guild);
-				this.guilds.push(guild);
+				this.guilds = [...this.guilds, guild];
 				this.emit("GUILD_CREATE", guild);
 				break;
 			}
