@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { createHttpClient } from "../../lib";
+import { useState } from "react";
 
 export type ModalProps = {
 	close: () => void;
@@ -25,6 +26,8 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 		resolver: zodResolver(CreateGuildInputs),
 	});
 
+	const [createGuild, setCreateGuild] = useState(true);
+
 	const onSubmit = async (data: CreateGuildInputs) => {
 		clearErrors("name");
 
@@ -32,13 +35,27 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 
 		const client = createHttpClient();
 
-		const { error } = await client.POST("/guild/", {
-			body: {
-				name,
-			},
-		});
+		if (createGuild) {
+			const { error } = await client.POST("/guild/", {
+				body: {
+					name,
+				},
+			});
 
-		if (error) setError("name", { message: "Failed" });
+			if (error) setError("name", { message: "Failed" });
+			else close();
+		} else {
+			const { error } = await client.POST("/invite/:invite_code", {
+				params: {
+					path: {
+						invite_code: name,
+					},
+				},
+			});
+
+			if (error) setError("name", { message: "Failed" });
+			else close();
+		}
 
 		return;
 	};
@@ -46,13 +63,25 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 	return (
 		<Container>
 			<Header>
-				<h1>Create Guild</h1>
+				<div>
+					<h1>{createGuild ? "Create" : "Join"} Guild</h1>
+					<button
+						type="submit"
+						onClick={() => setCreateGuild(!createGuild)}
+					>
+						{createGuild
+							? "Or join instead?"
+							: "Or make one instead?"}
+					</button>
+				</div>
 				<CloseButton onClick={close}>X</CloseButton>
 			</Header>
 
 			<Content onSubmit={handleSubmit(onSubmit, console.log)}>
 				<InputContainer>
-					<label htmlFor="guildName">Name</label>
+					<label htmlFor="guildName">
+						{createGuild ? "Name" : "Invite Code"}
+					</label>
 					{errors.name?.message && (
 						<InputError>{errors.name.message}</InputError>
 					)}
@@ -64,7 +93,7 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 					/>
 				</InputContainer>
 
-				<Input type="submit"></Input>
+				<Input type="submit" />
 			</Content>
 		</Container>
 	);

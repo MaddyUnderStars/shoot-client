@@ -8,7 +8,7 @@ export class Guild implements GuildSchema {
 	public name: string;
 	public domain: string;
 
-	public channels?: Channel[] = [];
+	public channels: Channel[] = [];
 
 	get mention() {
 		return `${this.id}@${this.domain}`;
@@ -21,7 +21,8 @@ export class Guild implements GuildSchema {
 
 		for (const ch of data.channels || []) {
 			const channel = new Channel(ch, this);
-			this.channels?.push(channel);
+			if (this.channels.find(x => x.mention === channel.mention)) continue;
+			this.channels.push(channel);
 		}
 	}
 }
