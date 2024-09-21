@@ -8,7 +8,6 @@ import { MembersList } from "../components/membersList";
 
 const Container = styled.div`
 	display: flex;
-	padding-top: 20px;
 	flex: 1;
 `;
 
@@ -46,9 +45,11 @@ export const Channels = observer(() => {
 
 			<Chat channel_id={channel_id} guild_id={guild_id} />
 
-			<RightBar>
-				<MembersList guild_id={guild_id} />
-			</RightBar>
+			{channel_id ? (
+				<RightBar>
+					<MembersList channel_id={channel_id} />
+				</RightBar>
+			) : null}
 		</Container>
 	);
 });

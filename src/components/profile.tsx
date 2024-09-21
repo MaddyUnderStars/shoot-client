@@ -3,11 +3,18 @@ import { FaCog } from "react-icons/fa";
 import { useProfile, useWebrtcConnected } from "../lib/hooks";
 import { shoot } from "../lib";
 import { SettingsModal } from "./modals/settings";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ImPhoneHangUp } from "react-icons/im";
+import { Channel } from "../lib/entities";
 
 export const Profile = () => {
 	const profile = useProfile();
 	const webrtc = useWebrtcConnected();
+	const [voiceChannel, setVoiceChannel] = useState<Channel>();
+
+	useEffect(() => {
+		setVoiceChannel(shoot.webrtc.connected_channel);
+	}, [webrtc]);
 
 	const [isSettingsOpen, setSettingsOpen] = useState(false);
 
@@ -18,12 +25,20 @@ export const Profile = () => {
 			<Container>
 				{webrtc && (
 					<CallSection>
-						Voice call
-						<button onClick={() => shoot.webrtc.leave()}>
-							Leave
-						</button>
+						<CallChanenl>
+							{voiceChannel?.name}
+							<div style={{ fontSize: "0.8rem" }}>
+								<div>in: {voiceChannel?.guild?.name}</div>
+								<div>{voiceChannel?.guild?.domain}</div>
+							</div>
+						</CallChanenl>
+
+						<HangupButton onClick={() => shoot.webrtc.leave()}>
+							<ImPhoneHangUp />
+						</HangupButton>
 					</CallSection>
 				)}
+
 				<ProfileSection>
 					<User>
 						<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
@@ -34,7 +49,10 @@ export const Profile = () => {
 						</Username>
 					</User>
 
-					<FaCog onClick={() => setSettingsOpen(true)} />
+					<FaCog
+						style={{ cursor: "pointer" }}
+						onClick={() => setSettingsOpen(true)}
+					/>
 				</ProfileSection>
 			</Container>
 
@@ -46,7 +64,27 @@ export const Profile = () => {
 	);
 };
 
-const CallSection = styled.div``;
+const CallChanenl = styled.span`
+	display: flex;
+	flex-direction: column;
+`;
+
+const CallSection = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+`;
+
+const HangupButton = styled.button`
+	background-color: var(--background-tertiary);
+	border: none;
+	color: var(--text-primary);
+	padding: 10px;
+	cursor: pointer;
+	color: red;
+`;
 
 const ProfileSection = styled.div`
 	display: flex;
@@ -56,6 +94,7 @@ const ProfileSection = styled.div`
 
 const Container = styled.div`
 	padding: 20px;
+	background-color: var(--background-secondary);
 `;
 
 const User = styled.div`

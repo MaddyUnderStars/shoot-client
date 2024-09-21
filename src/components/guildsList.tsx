@@ -8,7 +8,10 @@ import { useState } from "react";
 import "./guildsList.css";
 import { CreateGuildModal } from "./modals/createGuild";
 
-const Container = styled.div``;
+const Container = styled.div`
+	background-color: var(--background-secondary);
+	padding-top: 20px;
+`;
 
 const Guild = styled.div`
 	padding: 5px;

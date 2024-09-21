@@ -52,7 +52,8 @@ export class WebrtcClient extends EventEmitter {
 		this.token = opts.token;
 		this.socket = new WebSocket(new URL(opts.address));
 
-		this.connected_channel = shoot.channels.get(opts.channel_id);
+		this.connected_channel = shoot.channels.get(opts.channel_id) ?? shoot.guilds.flatMap(x => x.channels).find(x => x.mention === opts.channel_id);
+		console.log(this.connected_channel, opts.channel_id);
 
 		this.socket.onopen = this.onOpen.bind(this);
 		this.socket.onmessage = this.onMessage.bind(this);

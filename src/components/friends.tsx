@@ -24,17 +24,11 @@ export const Friends = () => {
 	return (
 		<>
 			<Container>
-				<div
-					style={{
-						display: "flex",
-						marginBottom: "10px",
-						borderBottom: "1px solid grey",
-					}}
-				>
+				<Header>
 					Friends
 					<AddFriend />
-				</div>
-				<div>
+				</Header>
+				<Scrollable>
 					{relationships.map((x) => (
 						<Relationship key={x.user.mention}>
 							<User
@@ -57,7 +51,7 @@ export const Friends = () => {
 							<FriendActions relationship={x} />
 						</Relationship>
 					))}
-				</div>
+				</Scrollable>
 			</Container>
 
 			<ReactModal
@@ -86,22 +80,40 @@ export const Friends = () => {
 	);
 };
 
+const Header = styled.div`
+	position: sticky;
+	top: 0;
+	background-color: var(--background-secondary);
+	padding: 8px;
+	display: flex;
+	border-bottom: 1px solid grey;
+`;
+
 const Relationship = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	border-bottom: 1px solid grey;
-	padding-bottom: 20px;
+	height: 4.5rem;
+	&:last-child {
+		border-bottom: none;
+	}
 `;
 
 const Container = styled.div`
 	flex: 1;
+	height: 100%;
+	overflow-y: scroll;
+`;
+
+const Scrollable = styled.div`
+	padding: 0 20px 0 20px;
 `;
 
 const User = styled.div`
 	display: flex;
 	align-items: center;
-	margin-top: 10px;
+	cursor: pointer;
 `;
 
 const ProfilePicture = styled.img`

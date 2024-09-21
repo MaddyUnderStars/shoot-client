@@ -36,7 +36,7 @@ class Shoot extends EventEmitter {
 		return this._instance;
 	}
 
-	private sequence: number = 0;
+	private sequence = 0;
 	private heartbeatTimeout?: number;
 	private reconnectTimeout?: number;
 
@@ -59,18 +59,18 @@ class Shoot extends EventEmitter {
 		this._token = opts.token;
 
 		const http = new URL(
-			typeof opts.instance == "string"
+			typeof opts.instance === "string"
 				? opts.instance
 				: opts.instance.http,
 		);
 		// http.protocol = "https";
 
 		const gw = new URL(
-			typeof opts.instance == "string"
+			typeof opts.instance === "string"
 				? opts.instance
 				: opts.instance.gateway,
 		);
-		gw.protocol = http.protocol == "http:" ? "ws" : "wss";
+		gw.protocol = http.protocol === "http:" ? "ws" : "wss";
 
 		this._instance = {
 			http,
@@ -87,13 +87,21 @@ class Shoot extends EventEmitter {
 		this.socket.onerror = this.onError.bind(this);
 	};
 
+	requestMembers = async (channel_id: string) => {
+		this.send({
+			t: "members",
+			channel_id,
+			range: [0, 100]
+		});
+	}
+
 	onMessage = ({ data }: MessageEvent) => {
 		this._connected = true;
 
 		const json = JSON.parse(data) as GATEWAY_EVENT;
 		this.sequence++;
 
-		if (json.t != "HEARTBEAT_ACK")
+		if (json.t !== "HEARTBEAT_ACK")
 			Log.verbose(`<- [${this.sequence}] ${json.t}`);
 
 		switch (json.t) {
@@ -122,7 +130,7 @@ class Shoot extends EventEmitter {
 					this.channels.get(json.d.message.channel_id) ??
 					this.guilds
 						.flatMap((x) => x.channels)
-						.find((x) => x?.mention == json.d.message.channel_id);
+						.find((x) => x?.mention === json.d.message.channel_id);
 				channel?.addMessage(new Message(json.d.message));
 				this.emit("MESSAGE_CREATE", new Message(json.d.message));
 				break;
@@ -143,6 +151,10 @@ class Shoot extends EventEmitter {
 				const ch = new Channel(json.d.channel);
 				if (!ch.guild) this.channels.set(ch.id, ch);
 				this.emit("CHANNEL_CREATE", ch);
+				break;
+			}
+			case "MEMBERS_CHUNK": {
+				this.emit("MEMBERS_CHUNK", json);
 				break;
 			}
 		}
@@ -230,7 +242,7 @@ class Shoot extends EventEmitter {
 	};
 }
 
-export type PAYLOAD = IDENTIFY | HEARTBEAT;
+export type PAYLOAD = IDENTIFY | HEARTBEAT | SUBSCRIBE_MEMBERS;
 
 export type IDENTIFY = {
 	t: "identify";
@@ -241,5 +253,19 @@ export type HEARTBEAT = {
 	t: "heartbeat";
 	s: number;
 };
+
+export type SUBSCRIBE_MEMBERS = {
+	t: "members",
+
+	/** Channel mention to subscribe to */
+	channel_id: string,
+	/** The range to subscribe to
+	 * @example [0, 100]
+	 */
+	range: [number, number],
+	/** Subscribe to only online members */
+	online?: boolean,
+}
+
 
 export const shoot = new Shoot();

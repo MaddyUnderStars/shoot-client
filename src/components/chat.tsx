@@ -21,7 +21,36 @@ const Messages = styled.div`
 `;
 
 const ChatMessage = styled.div`
-	margin: 5px 0 5px 0;
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid grey;
+	padding-bottom: 10px;
+
+	&:first-child {
+		border-bottom: none;
+	}
+`;
+
+const ChatMessageHeader = styled.div``;
+
+const ChatContent = styled.div`
+	margin-top: 5px;
+`;
+
+const ChatAuthor = styled.div`
+	display: inline;
+`;
+
+const ChatTimestamp = styled.div`
+	display: inline;
+	margin-left: 10px;
+	color: var(--text-secondary);
+`;
+
+const MessageContentSection = styled.div`
+	display: inline-flex;
+	flex-direction: column;
 `;
 
 const ChatInput = styled.input`
@@ -30,7 +59,23 @@ const ChatInput = styled.input`
 	background-color: rgb(10, 10, 10);
 	border: 1px solid white;
 	color: white;
-	width: 100%;
+	flex: 1;
+`;
+
+const History = styled.div`
+	margin-left: 20px;
+	margin-right: 20px;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+`;
+
+const ProfilePicture = styled.img`
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+	margin-right: 10px;
+	display: inline;
 `;
 
 interface ChatProps {
@@ -66,7 +111,7 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 
 	useEffect(() => {
 		const cb = (msg: Message) => {
-			if (msg.channel_id != channel_id) return;
+			if (msg.channel_id !== channel_id) return;
 
 			setMessages((value) => [msg, ...value]);
 		};
@@ -97,32 +142,44 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		<Container>
 			<ChatHeader channel_id={channel_id} guild_id={guild_id} />
 
-			<Messages id="chat-scroll">
-				<InfiniteScroll
-					dataLength={messages.length}
-					next={getNext}
-					hasMore={hasNext}
-					loader={<h4>Loading</h4>}
-					endMessage={<EndMessage />}
-					inverse={true}
-					scrollableTarget="chat-scroll"
-					style={{
-						display: "flex",
-						flexDirection: "column-reverse",
-					}}
-				>
-					{[...messages].map((msg) => (
-						<ChatMessage key={msg.id}>
-							<div>{msg.author_id}</div>
-							<div>{msg.content}</div>
-						</ChatMessage>
-					))}
-				</InfiniteScroll>
-			</Messages>
+			<History>
+				<Messages id="chat-scroll">
+					<InfiniteScroll
+						dataLength={messages.length}
+						next={getNext}
+						hasMore={hasNext}
+						loader={<h4>Loading</h4>}
+						endMessage={<EndMessage />}
+						inverse={true}
+						scrollableTarget="chat-scroll"
+						style={{
+							display: "flex",
+							flexDirection: "column-reverse",
+						}}
+					>
+						{[...messages].map((msg) => (
+							<ChatMessage key={msg.id}>
+								<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+								<MessageContentSection>
+									<ChatMessageHeader>
+										<ChatAuthor>{msg.author_id}</ChatAuthor>
+										<ChatTimestamp>
+											{(
+												msg.updated ?? msg.published
+											).toLocaleString()}
+										</ChatTimestamp>
+									</ChatMessageHeader>
+									<ChatContent>{msg.content}</ChatContent>
+								</MessageContentSection>
+							</ChatMessage>
+						))}
+					</InfiniteScroll>
+				</Messages>
 
-			<form onSubmit={sendMessage}>
-				<ChatInput name="content" />
-			</form>
+				<form style={{ display: "flex" }} onSubmit={sendMessage}>
+					<ChatInput placeholder="Send a message..." name="content" />
+				</form>
+			</History>
 		</Container>
 	);
 };

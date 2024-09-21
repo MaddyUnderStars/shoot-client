@@ -41,6 +41,15 @@ export type RELATIONSHIP_CREATE = {
 	};
 };
 
+export type MEMBERS_CHUNK = {
+	t: "MEMBERS_CHUNK";
+
+	d: {
+		/** Role UUID or member */
+		items: Array<string | { member_id: string; name: string }>;
+	};
+};
+
 /** Sent by gateway after a user has been authenticated with IDENTIFY */
 export type READY = {
 	t: "READY";
@@ -68,6 +77,7 @@ export type GATEWAY_EVENT =
 	| MEDIA_TOKEN_RECEIVED
 	| GUILD_CREATE
 	| RELATIONSHIP_CREATE
+	| MEMBERS_CHUNK
 	| READY
 	| HEARTBEAT_ACK;
 

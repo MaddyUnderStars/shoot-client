@@ -1,13 +1,22 @@
 import styled from "styled-components";
 import { Link } from "wouter";
 import { shoot } from "./lib";
+import { HashLoader } from "react-spinners";
 
-const Header = styled.h1`
+const Centered = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	flex: 1;
+	z-index: 100;
+`;
+
+const Subtitle = styled.div`
+	margin-bottom: 20px;
+`;
+
+const Header = styled.h1`
 	font-size: 3rem;
 `;
 
@@ -21,7 +30,16 @@ const InstancePicker = styled.div`
 export const Fallback = () => {
 	return (
 		<>
-			<Header>Shoot</Header>
+			<Centered>
+				<Header>Shoot</Header>
+				{/* <Subtitle>We're getting things ready...</Subtitle> */}
+			</Centered>
+
+			<HashLoader
+				style={{ position: "absolute", top: "50%", left: "50%", rotate: "45deg" }}
+				size={100}
+				color="rgb(35, 33, 41)"
+			/>
 
 			<InstancePicker>
 				<Link

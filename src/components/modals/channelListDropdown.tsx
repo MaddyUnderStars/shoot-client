@@ -1,11 +1,19 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useGuild } from "../../lib/hooks";
 import ReactModal from "react-modal";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
+import styled from "styled-components";
+
+const Dropdown = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+`;
 
 type ChannelListDropdownProps = {
 	guild_id: string;
-};
+} & PropsWithChildren;
 
 const Popup = ({
 	guild_id,
@@ -21,12 +29,17 @@ const Popup = ({
 	);
 };
 
-export const ChannelListDropdown = ({ guild_id }: ChannelListDropdownProps) => {
+export const ChannelListDropdown = ({
+	guild_id,
+	children,
+}: ChannelListDropdownProps) => {
 	const [popup, setPopup] = useState<boolean>(false);
 
 	return (
-		<>
-			<RiArrowDropDownLine size={20} onClick={() => setPopup(true)} />
+		<Dropdown onClick={() => setPopup(true)}>
+			{children}
+
+			<RiArrowDropDownLine size={20} />
 
 			<ReactModal
 				isOpen={popup}
@@ -49,6 +62,6 @@ export const ChannelListDropdown = ({ guild_id }: ChannelListDropdownProps) => {
 			>
 				<Popup guild_id={guild_id} close={() => setPopup(false)} />
 			</ReactModal>
-		</>
+		</Dropdown>
 	);
 };

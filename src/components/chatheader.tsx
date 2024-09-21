@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
 import { createHttpClient, shoot } from "../lib";
 
+import { IoIosCall } from "react-icons/io";
+
 interface ChatHeaderProps {
 	guild_id?: string;
 	channel_id: string;
@@ -25,7 +27,11 @@ export const ChatHeader = ({ guild_id, channel_id }: ChatHeaderProps) => {
 
 		if (typeof data == "string") return; // TODO: wait for it
 
-		shoot.webrtc.login({ address: data.ip, token: data.token });
+		shoot.webrtc.login({
+			address: data.ip,
+			token: data.token,
+			channel_id: channel_id,
+		});
 	};
 
 	return (
@@ -36,15 +42,36 @@ export const ChatHeader = ({ guild_id, channel_id }: ChatHeaderProps) => {
 			</Username>
 
 			<Controls>
-				<Call onClick={startCall}>Call</Call>
+				<Call onClick={startCall}>
+					<IoIosCall />
+				</Call>
+				<Search placeholder={"Search"} />
 			</Controls>
 		</Container>
 	);
 };
 
-const Call = styled.button``;
+const Search = styled.input`
+	background-color: var(--background-tertiary);
+	border: none;
+	color: var(--text-primary);
+	padding: 10px;
+	border-bottom: 1px solid white;
+`;
 
-const Controls = styled.div``;
+const Call = styled.button`
+	background-color: var(--background-tertiary);
+	border: none;
+	color: var(--text-primary);
+	padding: 10px;
+	cursor: pointer;
+	border-bottom: 1px solid white;
+`;
+
+const Controls = styled.div`
+	display: flex;
+	gap: 10px;
+`;
 
 const Username = styled.div``;
 
@@ -57,7 +84,8 @@ const DomainPart = styled.p`
 `;
 
 const Container = styled.div`
-	margin-left: 10px;
+	padding: 10px 0 10px 20px;
 	display: flex;
 	justify-content: space-between;
+	background-color: var(--background-secondary);
 `;
