@@ -26,10 +26,10 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 		resolver: zodResolver(CreateGuildInputs),
 	});
 
-	const [createGuild, setCreateGuild] = useState(true);
+	const [createGuild, setCreateGuild] = useState(false);
 
 	const onSubmit = async (data: CreateGuildInputs) => {
-		clearErrors("name");
+		clearErrors();
 
 		const { name } = data;
 
@@ -45,7 +45,7 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 			if (error) setError("name", { message: "Failed" });
 			else close();
 		} else {
-			const { error } = await client.POST("/invite/:invite_code", {
+			const { error } = await client.POST("/invite/{invite_code}", {
 				params: {
 					path: {
 						invite_code: name,
@@ -53,7 +53,7 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 				},
 			});
 
-			if (error) setError("name", { message: "Failed" });
+			if (error) setError("name", { message: error.message });
 			else close();
 		}
 
@@ -65,14 +65,17 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 			<Header>
 				<div>
 					<h1>{createGuild ? "Create" : "Join"} Guild</h1>
-					<button
+					<OptionButton
 						type="submit"
-						onClick={() => setCreateGuild(!createGuild)}
+						onClick={() => {
+							setCreateGuild(!createGuild);
+							clearErrors();
+						}}
 					>
 						{createGuild
 							? "Or join instead?"
 							: "Or make one instead?"}
-					</button>
+					</OptionButton>
 				</div>
 				<CloseButton onClick={close}>X</CloseButton>
 			</Header>
@@ -87,6 +90,7 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 					)}
 					<Input
 						id="guildName"
+						placeholder={createGuild ? "" : "code@example.com"}
 						{...register("name", {
 							required: true,
 						})}
@@ -99,9 +103,20 @@ export const CreateGuildModal = ({ close }: ModalProps) => {
 	);
 };
 
+const OptionButton = styled.button`
+	border: none;
+	background-color: transparent;
+	color: white;
+	text-decoration: underline;
+	cursor: pointer;
+`
+
 const Input = styled.input`
 	padding: 5px;
 	margin: 5px 0 5px 0;
+	border: 1px solid white;
+	background-color: var(--background-primary);
+	color: white;
 `;
 
 const InputContainer = styled.div`
@@ -119,7 +134,6 @@ const Content = styled.form`
 	margin-top: 20px;
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
 `;
 
 const CloseButton = styled.button`
@@ -127,6 +141,7 @@ const CloseButton = styled.button`
 	background-color: transparent;
 	color: white;
 	font-size: 1.2rem;
+	cursor: pointer;
 `;
 
 const Header = styled.div`

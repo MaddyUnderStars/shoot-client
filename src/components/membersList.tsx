@@ -14,11 +14,15 @@ const Member = styled.div`
 	margin-top: 10px;
 `
 
+const getNext = async (channel_id: string) => {
+	shoot.requestMembers(channel_id);
+}
+
 export const MembersList = ({ channel_id }: { channel_id: string }) => {
 	// const channel = useChannel(channel_id);
 
 	const [members, setMembers] = useState<string[]>([]);
-	const [hasNext, setHasNext] = useState(false);
+	const [hasNext, ] = useState(false);
 
 	useEffect(() => {
 		const cb = (data: MEMBERS_CHUNK) => {
@@ -34,29 +38,23 @@ export const MembersList = ({ channel_id }: { channel_id: string }) => {
 
 		shoot.addListener("MEMBERS_CHUNK", cb);
 
+		getNext(channel_id);
+
 		return () => {
 			shoot.removeListener("MEMBERS_CHUNK", cb);
 		}
 	}, [channel_id])
 
-	useEffect(() => {
-		getNext();
-	}, [channel_id]);
-
-	const getNext = async () => {
-		shoot.requestMembers(channel_id);
-	}
-
 	return (
 		<Container>
 			<InfiniteScroll
 				dataLength={members.length}
-				next={getNext}
+				next={() => getNext(channel_id)}
 				hasMore={hasNext}
 				loader={<h4>Loading</h4>}
 			>
 				{[...members].map((member) => (
-					<Member>{member}</Member>
+					<Member key={member}>{member}</Member>
 				))}
 			</InfiniteScroll>
 		</Container>

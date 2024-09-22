@@ -2,10 +2,12 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
 import { FormEvent, useEffect, useState } from "react";
-import { Message } from "../lib/entities";
+import { Message, User } from "../lib/entities";
 import { Friends } from "./friends";
 import { shoot } from "../lib";
 import { ChatHeader } from "./chatheader";
+import ReactModal from "react-modal";
+import { UserPopout } from "./modals/userPopout";
 
 const Container = styled.div`
 	display: flex;
@@ -40,6 +42,7 @@ const ChatContent = styled.div`
 
 const ChatAuthor = styled.div`
 	display: inline;
+	cursor: pointer;
 `;
 
 const ChatTimestamp = styled.div`
@@ -84,6 +87,21 @@ interface ChatProps {
 }
 
 export const Chat = ({ guild_id, channel_id }: ChatProps) => {
+	const [user, setUser] = useState<User>();
+	const [popup, setPopup] = useState<boolean>(false);
+	const [position, setPosition] = useState<{ x: number; y: number }>({
+		x: 0,
+		y: 0,
+	});
+
+	const openUserPopup = async (u: string) => {
+		const user = shoot.users.get(u);
+		if (!user) return;	// TODO: fetch
+
+		setPopup(true);
+		setUser(user);
+	};
+
 	const channel = useChannel(channel_id, guild_id);
 
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -139,48 +157,86 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 	if (!channel) return <Friends />;
 
 	return (
-		<Container>
-			<ChatHeader channel_id={channel_id} guild_id={guild_id} />
+		<>
+			<Container>
+				<ChatHeader channel_id={channel_id} guild_id={guild_id} />
 
-			<History>
-				<Messages id="chat-scroll">
-					<InfiniteScroll
-						dataLength={messages.length}
-						next={getNext}
-						hasMore={hasNext}
-						loader={<h4>Loading</h4>}
-						endMessage={<EndMessage />}
-						inverse={true}
-						scrollableTarget="chat-scroll"
-						style={{
-							display: "flex",
-							flexDirection: "column-reverse",
-						}}
-					>
-						{[...messages].map((msg) => (
-							<ChatMessage key={msg.id}>
-								<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
-								<MessageContentSection>
-									<ChatMessageHeader>
-										<ChatAuthor>{msg.author_id}</ChatAuthor>
-										<ChatTimestamp>
-											{(
-												msg.updated ?? msg.published
-											).toLocaleString()}
-										</ChatTimestamp>
-									</ChatMessageHeader>
-									<ChatContent>{msg.content}</ChatContent>
-								</MessageContentSection>
-							</ChatMessage>
-						))}
-					</InfiniteScroll>
-				</Messages>
+				<History>
+					<Messages id="chat-scroll">
+						<InfiniteScroll
+							dataLength={messages.length}
+							next={getNext}
+							hasMore={hasNext}
+							loader={<h4>Loading</h4>}
+							endMessage={<EndMessage />}
+							inverse={true}
+							scrollableTarget="chat-scroll"
+							style={{
+								display: "flex",
+								flexDirection: "column-reverse",
+							}}
+						>
+							{[...messages].map((msg) => (
+								<ChatMessage key={msg.id}>
+									<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+									<MessageContentSection>
+										<ChatMessageHeader>
+											<ChatAuthor
+												onClick={(event) => {
+													setPosition({
+														x: event.clientX,
+														y: event.clientY,
+													});
+													openUserPopup(msg.author_id);
+												}}
+											>
+												{msg.author_id}
+											</ChatAuthor>
+											<ChatTimestamp>
+												{(
+													msg.updated ?? msg.published
+												).toLocaleString()}
+											</ChatTimestamp>
+										</ChatMessageHeader>
+										<ChatContent>{msg.content}</ChatContent>
+									</MessageContentSection>
+								</ChatMessage>
+							))}
+						</InfiniteScroll>
+					</Messages>
 
-				<form style={{ display: "flex" }} onSubmit={sendMessage}>
-					<ChatInput placeholder="Send a message..." name="content" />
-				</form>
-			</History>
-		</Container>
+					<form style={{ display: "flex" }} onSubmit={sendMessage}>
+						<ChatInput
+							placeholder="Send a message..."
+							name="content"
+						/>
+					</form>
+				</History>
+			</Container>
+
+			<ReactModal
+				isOpen={popup}
+				shouldCloseOnOverlayClick={true}
+				shouldCloseOnEsc={true}
+				onRequestClose={() => setPopup(false)}
+				style={{
+					overlay: {
+						background: "transparent",
+					},
+					content: {
+						position: "absolute",
+						width: "min-content",
+						height: "min-content",
+						top: position.y,
+						left: position.x,
+						backgroundColor: "transparent",
+						border: "none",
+					},
+				}}
+			>
+				<UserPopout user={user} />
+			</ReactModal>
+		</>
 	);
 };
 

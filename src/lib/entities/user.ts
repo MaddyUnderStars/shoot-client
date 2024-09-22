@@ -1,9 +1,9 @@
 import { shoot } from "../client";
 import { components } from "../http/generated/v1";
 
-export type UserSchema = components["schemas"]["PublicUser"] & {
+export type UserSchema = Omit<components["schemas"]["PublicUser"] & {
 	email?: string;
-};
+}, "id">
 
 export class User implements UserSchema {
 	name: string;

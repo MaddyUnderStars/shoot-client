@@ -1,6 +1,7 @@
 .modal {
-	background-color: rgb(39, 35, 35);
-	border: 1px solid grey;
+	background-color: var(--background-tertiary);
+	box-shadow: 10px 10px 15px 0px rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
 
 	position: absolute;
 	top: 50%;

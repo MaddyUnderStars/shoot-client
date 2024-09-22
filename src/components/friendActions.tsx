@@ -23,7 +23,7 @@ const PendingActions = ({ rel }: { rel: Relationship }) => {
 	);
 };
 
-const AcceptedActions = ({ rel }: { rel: Relationship }) => {
+const AcceptedActions = () => {
 	return (
 		<Container>
 			<Button>Remove</Button>
@@ -41,7 +41,7 @@ export const FriendActions = ({
 		case RelationshipType.pending:
 			return <PendingActions rel={relationship} />;
 		case RelationshipType.accepted:
-			return <AcceptedActions rel={relationship} />
+			return <AcceptedActions />
 		default:
 			return null;
 	}

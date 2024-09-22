@@ -12,9 +12,9 @@ const Centered = styled.div`
 	z-index: 100;
 `;
 
-const Subtitle = styled.div`
-	margin-bottom: 20px;
-`;
+// const Subtitle = styled.div`
+/* margin-bottom: 20px; */
+// `;
 
 const Header = styled.h1`
 	font-size: 3rem;

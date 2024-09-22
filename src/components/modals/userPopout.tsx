@@ -63,7 +63,7 @@ const DomainPart = styled.p`
 `;
 
 const Header = styled.div`
-	background-color: rgb(61, 20, 99);
+	background-color: var(--brand-1);
 	display: flex;
 	align-items: center;
 	padding: 20px;
@@ -79,5 +79,6 @@ const Body = styled.div`
 
 const Container = styled.div`
 	width: 250px;
-	background-color: rgb(30, 30, 30);
+	background-color: var(--background-tertiary);
+	box-shadow: 10px 10px 15px 0px rgba(0, 0, 0, 0.2);
 `;

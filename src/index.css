@@ -10,6 +10,8 @@ body {
 	--text-primary: rgb(240, 240, 240);
 	--text-secondary: rgb(150, 150, 150);
 
+	--brand-1: rgb(61, 20, 99);
+
 	background-color: var(--background-primary);
 	color: var(--text-primary);
 

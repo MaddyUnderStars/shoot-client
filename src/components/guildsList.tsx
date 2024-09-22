@@ -22,6 +22,7 @@ const Guild = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const CreateGuildButton = styled.button`
@@ -29,6 +30,7 @@ const CreateGuildButton = styled.button`
 	text-decoration: none;
 	background-color: transparent;
 	color: white;
+	cursor: pointer;
 `;
 
 export const GuildsList = () => {
@@ -62,10 +64,8 @@ export const GuildsList = () => {
 					</Link>
 				))}
 
-				<Guild>
-					<CreateGuildButton onClick={() => setIsOpen(true)}>
-						+
-					</CreateGuildButton>
+				<Guild onClick={() => setIsOpen(true)}>
+					<CreateGuildButton>+</CreateGuildButton>
 				</Guild>
 			</Container>
 

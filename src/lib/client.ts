@@ -112,6 +112,7 @@ class Shoot extends EventEmitter {
 
 				this.guilds = json.d.guilds.map((x) => new Guild(x));
 
+				this.relationships = [];
 				for (const rel of json.d.relationships) {
 					this.relationships.push(new Relationship(rel));
 				}

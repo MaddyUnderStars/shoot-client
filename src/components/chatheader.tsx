@@ -56,6 +56,7 @@ const Search = styled.input`
 	border: none;
 	color: var(--text-primary);
 	padding: 10px;
+	margin-right: 5px;
 	border-bottom: 1px solid white;
 `;
 
