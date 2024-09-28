@@ -1,4 +1,7 @@
-.settingsModal {}
+.settingsModal {
+	display: flex;
+	height: 100%;
+}
 
 .settingsOverlay {
 	background-color: rgb(20, 20, 20);
@@ -8,4 +11,29 @@
 	bottom: 0;
 	right: 0;
 	padding: 20px;
+}
+
+.react-tabs {
+	display: flex;
+	flex: 1;
+}
+
+.react-tabs__tab-list {
+	width: 100px;
+	border-right: 1px solid var(--background-tertiary);
+}
+
+.react-tabs__tab {
+	list-style-type: none;
+	margin: 10px 0 10px 0;
+	text-decoration: underline;
+}
+
+.react-tabs__tab:focus {
+	outline: none;
+  }
+
+.react-tabs__tab-panel {
+	margin-left: 20px;
+	flex: 1;
 }
