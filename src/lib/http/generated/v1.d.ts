@@ -379,6 +379,8 @@ export interface paths {
                     "application/json": {
                         display_name?: string;
                         summary?: string;
+                        /** Format: email */
+                        email?: string;
                     };
                 };
             };

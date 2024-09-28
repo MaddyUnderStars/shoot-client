@@ -1,5 +1,6 @@
 .settingsModal {
 	display: flex;
+	justify-content: center;
 	height: 100%;
 }
 
@@ -15,7 +16,7 @@
 
 .react-tabs {
 	display: flex;
-	flex: 1;
+	flex: 0.5;
 }
 
 .react-tabs__tab-list {

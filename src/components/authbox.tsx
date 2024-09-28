@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { UseFormSetError, useForm } from "react-hook-form";
+import { type UseFormSetError, useForm } from "react-hook-form";
 import { z } from "zod";
 import { createHttpClient, tryParseUrl } from "../lib";
 import debounce from "debounce";
@@ -127,10 +127,10 @@ const validateInstance = async (
 		if (data?.software.name !== "Shoot")
 			return setError("Does not implement Shoot API");
 	} catch (e) {
-		if (e instanceof DOMException && e?.name == "AbortError") return; // ignore aborts
+		if (e instanceof DOMException && e?.name === "AbortError") return; // ignore aborts
 		if (
 			e instanceof Error &&
-			e.message == "NetworkError when attempting to fetch resource."
+			e.message === "NetworkError when attempting to fetch resource."
 		)
 			e.message = "Offline or misconfigured";
 		setError(e instanceof Error ? e.message : e!.toString());

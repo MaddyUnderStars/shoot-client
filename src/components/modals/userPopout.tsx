@@ -37,8 +37,7 @@ export const UserPopout = ({ user }: UserModalProps) => {
 			</Header>
 
 			<Body>
-				<p>This is placeholder content.</p>
-				<p>It will be replaced with something else at some point.</p>
+				<p>{user.summary}</p>
 				<SendMessage onClick={openDm}>Open DM</SendMessage>
 			</Body>
 		</Container>
