@@ -32,9 +32,18 @@
 
 .react-tabs__tab:focus {
 	outline: none;
-  }
+}
 
 .react-tabs__tab-panel {
 	margin-left: 20px;
 	flex: 1;
+}
+
+
+.react-tabs__tab-panel {
+	display: none;
+}
+
+.react-tabs__tab-panel--selected {
+	display: block;
 }

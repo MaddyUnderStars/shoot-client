@@ -11,9 +11,8 @@ import styled from "styled-components";
 import { useProfile } from "../../lib/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Profile } from "../profile";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createHttpClient } from "../../lib";
+import { createHttpClient, shoot } from "../../lib";
 
 const LabeledField = styled.div`
 	background-color: var(--background-secondary);
@@ -66,7 +65,6 @@ const ProfileTab = () => {
 		register,
 		handleSubmit,
 		setError,
-		clearErrors,
 		formState: { errors },
 	} = useForm<ProfileFormInputs>({
 		resolver: zodResolver(ProfileFormInputs),
@@ -74,11 +72,20 @@ const ProfileTab = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		const client = createHttpClient();
-		const ret = await client.PATCH("/users/@me/", {
-			body: data,
-		});
+		try {
+			const ret = await client.PATCH("/users/@me/", {
+				body: data,
+			});
 
-		if (ret.error) setError("email", { message: ret.error.message });
+			if (ret.error)
+				return setError("email", { message: ret.error.message });
+		} catch (e) {
+			// bug in openapi fetch
+		}
+
+		shoot.user!.display_name = data.display_name;
+		shoot.user!.summary = data.summary;
+		shoot.user!.email = data.email;
 	});
 
 	if (!user) return null;
@@ -105,8 +112,7 @@ const ProfileTab = () => {
 					</label>
 					<input
 						id="email"
-						value={user.email}
-						{...register("email")}
+						{...register("email", { value: user.email })}
 					/>
 				</LabeledField>
 
@@ -121,8 +127,9 @@ const ProfileTab = () => {
 					</label>
 					<input
 						id="display_name"
-						value={user.display_name}
-						{...register("display_name")}
+						{...register("display_name", {
+							value: user.display_name,
+						})}
 					/>
 				</LabeledField>
 
@@ -137,8 +144,10 @@ const ProfileTab = () => {
 						rows={5}
 						maxLength={200}
 						id="summary"
-						value={user.summary}
-						{...register("summary", { maxLength: 200 })}
+						{...register("summary", {
+							maxLength: 200,
+							value: user.summary,
+						})}
 					/>
 				</LabeledField>
 
@@ -165,6 +174,10 @@ const Settings = ({ close }: { close: () => unknown }) => {
 
 			<TabPanel>
 				<ProfileTab />
+			</TabPanel>
+
+			<TabPanel>
+				<h1>Logging out...</h1>
 			</TabPanel>
 		</Tabs>
 	);
