@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { useRelationships } from "../lib/hooks";
 import ReactModal from "react-modal";
-import { UserPopout } from "./modals/userPopout";
-import { useState } from "react";
+// import { UserPopout } from "./modals/userPopout";
+import { lazy, Suspense, useState } from "react";
 import { Relationship as RelType, User as UserType } from "../lib/entities";
 import { AddFriend } from "./addFriend";
 import { FriendActions } from "./friendActions";
+
+const UserPopout = lazy(async () => ({
+	default: (await import("./modals/userPopout")).UserPopout,
+}));
 
 export const Friends = () => {
 	const relationships = useRelationships();
@@ -74,7 +78,9 @@ export const Friends = () => {
 					},
 				}}
 			>
-				<UserPopout user={user} />
+				<Suspense fallback={<p>Loading...</p>}>
+					<UserPopout user={user} />
+				</Suspense>
 			</ReactModal>
 		</>
 	);

@@ -1,13 +1,21 @@
-import React, { useCallback, useEffect } from "react";
+import React, { lazy, Suspense, useCallback, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import ReactModal from "react-modal";
-import { Channels, Login, Register } from "./routes";
+import { Channels } from "./routes";
 import "./index.css";
 import { Fallback } from "./fallback";
 import { Route, Router, Switch, useLocation } from "wouter";
 import { LoginStore } from "./lib/loginStore";
 import { shoot } from "./lib";
 import { useShootConnected } from "./lib/hooks";
+
+const Login = lazy(async () => ({
+	default: (await import("./routes/login")).Login,
+}));
+
+const Register = lazy(async () => ({
+	default: (await import("./routes/register")).Register,
+}));
 
 const login = LoginStore.load();
 if (login) shoot.login(login);
@@ -35,7 +43,7 @@ const Container = () => {
 	}
 
 	return (
-		<>
+		<Suspense fallback={<Fallback/>}>
 			<audio autoPlay ref={voiceCallRef}></audio>
 			<Router>
 				<Switch>
@@ -58,7 +66,7 @@ const Container = () => {
 					<Route component={() => <Fallback />} />
 				</Switch>
 			</Router>
-		</>
+		</Suspense>
 	);
 };
 

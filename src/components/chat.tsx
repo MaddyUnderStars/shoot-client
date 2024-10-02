@@ -1,13 +1,16 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, lazy, Suspense, useEffect, useState } from "react";
 import { Message, User } from "../lib/entities";
 import { Friends } from "./friends";
 import { shoot } from "../lib";
 import { ChatHeader } from "./chatheader";
 import ReactModal from "react-modal";
-import { UserPopout } from "./modals/userPopout";
+
+const UserPopout = lazy(async () => ({
+	default: (await import("./modals/userPopout")).UserPopout,
+}));
 
 const Container = styled.div`
 	display: flex;
@@ -96,7 +99,7 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 
 	const openUserPopup = async (u: string) => {
 		const user = shoot.users.get(u);
-		if (!user) return;	// TODO: fetch
+		if (!user) return; // TODO: fetch
 
 		setPopup(true);
 		setUser(user);
@@ -176,28 +179,51 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 								flexDirection: "column-reverse",
 							}}
 						>
-							{[...messages].map((msg) => (
-								<ChatMessage key={msg.id}>
-									<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+							{[...messages].map((msg, i) => (
+								<ChatMessage
+									style={
+										messages[i - 1]?.author_id ===
+										msg.author_id
+											? {
+													borderBottom: "none",
+													marginTop: 0,
+											  }
+											: {}
+									}
+									key={msg.id}
+								>
+									{messages[i + 1]?.author_id !==
+										msg.author_id && (
+										<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+									)}
 									<MessageContentSection>
-										<ChatMessageHeader>
-											<ChatAuthor
-												onClick={(event) => {
-													setPosition({
-														x: event.clientX,
-														y: event.clientY,
-													});
-													openUserPopup(msg.author_id);
-												}}
-											>
-												{msg.author_id}
-											</ChatAuthor>
-											<ChatTimestamp>
-												{(
-													msg.updated ?? msg.published
-												).toLocaleString()}
-											</ChatTimestamp>
-										</ChatMessageHeader>
+										{messages[i + 1]?.author_id !==
+											msg.author_id && (
+											<ChatMessageHeader>
+												<ChatAuthor
+													onClick={(event) => {
+														setPosition({
+															x: event.clientX,
+															y: event.clientY,
+														});
+														openUserPopup(
+															msg.author_id,
+														);
+													}}
+												>
+													{shoot.users.get(
+														msg.author_id,
+													)?.display_name ??
+														msg.author_id}
+												</ChatAuthor>
+												<ChatTimestamp>
+													{(
+														msg.updated ??
+														msg.published
+													).toLocaleString()}
+												</ChatTimestamp>
+											</ChatMessageHeader>
+										)}
 										<ChatContent>{msg.content}</ChatContent>
 									</MessageContentSection>
 								</ChatMessage>
@@ -234,7 +260,9 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 					},
 				}}
 			>
-				<UserPopout user={user} />
+				<Suspense fallback={<p>Loading...</p>}>
+					<UserPopout user={user} />
+				</Suspense>
 			</ReactModal>
 		</>
 	);
