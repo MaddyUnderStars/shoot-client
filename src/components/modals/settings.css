@@ -14,6 +14,10 @@
 	padding: 20px;
 }
 
+.settingsModal:focus {
+	outline: none;
+}
+
 .react-tabs {
 	display: flex;
 	flex: 0.5;
@@ -28,10 +32,6 @@
 	list-style-type: none;
 	margin: 10px 0 10px 0;
 	text-decoration: underline;
-}
-
-.react-tabs__tab:focus {
-	outline: none;
 }
 
 .react-tabs__tab-panel {

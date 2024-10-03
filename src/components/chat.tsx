@@ -180,50 +180,33 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 							}}
 						>
 							{[...messages].map((msg, i) => (
-								<ChatMessage
-									style={
-										messages[i - 1]?.author_id ===
-										msg.author_id
-											? {
-													borderBottom: "none",
-													marginTop: 0,
-											  }
-											: {}
-									}
-									key={msg.id}
-								>
-									{messages[i + 1]?.author_id !==
-										msg.author_id && (
-										<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
-									)}
+								<ChatMessage key={msg.id}>
+									<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+
 									<MessageContentSection>
-										{messages[i + 1]?.author_id !==
-											msg.author_id && (
-											<ChatMessageHeader>
-												<ChatAuthor
-													onClick={(event) => {
-														setPosition({
-															x: event.clientX,
-															y: event.clientY,
-														});
-														openUserPopup(
-															msg.author_id,
-														);
-													}}
-												>
-													{shoot.users.get(
+										<ChatMessageHeader>
+											<ChatAuthor
+												onClick={(event) => {
+													setPosition({
+														x: event.clientX,
+														y: event.clientY,
+													});
+													openUserPopup(
 														msg.author_id,
-													)?.display_name ??
-														msg.author_id}
-												</ChatAuthor>
-												<ChatTimestamp>
-													{(
-														msg.updated ??
-														msg.published
-													).toLocaleString()}
-												</ChatTimestamp>
-											</ChatMessageHeader>
-										)}
+													);
+												}}
+											>
+												{shoot.users.get(msg.author_id)
+													?.display_name ??
+													msg.author_id}
+											</ChatAuthor>
+											<ChatTimestamp>
+												{(
+													msg.updated ?? msg.published
+												).toLocaleString()}
+											</ChatTimestamp>
+										</ChatMessageHeader>
+
 										<ChatContent>{msg.content}</ChatContent>
 									</MessageContentSection>
 								</ChatMessage>

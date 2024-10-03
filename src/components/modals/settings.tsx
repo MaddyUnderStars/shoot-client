@@ -29,7 +29,9 @@ const Settings = () => {
 			</TabList>
 
 			<TabPanel>
-				<Suspense fallback={<p>Loading...</p>}><ProfileTab /></Suspense>
+				<Suspense fallback={<p>Loading...</p>}>
+					<ProfileTab />
+				</Suspense>
 			</TabPanel>
 
 			<TabPanel>
