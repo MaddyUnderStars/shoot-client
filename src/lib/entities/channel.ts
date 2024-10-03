@@ -1,10 +1,10 @@
 import { action, observable } from "mobx";
 import { shoot } from "../client";
 import { createHttpClient } from "../http";
-import { components, paths } from "../http/generated/v1";
-import { Guild } from "./guild";
+import type { components, paths } from "../http/generated/v1";
+import type { Guild } from "./guild";
 import { Message } from "./message";
-import { User } from "./user";
+import type { User } from "./user";
 
 export type ChannelSchema = components["schemas"]["PublicChannel"] & {
 	guild_id?: string;
@@ -13,10 +13,7 @@ export type ChannelSchema = components["schemas"]["PublicChannel"] & {
 export type MessageSendOptions = Message | string;
 
 export type MessageFetchOptions = Partial<
-	Omit<
-		paths["/channel/{channel_id}/messages/"]["get"]["parameters"]["path"],
-		"channel_id"
-	>
+	paths["/channel/{channel_id}/messages/"]["get"]["parameters"]["query"]
 >;
 
 export class Channel {
@@ -42,13 +39,13 @@ export class Channel {
 		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
 
 		if (this.guild) {
-			if (!this.guild.channels.find(x => x.mention === this.mention))
+			if (!this.guild.channels.find((x) => x.mention === this.mention))
 				this.guild.channels = [...this.guild.channels, this];
 		}
 
 		if (this.recipients)
-		this.name =
-			this.recipients.length > 1 ? this.name : this.recipients[0]!.name;
+			this.name =
+				this.recipients.length > 1 ? this.name : this.recipients[0]!.name;
 	}
 
 	@action
@@ -60,9 +57,14 @@ export class Channel {
 	getMessages = async (opts: MessageFetchOptions) => {
 		const { data, error } = await createHttpClient().GET(
 			"/channel/{channel_id}/messages/",
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			//@ts-ignore
-			{ params: { path: { channel_id: this.mention, ...opts } } },
+			{
+				params: {
+					path: {
+						channel_id: this.mention,
+					},
+					query: opts
+				},
+			},
 		);
 
 		if (!data) throw new Error("TODO: failed to load messages");
@@ -87,8 +89,7 @@ export class Channel {
 					path: { channel_id: this.mention },
 				},
 				body: {
-					content:
-						typeof message == "string" ? message : message.content,
+					content: typeof message == "string" ? message : message.content,
 				},
 			},
 		);

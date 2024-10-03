@@ -1230,14 +1230,17 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    limit?: number;
+                    order?: "ASC" | "DESC";
+                    after?: string;
+                    before?: string;
+                    around?: string;
+                    query?: string;
+                };
                 header?: never;
                 path: {
                     channel_id: string;
-                    limit: number;
-                    after: string;
-                    before: string;
-                    around: string;
                 };
                 cookie?: never;
             };

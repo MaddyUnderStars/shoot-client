@@ -9,7 +9,7 @@ const Centered = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex: 1;
-	z-index: 100;
+	z-index: 1;
 `;
 
 // const Subtitle = styled.div`
@@ -25,6 +25,11 @@ const InstancePicker = styled.div`
 	bottom: 0;
 	left: 0;
 	padding: 30px;
+	z-index: 2;
+	
+	& a {
+		cursor: pointer;
+	}
 `;
 
 export const Fallback = () => {
@@ -36,7 +41,12 @@ export const Fallback = () => {
 			</Centered>
 
 			<HashLoader
-				style={{ position: "absolute", top: "50%", left: "50%", rotate: "45deg" }}
+				style={{
+					position: "absolute",
+					top: "50%",
+					left: "50%",
+					rotate: "45deg",
+				}}
 				size={100}
 				color="rgb(35, 33, 41)"
 			/>

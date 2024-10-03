@@ -25,7 +25,7 @@ export const ChatHeader = ({ guild_id, channel_id }: ChatHeaderProps) => {
 
 		if (error) return;
 
-		if (typeof data == "string") return; // TODO: wait for it
+		if (typeof data === "string") return; // TODO: wait for it
 
 		shoot.webrtc.login({
 			address: data.ip,
@@ -45,7 +45,22 @@ export const ChatHeader = ({ guild_id, channel_id }: ChatHeaderProps) => {
 				<Call onClick={startCall}>
 					<IoIosCall />
 				</Call>
-				<Search placeholder={"Search"} />
+
+				<form onSubmit={async (e) => {
+					e.preventDefault();
+
+					const query = new FormData(e.currentTarget).get("query")?.toString();
+					if (!query) return;
+
+					const messages = await channel.getMessages({
+						query,
+					})
+
+					console.log(messages);
+				}}>
+					<Search placeholder={"Search"} name="query" />
+					<input type="submit" />
+				</form>
 			</Controls>
 		</Container>
 	);
