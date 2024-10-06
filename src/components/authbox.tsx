@@ -164,6 +164,7 @@ const Header = styled.div`
 const Modal = styled.div`
 	background-color: rgb(20, 20, 20);
 	padding: 20px;
+	box-shadow: 10px 10px 15px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const Form = styled.form`
