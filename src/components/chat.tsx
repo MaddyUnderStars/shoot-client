@@ -31,6 +31,7 @@ const ChatMessage = styled.div`
 	align-items: center;
 	border-bottom: 1px solid grey;
 	padding-bottom: 10px;
+	content-visibility: auto;
 
 	&:first-child {
 		border-bottom: none;

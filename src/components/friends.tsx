@@ -3,9 +3,13 @@ import { useRelationships } from "../lib/hooks";
 import ReactModal from "react-modal";
 // import { UserPopout } from "./modals/userPopout";
 import { lazy, Suspense, useState } from "react";
-import { Relationship as RelType, User as UserType } from "../lib/entities";
+import type {
+	Relationship as RelType,
+	User as UserType,
+} from "../lib/entities";
 import { AddFriend } from "./addFriend";
 import { FriendActions } from "./friendActions";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
 const UserPopout = lazy(async () => ({
 	default: (await import("./modals/userPopout")).UserPopout,
@@ -29,9 +33,10 @@ export const Friends = () => {
 		<>
 			<Container>
 				<Header>
-					Friends
-					<AddFriend />
+					<Tab>Friends</Tab>
+					<Tab>Add Friends</Tab>
 				</Header>
+
 				<Scrollable>
 					{relationships.map((x) => (
 						<Relationship key={x.user.mention}>
@@ -56,6 +61,10 @@ export const Friends = () => {
 						</Relationship>
 					))}
 				</Scrollable>
+
+				<TabPanel style={{ display: "flex" }}>
+					<AddFriend />
+				</TabPanel>
 			</Container>
 
 			<ReactModal
@@ -86,13 +95,27 @@ export const Friends = () => {
 	);
 };
 
-const Header = styled.div`
+const Header = styled(TabList)`
 	position: sticky;
 	top: 0;
 	background-color: var(--background-secondary);
-	padding: 8px;
 	display: flex;
-	border-bottom: 1px solid grey;
+	gap: 10px;
+	margin: 0;
+	padding: 0 10px 0 10px;
+
+	& li {
+		background-color: var(--background-tertiary);
+		border: none;
+		color: var(--text-primary);
+		padding: 5px;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	& li[aria-selected="true"] {
+		border-bottom: 1px solid white;
+	}
 `;
 
 const Relationship = styled.div`
@@ -106,13 +129,14 @@ const Relationship = styled.div`
 	}
 `;
 
-const Container = styled.div`
+const Container = styled(Tabs)`
 	flex: 1;
-	height: 100%;
-	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
 `;
 
-const Scrollable = styled.div`
+const Scrollable = styled(TabPanel)`
+	overflow-y: auto;
 	padding: 0 20px 0 20px;
 `;
 
