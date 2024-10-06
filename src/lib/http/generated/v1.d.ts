@@ -1066,6 +1066,7 @@ export interface paths {
             requestBody?: {
                 content: {
                     "application/json": {
+                        /** Format: date-time */
                         expiry?: string;
                     };
                 };

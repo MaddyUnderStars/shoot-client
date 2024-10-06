@@ -27,7 +27,7 @@
     "react-tabs": "^6.0.2",
     "styled-components": "^6.1.8",
     "wouter": "^3.1.2",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/events": "^3.0.3",

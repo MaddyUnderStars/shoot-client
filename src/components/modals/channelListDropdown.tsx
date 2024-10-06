@@ -1,9 +1,10 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useGuild } from "../../lib/hooks";
 import ReactModal from "react-modal";
-import { PropsWithChildren, useState } from "react";
+import { type PropsWithChildren, useState } from "react";
 import styled from "styled-components";
 import { createHttpClient } from "../../lib";
+import { CreateInvite } from "./createInvite";
 
 const Dropdown = styled.div`
 	display: flex;
@@ -58,13 +59,21 @@ const Popup = ({
 	};
 
 	return (
-		<DropdownContent>
-			<button onClick={createChannel}>Create channel</button>
-			{/* <button onClick={createInvite}>Create invite</button> */}
-			<button style={{ color: "red" }} onClick={deleteGuild}>
-				Delete guild
-			</button>
-		</DropdownContent>
+		<>
+			<DropdownContent>
+				<button type="button" onClick={createChannel}>
+					Create channel
+				</button>
+				<CreateInvite guild_id={guild_id} />
+				<button
+					type="button"
+					style={{ color: "red" }}
+					onClick={deleteGuild}
+				>
+					Delete guild
+				</button>
+			</DropdownContent>
+		</>
 	);
 };
 
