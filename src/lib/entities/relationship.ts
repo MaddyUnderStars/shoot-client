@@ -1,8 +1,10 @@
 import { shoot } from "../client";
-import { components } from "../http/generated/v1";
-import { User } from "./user";
+import type { components } from "../http/generated/v1";
+import { User, type UserSchema } from "./user";
 
-export type RelationshipSchema = components["schemas"]["PrivateRelationship"];
+export type RelationshipSchema = Omit<components["schemas"]["PrivateRelationship"], "user"> & {
+	user: UserSchema
+};
 
 export enum RelationshipType {
 	pending = 0,

@@ -2,7 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { type UseFormSetError, useForm } from "react-hook-form";
 import { z } from "zod";
-import { createHttpClient, tryParseUrl } from "../lib";
+import { tryParseUrl } from "../lib/util";
+import { createHttpClient } from "../lib/http";
 import debounce from "debounce";
 import styled from "styled-components";
 

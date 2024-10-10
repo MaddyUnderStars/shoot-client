@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { shoot } from "./client";
-import { Channel } from "./entities";
+import type { Channel } from "./entities/channel";
 import { createLogger } from "./util";
 
 type WebrtcClientOptions = {
@@ -85,7 +85,7 @@ export class WebrtcClient extends EventEmitter {
 		this.pc = new RTCPeerConnection();
 
 		this.pc.onnegotiationneeded = (event) =>
-			Log.verbose(`pc.onnegotiationneeded`, event);
+			Log.verbose("pc.onnegotiationneeded", event);
 		this.pc.onicecandidate = (event) =>
 			event.candidate
 				? this.candidates.push(event.candidate)

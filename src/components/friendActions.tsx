@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { createHttpClient } from "../lib";
-import { Relationship, RelationshipType } from "../lib/entities";
+import { createHttpClient } from "../lib/http";
+import { type Relationship, RelationshipType } from "../lib/entities/relationship";
 
 const Container = styled.div`
 
@@ -12,6 +12,7 @@ const Button = styled.button`
 	color: var(--text-primary);
 	padding: 10px;
 	margin-left: 10px;
+	cursor: pointer;
 `
 
 const PendingActions = ({ rel }: { rel: Relationship }) => {
@@ -23,10 +24,10 @@ const PendingActions = ({ rel }: { rel: Relationship }) => {
 	);
 };
 
-const AcceptedActions = () => {
+const AcceptedActions = ({ rel }: { rel: Relationship }) => {
 	return (
 		<Container>
-			<Button>Remove</Button>
+			<Button onClick={() => onDelete(rel)}>Remove</Button>
 			<Button>Block</Button>
 		</Container>
 	)
@@ -41,7 +42,7 @@ export const FriendActions = ({
 		case RelationshipType.pending:
 			return <PendingActions rel={relationship} />;
 		case RelationshipType.accepted:
-			return <AcceptedActions />
+			return <AcceptedActions rel={relationship}/>
 		default:
 			return null;
 	}

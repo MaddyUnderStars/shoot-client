@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import ReactModal from "react-modal";
 import styled from "styled-components";
 import { z } from "zod";
-import { createHttpClient } from "../../lib";
+import { createHttpClient } from "../../lib/http";
 
 export const CreateInviteInputs = z.object({
 	expiry: z.string().date().optional(),
@@ -18,8 +18,6 @@ const Modal = ({ guild_id }: { guild_id: string }) => {
 	const {
 		register,
 		handleSubmit,
-		setError,
-		clearErrors,
 		formState: { errors },
 	} = useForm<CreateInviteInputs>({
 		resolver: zodResolver(CreateInviteInputs),
@@ -99,13 +97,13 @@ export const CreateInvite = ({ guild_id }: { guild_id: string }) => {
 	);
 };
 
-const OptionButton = styled.button`
-	border: none;
-	background-color: transparent;
-	color: white;
-	text-decoration: underline;
-	cursor: pointer;
-`;
+// const OptionButton = styled.button`
+// 	border: none;
+// 	background-color: transparent;
+// 	color: white;
+// 	text-decoration: underline;
+// 	cursor: pointer;
+// `;
 
 const Input = styled.input`
 	padding: 5px;

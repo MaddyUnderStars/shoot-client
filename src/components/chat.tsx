@@ -1,10 +1,10 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
-import { FormEvent, lazy, Suspense, useEffect, useState } from "react";
-import { Message, User } from "../lib/entities";
-import { Friends } from "./friends";
-import { shoot } from "../lib";
+import { type FormEvent, lazy, Suspense, useEffect, useState } from "react";
+import type { Message } from "../lib/entities/message";
+import type { User } from "../lib/entities/user";
+import { shoot } from "../lib/client";
 import { ChatHeader } from "./chatheader";
 import ReactModal from "react-modal";
 
@@ -126,9 +126,9 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		);
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		getNext();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [channel]);
 
 	useEffect(() => {
@@ -153,12 +153,12 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 
 		const content = formData.get("content")?.toString();
 
+		if (!content) return;
+
 		form.reset();
 
-		await channel?.sendMessage(content!);
+		await channel?.sendMessage(content);
 	};
-
-	if (!channel) return <Friends />;
 
 	return (
 		<>
@@ -180,7 +180,7 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 								flexDirection: "column-reverse",
 							}}
 						>
-							{[...messages].map((msg, i) => (
+							{[...messages].map((msg) => (
 								<ChatMessage key={msg.id}>
 									<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
 

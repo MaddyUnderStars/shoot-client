@@ -1,6 +1,6 @@
 import { shoot } from "../client";
-import { components } from "../http/generated/v1";
-import { Channel } from "./channel";
+import type { components } from "../http/generated/v1";
+import type { Channel } from "./channel";
 
 export type MessageSchema = components["schemas"]["PublicMessage"];
 

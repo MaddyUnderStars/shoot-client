@@ -1,5 +1,5 @@
 import { shoot } from "../client";
-import { components } from "../http/generated/v1";
+import type { components } from "../http/generated/v1";
 
 export type UserSchema = Omit<components["schemas"]["PublicUser"] & {
 	email?: string;

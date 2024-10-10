@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
-import { createHttpClient } from "../../lib";
+import { createHttpClient } from "../../lib/http";
 import { useState } from "react";
 
 export type ModalProps = {

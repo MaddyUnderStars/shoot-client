@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "wouter";
-import { shoot } from "./lib";
+import { shoot } from "./lib/client";
 import { HashLoader } from "react-spinners";
 
 const Centered = styled.div`

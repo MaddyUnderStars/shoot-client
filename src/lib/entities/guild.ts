@@ -1,4 +1,4 @@
-import { components } from "../http/generated/v1";
+import type { components } from "../http/generated/v1";
 import { Channel } from "./channel";
 
 export type GuildSchema = components["schemas"]["PublicGuild"];

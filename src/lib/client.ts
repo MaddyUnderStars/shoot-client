@@ -1,10 +1,11 @@
 import { EventEmitter } from "events";
-import { Channel, Message } from "./entities";
+import { Channel } from "./entities/channel";
 import { Guild } from "./entities/guild";
+import { Message } from "./entities/message";
 import { Relationship } from "./entities/relationship";
 import { User } from "./entities/user";
 import { LoginStore } from "./loginStore";
-import { CLOSE_CODES, GATEWAY_EVENT } from "./types";
+import { CLOSE_CODES, type GATEWAY_EVENT } from "./types";
 import { createLogger } from "./util";
 import { WebrtcClient } from "./webrtc";
 
@@ -165,7 +166,8 @@ class Shoot extends EventEmitter {
 		this._connected = true;
 		this.reconnectAttempt = 0;
 		Log.verbose("opened");
-		this.send({ t: "identify", token: this._token! });
+		if (!this.token) return Log.error("does not have token");
+		this.send({ t: "identify", token: this.token });
 		this.emit("open");
 	};
 
@@ -181,7 +183,7 @@ class Shoot extends EventEmitter {
 		this.sequence = 0;
 
 		// don't reconnect if our token is bad
-		if (event.code == CLOSE_CODES.BAD_TOKEN) {
+		if (event.code === CLOSE_CODES.BAD_TOKEN) {
 			LoginStore.save(null);
 			return;
 		}
@@ -192,9 +194,10 @@ class Shoot extends EventEmitter {
 				Log.verbose("trying reconnect");
 				this.reconnectAttempt++;
 				this.reconnectTimeout = undefined;
+				if (!this.instance || !this.token) return Log.error("does not have token or instance");
 				this.login({
-					instance: this.instance!,
-					token: this.token!,
+					instance: this.instance,
+					token: this.token,
 				});
 			}, 1000 * this.reconnectAttempt);
 		}
@@ -207,7 +210,7 @@ class Shoot extends EventEmitter {
 	};
 
 	onError = () => {
-		Log.verbose(`closed due to error`);
+		Log.verbose("closed due to error");
 		// this.onClose();
 	};
 
@@ -224,10 +227,10 @@ class Shoot extends EventEmitter {
 
 	send = (data: PAYLOAD): Promise<void> => {
 		return new Promise((resolve, reject) => {
-			if (!this.socket || this.socket.readyState != this.socket.OPEN)
+			if (!this.socket || this.socket.readyState !== this.socket.OPEN)
 				throw new Error("gateway socket isn't open");
 
-			if (data.t != "heartbeat") Log.verbose(`-> ${data.t}`);
+			if (data.t !== "heartbeat") Log.verbose(`-> ${data.t}`);
 
 			try {
 				//@ts-expect-error TODO

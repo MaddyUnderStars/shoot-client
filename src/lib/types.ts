@@ -1,6 +1,6 @@
-import { ChannelSchema } from "./entities";
-import { GuildSchema } from "./entities/guild";
-import { components } from "./http/generated/v1";
+import type { ChannelSchema } from "./entities";
+import type { GuildSchema } from "./entities/guild";
+import type { components } from "./http/generated/v1";
 
 export type MESSAGE_CREATE = {
 	t: "MESSAGE_CREATE";

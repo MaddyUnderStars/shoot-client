@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
-import { createHttpClient, shoot } from "../lib";
+import { createHttpClient } from "../lib/http";
+import { shoot } from "../lib/client";
 
 import { IoIosCall } from "react-icons/io";
 

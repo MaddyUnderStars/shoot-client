@@ -1,4 +1,4 @@
-import { ClientOptions } from "./client";
+import type { ClientOptions } from "./client";
 
 export class LoginStore {
 	static save = (data: ClientOptions | null) => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { User } from "../../lib/entities";
-import { createHttpClient } from "../../lib";
+import type { User } from "../../lib/entities/user";
+import { createHttpClient } from "../../lib/http/index";
 import { useLocation } from "wouter";
 
 export type UserModalProps = {
@@ -24,7 +24,8 @@ export const UserPopout = ({ user }: UserModalProps) => {
 				name: `${user.mention}`,
 			},
 		});
-		setLocation(`/channels/${data!.id}@${data!.domain}`);
+		if (!data) return;
+		setLocation(`/channels/${data.id}@${data.domain}`);
 	};
 
 	return (
@@ -38,13 +39,14 @@ export const UserPopout = ({ user }: UserModalProps) => {
 
 			<Body>
 				<p>{user.summary}</p>
-				<SendMessage onClick={openDm}>Open DM</SendMessage>
+				<Button onClick={openDm}>Open DM</Button>
+				<Button onClick={() => setLocation(`/users/${user.mention}`)}>Open Profile</Button>
 			</Body>
 		</Container>
 	);
 };
 
-const SendMessage = styled.button`
+const Button = styled.button`
 	background-color: transparent;
 	width: 100%;
 	border: 1px solid grey;

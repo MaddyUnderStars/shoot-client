@@ -3,7 +3,7 @@ import { useGuild } from "../../lib/hooks";
 import ReactModal from "react-modal";
 import { type PropsWithChildren, useState } from "react";
 import styled from "styled-components";
-import { createHttpClient } from "../../lib";
+import { createHttpClient } from "../../lib/http";
 import { CreateInvite } from "./createInvite";
 
 const Dropdown = styled.div`
@@ -85,7 +85,7 @@ export const ChannelListDropdown = ({
 
 	return (
 		<Dropdown>
-			<span onClick={() => setPopup(true)}>
+			<span onClick={() => setPopup(true)} onKeyDown={() => setPopup(true)}>
 				{children}
 				<RiArrowDropDownLine size={20} />
 			</span>

@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import { useParams } from "wouter";
-import { ChannelList, GuildsList } from "../components";
 import { Chat } from "../components/chat";
 import { observer } from "mobx-react-lite";
 import { Profile } from "../components/profile";
 import { MembersList } from "../components/membersList";
+import { GuildsList } from "../components/guildsList";
+import { ChannelList } from "../components/channelList";
+import { Friends } from "../components/friends";
+import { JsxElement } from "typescript";
+import { UserProfile } from "../components/UserProfile";
 
 const Container = styled.div`
 	display: flex;
@@ -26,11 +30,18 @@ const LeftBarInner = styled.div`
 
 export const Channels = observer(() => {
 	const params = useParams<{
-		channel_id: string;
+		user_id: string | undefined;
+		channel_id: string | undefined;
 		guild_id: string | undefined;
 	}>();
-	const { channel_id, guild_id } = params;
+	const { channel_id, guild_id, user_id } = params;
 
+	let inner: JSX.Element;
+	if (user_id) inner = <UserProfile user_id={user_id} />
+	else {
+		if (channel_id) inner = <Chat channel_id={channel_id} guild_id={guild_id} />
+		else inner = <Friends/>
+	}
 	return (
 		<Container>
 			<LeftBar>
@@ -43,7 +54,7 @@ export const Channels = observer(() => {
 				</LeftBarInner>
 			</LeftBar>
 
-			<Chat channel_id={channel_id} guild_id={guild_id} />
+			{inner}
 
 			{channel_id ? (
 				<RightBar>
