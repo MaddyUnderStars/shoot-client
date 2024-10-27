@@ -1,10 +1,10 @@
-import React, { lazy, Suspense, useCallback, useEffect } from "react";
+import React, { lazy, Suspense, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import ReactModal from "react-modal";
 import { Channels } from "./routes/channels";
 import "./index.css";
 import { Fallback } from "./fallback";
-import { Route, Router, Switch, useLocation } from "wouter";
+import { Route, Router, Switch } from "wouter";
 import { LoginStore } from "./lib/loginStore";
 import { shoot } from "./lib/client";
 import { useShootConnected } from "./lib/hooks";
@@ -28,19 +28,9 @@ const Container = () => {
 	const loggedIn = useShootConnected();
 	const hasToken = !!login;
 
-	const [location, setLocation] = useLocation();
-
 	const voiceCallRef = useCallback((ref: HTMLAudioElement) => {
 		if (ref) shoot.webrtc.voiceElement = ref;
 	}, []);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-	// useEffect(() => {
-	// 	if (!loggedIn && location !== "/login" && location !== "/register")
-	// 		setLocation("/login");
-	// 	else setLocation("/channels/@me");
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [loggedIn]);
 
 	if (hasToken && !loggedIn) {
 		return <Fallback />;
@@ -60,9 +50,10 @@ const Container = () => {
 						/>
 
 						<Route
-							path="/channels/@me"
+							path="/users/:user_id"
 							component={() => <Channels />}
 						/>
+
 						<Route
 							path="/channels/:channel_id"
 							component={() => <Channels />}
@@ -71,12 +62,18 @@ const Container = () => {
 							path="/channels/:guild_id/:channel_id"
 							component={() => <Channels />}
 						/>
+
 						<Route
-							path="/users/:user_id"
+							path="/channels/@me"
 							component={() => <Channels />}
 						/>
 
-						<Route component={() => <Fallback />} />
+						<Route
+							component={() => {
+								if (!loggedIn) return <Login />;
+								return <Channels />;
+							}}
+						/>
 					</Switch>
 				</Router>
 			</QueryClientProvider>
