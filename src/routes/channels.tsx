@@ -7,7 +7,6 @@ import { MembersList } from "../components/membersList";
 import { GuildsList } from "../components/guildsList";
 import { ChannelList } from "../components/channelList";
 import { Friends } from "../components/friends";
-import { JsxElement } from "typescript";
 import { UserProfile } from "../components/UserProfile";
 
 const Container = styled.div`
@@ -39,8 +38,8 @@ export const Channels = observer(() => {
 	let inner: JSX.Element;
 	if (user_id) inner = <UserProfile user_id={user_id} />
 	else {
-		if (channel_id) inner = <Chat channel_id={channel_id} guild_id={guild_id} />
-		else inner = <Friends/>
+		if (!channel_id || channel_id === "@me") inner = <Friends />
+		else inner = <Chat channel_id={channel_id} guild_id={guild_id} />
 	}
 	return (
 		<Container>
@@ -56,7 +55,7 @@ export const Channels = observer(() => {
 
 			{inner}
 
-			{channel_id ? (
+			{channel_id && channel_id !== "@me" ? (
 				<RightBar>
 					<MembersList channel_id={channel_id} />
 				</RightBar>

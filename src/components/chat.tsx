@@ -29,7 +29,7 @@ const ChatMessage = styled.div`
 	margin-top: 10px;
 	display: flex;
 	align-items: center;
-	border-bottom: 1px solid grey;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 	padding-bottom: 10px;
 	content-visibility: auto;
 
@@ -70,11 +70,11 @@ const ChatInput = styled.input`
 `;
 
 const History = styled.div`
-	margin-left: 20px;
-	margin-right: 20px;
 	display: flex;
+	margin-left: 20px;
 	flex: 1;
 	flex-direction: column;
+	overflow-y: auto;
 `;
 
 const ProfilePicture = styled.img`
@@ -117,6 +117,7 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		const msgs = await channel?.getMessages({});
 		if (!msgs) return;
 
+		console.log(msgs);
 		setHasNext(msgs.size > MESSAGES_PER_PAGE);
 
 		setMessages(
@@ -126,10 +127,9 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		);
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		getNext();
-	}, [channel]);
+	}, [channel_id])
 
 	useEffect(() => {
 		const cb = (msg: Message) => {
@@ -159,6 +159,10 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 
 		await channel?.sendMessage(content);
 	};
+
+	if (!channel) return <Container>
+		<p>No channel selected</p>
+	</Container>
 
 	return (
 		<>
