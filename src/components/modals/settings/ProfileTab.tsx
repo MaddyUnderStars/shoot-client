@@ -3,7 +3,8 @@ import { useProfile } from "../../../lib/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createHttpClient, shoot } from "../../../lib";
+import { createHttpClient } from "../../../lib/http";
+import { shoot } from "../../../lib/client";
 
 const LabeledField = styled.div`
 	background-color: var(--background-secondary);

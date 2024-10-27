@@ -1,4 +1,4 @@
-import type { ChannelSchema } from "./entities";
+import type { ChannelSchema } from "./entities/channel";
 import type { GuildSchema } from "./entities/guild";
 import type { components } from "./http/generated/v1";
 

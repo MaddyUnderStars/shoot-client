@@ -3,13 +3,11 @@ import { useRelationships } from "../lib/hooks";
 import ReactModal from "react-modal";
 // import { UserPopout } from "./modals/userPopout";
 import { lazy, Suspense, useState } from "react";
-import type {
-	Relationship as RelType,
-	User as UserType,
-} from "../lib/entities";
+import type { Relationship as RelType } from "../lib/entities/relationship";
 import { AddFriend } from "./addFriend";
 import { FriendActions } from "./friendActions";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import type { User as UserType } from "../lib/entities/user";
 
 const UserPopout = lazy(async () => ({
 	default: (await import("./modals/userPopout")).UserPopout,

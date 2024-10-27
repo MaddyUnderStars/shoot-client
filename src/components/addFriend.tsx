@@ -5,8 +5,6 @@ import { z } from "zod";
 import { createHttpClient } from "../lib/http";
 import { useProfile } from "../lib/hooks";
 
-import { MdAdd } from "react-icons/md";
-
 const AddFriendForm = z.object({
 	username: z.string(),
 });
@@ -30,7 +28,7 @@ export const AddFriend = () => {
 		const client = createHttpClient();
 
 		if (!data.username.includes("@"))
-			data.username = data.username + "@" + me.domain;
+			data.username = `${data.username}@${me.domain}`;
 
 		const ret = await client.POST("/users/{user_id}/relationship/", {
 			params: { path: { user_id: data.username } },

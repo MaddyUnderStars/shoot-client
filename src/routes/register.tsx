@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { Authbox, AuthboxSubmitHandler } from "../components/authbox";
-import { createHttpClient, shoot } from "../lib";
+import { Authbox, type AuthboxSubmitHandler } from "../components/authbox";
+import { createHttpClient } from "../lib/http";
+import { shoot } from "../lib/client";
 import { LoginStore } from "../lib/loginStore";
 
 export function Register() {
