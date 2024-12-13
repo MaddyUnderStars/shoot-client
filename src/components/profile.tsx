@@ -41,7 +41,7 @@ export const Profile = () => {
 
 				<ProfileSection>
 					<User>
-						<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
+						<ProfilePicture src={profile.avatar} />
 
 						<Username>
 							<NamePart>{profile.name}</NamePart>

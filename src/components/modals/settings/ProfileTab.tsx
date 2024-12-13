@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createHttpClient } from "../../../lib/http";
 import { shoot } from "../../../lib/client";
+import { useRef, useState } from "react";
 
 const LabeledField = styled.div`
 	background-color: var(--background-secondary);
@@ -43,9 +44,12 @@ const InputError = styled.span`
 `;
 
 const ProfileFormInputs = z.object({
-	email: z.string().email(),
-	display_name: z.string(),
-	summary: z.string(),
+	email: z.string().optional(),
+	display_name: z.string().optional(),
+	summary: z.string().optional(),
+	avatar: z
+		.custom<FileList>((filelist) => filelist instanceof FileList)
+		.optional(),
 });
 
 type ProfileFormInputs = z.infer<typeof ProfileFormInputs>;
@@ -64,13 +68,32 @@ export const ProfileTab = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		const client = createHttpClient();
+
+		if (data.avatar?.[0]) {
+			const d = new FormData();
+			d.append("file", data.avatar[0]);
+			const json = await fetch(`${shoot.instance!.http.toString()}media/`, {
+				method: "POST",
+				body: d,
+				headers: {
+					"Authorization": shoot.token!
+				}
+			}).then(x => x.json());
+			data.avatar = json.hash;
+		}
+
+		for (const key in data) {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
+			if (!data[key]) delete data[key];
+		}
+
 		try {
 			const ret = await client.PATCH("/users/@me/", {
 				body: data,
 			});
 
-			if (ret.error)
-				return setError("email", { message: ret.error.message });
+			if (ret.error) return setError("email", { message: ret.error.message });
 		} catch (e) {
 			// bug in openapi fetch
 		}
@@ -79,6 +102,10 @@ export const ProfileTab = () => {
 		shoot.user!.summary = data.summary;
 		shoot.user!.email = data.email;
 	});
+
+	const [avatar, setAvatar] = useState(
+		"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png",
+	);
 
 	if (!user) return null;
 
@@ -90,6 +117,32 @@ export const ProfileTab = () => {
 			</div>
 
 			<form onSubmit={onSubmit}>
+				<LabeledField>
+					<label
+						htmlFor="avatar"
+						style={{ display: "flex", flexDirection: "column" }}
+					>
+						Avatar
+						<img width="80px" alt="profile avatar" src={avatar} />
+					</label>
+					{!!errors.avatar?.message && (
+						<InputError>{errors.avatar.message}</InputError>
+					)}
+					<input
+						id="avatar"
+						type="file"
+						{...register("avatar")}
+						onChange={(event) => {
+							const target = event.target;
+							if (!target.files) return;
+							const file = target.files[0];
+							if (!file) return;
+
+							setAvatar(URL.createObjectURL(file));
+						}}
+					/>
+				</LabeledField>
+
 				<LabeledField>
 					<label htmlFor="username">Username</label>
 					<input id="username" value={user.name} disabled={true} />
@@ -104,6 +157,7 @@ export const ProfileTab = () => {
 					</label>
 					<input
 						id="email"
+						type="email"
 						{...register("email", { value: user.email })}
 					/>
 				</LabeledField>
@@ -112,9 +166,7 @@ export const ProfileTab = () => {
 					<label htmlFor="display_name">
 						Display Name
 						{!!errors.display_name?.message && (
-							<InputError>
-								{errors.display_name.message}
-							</InputError>
+							<InputError>{errors.display_name.message}</InputError>
 						)}
 					</label>
 					<input
