@@ -115,7 +115,7 @@ const validateInstance = async (
 			signal: instanceAbort.signal,
 		}).then((x) => x.json());
 
-		if (data.software.name !== "Shoot")
+		if (data.software.name.toLowerCase() !== "shoot")
 			return setError("Does not implement Shoot API");
 	} catch (e) {
 		if (e instanceof DOMException && e?.name === "AbortError") return; // ignore aborts
