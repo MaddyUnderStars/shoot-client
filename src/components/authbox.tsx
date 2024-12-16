@@ -3,7 +3,6 @@ import { useState } from "react";
 import { type UseFormSetError, useForm } from "react-hook-form";
 import { z } from "zod";
 import { tryParseUrl } from "../lib/util";
-import { createHttpClient } from "../lib/http";
 import debounce from "debounce";
 import styled from "styled-components";
 
@@ -37,9 +36,7 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 			<Modal>
 				<Header>{header}</Header>
 
-				<Form
-					onSubmit={handleSubmit((data) => onSubmit(data, setError))}
-				>
+				<Form onSubmit={handleSubmit((data) => onSubmit(data, setError))}>
 					<InputContainer>
 						<label htmlFor="instance">Instance</label>
 						{errors.instance?.message && (
@@ -47,9 +44,7 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 								{errors.instance.message}
 							</InputError>
 						)}
-						{checkingInstance && (
-							<InputStatus>Checking</InputStatus>
-						)}
+						{checkingInstance && <InputStatus>Checking</InputStatus>}
 						<Input
 							id="instance"
 							defaultValue={DEFAULT_INSTANCE}
@@ -58,15 +53,11 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 								onChange: debounce((event) => {
 									clearErrors("instance");
 									setCheckingInstance(true);
-									return validateInstance(
-										event.target.value,
-										(message) =>
-											setError("instance", { message }),
+									return validateInstance(event.target.value, (message) =>
+										setError("instance", { message }),
 									)
 										.then(() => setCheckingInstance(false))
-										.catch(() =>
-											setCheckingInstance(false),
-										);
+										.catch(() => setCheckingInstance(false));
 								}, 500),
 							})}
 							aria-describedby="instance-error-msg"
@@ -119,13 +110,12 @@ const validateInstance = async (
 
 	instanceAbort = new AbortController();
 
-	const client = createHttpClient(parsedUrl);
 	try {
-		const { data, error } = await client.GET("/nodeinfo/2.0.json/", {
+		const data = await fetch(`${parsedUrl}/.well-known/nodeinfo/2.0`, {
 			signal: instanceAbort.signal,
-		});
-		if (error) setError(JSON.stringify(error));
-		if (data?.software.name !== "Shoot")
+		}).then((x) => x.json());
+
+		if (data.software.name !== "Shoot")
 			return setError("Does not implement Shoot API");
 	} catch (e) {
 		if (e instanceof DOMException && e?.name === "AbortError") return; // ignore aborts

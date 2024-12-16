@@ -23,6 +23,8 @@
 
 	/* openapi-ts */
 	"noUncheckedIndexedAccess": true,
+
+    "types": []
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
