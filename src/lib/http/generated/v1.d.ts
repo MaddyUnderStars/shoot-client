@@ -4,74 +4,6 @@
  */
 
 export interface paths {
-    "/nodeinfo/2.0.json/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": {
-                            version: string;
-                            software: {
-                                name: string;
-                                version: string;
-                                homepage: string;
-                            };
-                            protocols: string[];
-                            openRegistrations: boolean;
-                            metadata: Record<string, never>;
-                        };
-                    };
-                };
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["HttpError"];
-                    };
-                };
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["HttpError"];
-                    };
-                };
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["HttpError"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/register": {
         parameters: {
             query?: never;
@@ -1405,6 +1337,10 @@ export interface paths {
                 content: {
                     "application/json": {
                         content: string;
+                        files?: {
+                            name: string;
+                            hash: string;
+                        }[];
                     };
                 };
             };
@@ -1486,6 +1422,76 @@ export interface paths {
                     };
                     content: {
                         "application/json": "Accepted";
+                    };
+                };
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channel/{channel_id}/attachments/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        size: number;
+                        name: string;
+                    }[];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            hash: string;
+                            url: string;
+                        }[];
                     };
                 };
                 401: {
@@ -1636,6 +1642,10 @@ export interface components {
             updated: string;
             author_id: string;
             channel_id: string;
+            files: {
+                name: string;
+                hash: string;
+            }[];
         };
     };
     responses: never;

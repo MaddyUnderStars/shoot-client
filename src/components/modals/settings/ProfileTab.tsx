@@ -75,9 +75,11 @@ export const ProfileTab = () => {
 			// bug in openapi fetch
 		}
 
-		shoot.user!.display_name = data.display_name;
-		shoot.user!.summary = data.summary;
-		shoot.user!.email = data.email;
+        if (!shoot.user) return;    // shouldn't happen
+
+		shoot.user.display_name = data.display_name;
+		shoot.user.summary = data.summary;
+		shoot.user.email = data.email;
 	});
 
 	if (!user) return null;

@@ -3,14 +3,14 @@ import { shoot } from "../client";
 import { createHttpClient } from "../http";
 import type { components, paths } from "../http/generated/v1";
 import type { Guild } from "./guild";
-import { Message } from "./message";
+import { Message, type MessageSchema } from "./message";
 import type { User } from "./user";
 
 export type ChannelSchema = components["schemas"]["PublicChannel"] & {
 	guild_id?: string;
 } & { owner_id?: string; recipients?: string[] };
 
-export type MessageSendOptions = Message | string;
+export type MessageSendOptions = Partial<MessageSchema> | string;
 
 export type MessageFetchOptions = Partial<
 	paths["/channel/{channel_id}/messages/"]["get"]["parameters"]["query"]
@@ -35,7 +35,7 @@ export class Channel {
 		this.id = data.id;
 		this.name = data.name;
 		this.domain = data.domain;
-		this.guild = guild ?? shoot.guilds.find((x) => x.id == data.guild_id);
+		this.guild = guild ?? shoot.guilds.find((x) => x.id === data.guild_id);
 		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
 
 		if (this.guild) {
@@ -82,6 +82,11 @@ export class Channel {
 	};
 
 	sendMessage = async (message: MessageSendOptions) => {
+        const content = typeof message === "string" ? message : message.content;
+        if (!content) throw new Error("must have content");
+
+        const files = typeof message === "string" ? undefined : message.files;
+
 		const { data, error } = await createHttpClient().POST(
 			"/channel/{channel_id}/messages/",
 			{
@@ -89,7 +94,8 @@ export class Channel {
 					path: { channel_id: this.mention },
 				},
 				body: {
-					content: typeof message == "string" ? message : message.content,
+					content,
+                    files,                    
 				},
 			},
 		);
