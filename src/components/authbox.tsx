@@ -111,7 +111,7 @@ const validateInstance = async (
 	instanceAbort = new AbortController();
 
 	try {
-		const data = await fetch(`${parsedUrl}/.well-known/nodeinfo/2.0`, {
+		const data = await fetch(`${parsedUrl}.well-known/nodeinfo/2.0`, {
 			signal: instanceAbort.signal,
 		}).then((x) => x.json());
 
