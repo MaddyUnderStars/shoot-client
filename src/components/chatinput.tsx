@@ -105,7 +105,7 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 					type="file"
 					multiple
 					hidden
-					onChange={(e) => setAttached([...e.target.files])}
+					onChange={(e) => setAttached([...e.target.files ?? []])}
 				/>
 			</div>
 		</form>
