@@ -2,19 +2,18 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
 import {
-	type FormEvent,
 	lazy,
 	Suspense,
 	useEffect,
 	useState,
-	type ChangeEvent,
 } from "react";
 import type { Message } from "../lib/entities/message";
 import type { User } from "../lib/entities/user";
 import { shoot } from "../lib/client";
 import { ChatHeader } from "./chatheader";
 import ReactModal from "react-modal";
-import { createHttpClient } from "../lib/http";
+import { MessageComponent } from "./message";
+import { ChatInput } from "./chatinput";
 
 const UserPopout = lazy(async () => ({
 	default: (await import("./modals/userPopout")).UserPopout,
@@ -33,64 +32,12 @@ const Messages = styled.div`
 	flex-direction: column-reverse;
 `;
 
-const ChatMessage = styled.div`
-	margin-top: 10px;
-	display: flex;
-	align-items: center;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-	padding-bottom: 10px;
-	content-visibility: auto;
-
-	&:first-child {
-		border-bottom: none;
-	}
-`;
-
-const ChatMessageHeader = styled.div``;
-
-const ChatContent = styled.div`
-	margin-top: 5px;
-`;
-
-const ChatAuthor = styled.div`
-	display: inline;
-	cursor: pointer;
-`;
-
-const ChatTimestamp = styled.div`
-	display: inline;
-	margin-left: 10px;
-	color: var(--text-secondary);
-`;
-
-const MessageContentSection = styled.div`
-	display: inline-flex;
-	flex-direction: column;
-`;
-
-const ChatInput = styled.input`
-	margin: 20px 0 20px 0;
-	padding: 10px;
-	background-color: rgb(10, 10, 10);
-	border: 1px solid white;
-	color: white;
-	flex: 1;
-`;
-
 const History = styled.div`
 	display: flex;
 	margin-left: 20px;
 	flex: 1;
 	flex-direction: column;
 	overflow-y: auto;
-`;
-
-const ProfilePicture = styled.img`
-	width: 30px;
-	height: 30px;
-	border-radius: 100%;
-	margin-right: 10px;
-	display: inline;
 `;
 
 interface ChatProps {
@@ -105,14 +52,13 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		x: 0,
 		y: 0,
 	});
-	const [attached, setAttached] = useState<{ hash: string; name: string }[]>(
-		[],
-	);
 
-	const openUserPopup = async (u: string) => {
+
+	const openUserPopup = async (u: string, x: number, y: number) => {
 		const user = shoot.users.get(u);
 		if (!user) return; // TODO: fetch
 
+		setPosition({ x, y });
 		setPopup(true);
 		setUser(user);
 	};
@@ -154,58 +100,6 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		};
 	}, [channel_id]);
 
-	const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		const form = event.currentTarget;
-		const formData = new FormData(form);
-
-		const content = formData.get("content")?.toString();
-
-		if (!content) return;
-
-		form.reset();
-
-		await channel?.sendMessage({ content, files: attached });
-	};
-
-	const doImageUploads = async (event: ChangeEvent<HTMLInputElement>) => {
-		if (!channel) return;
-
-		const files = event.target.files;
-		if (!files) return;
-
-		// get the upload endpoints
-		const { data, error } = await createHttpClient().POST(
-			"/channel/{channel_id}/attachments/",
-			{
-				body: [...files].map((x) => ({ name: x.name, size: x.size })),
-				params: {
-					path: {
-						channel_id: channel.mention,
-					},
-				},
-			},
-		);
-
-		if (!data || error) return;
-
-		setAttached(data.map((x, i) => ({ hash: x.hash, name: files[i]!.name })));
-
-		// and then upload the files
-		for (let i = 0; i < data?.length; i++) {
-			const file = files[i];
-			const signed = data[i];
-
-			if (!file || !signed) continue;
-
-			await fetch(signed.url, {
-				method: "PUT",
-				body: await file.arrayBuffer(),
-			});
-		}
-	};
-
 	if (!channel)
 		return (
 			<Container>
@@ -234,58 +128,16 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 							}}
 						>
 							{[...messages].map((msg) => (
-								<ChatMessage key={msg.id}>
-									<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
-
-									<MessageContentSection>
-										<ChatMessageHeader>
-											<ChatAuthor
-												onClick={(event) => {
-													setPosition({
-														x: event.clientX,
-														y: event.clientY,
-													});
-													openUserPopup(msg.author_id);
-												}}
-											>
-												{shoot.users.get(msg.author_id)?.display_name ??
-													msg.author_id}
-											</ChatAuthor>
-											<ChatTimestamp>
-												{(msg.updated ?? msg.published).toLocaleString()}
-											</ChatTimestamp>
-										</ChatMessageHeader>
-
-										<ChatContent>
-											{msg.content}
-
-											<ImageContainer>
-												{msg.files.map((file) => (
-													<Image
-														src={`https://chat.understars.dev/channel/${channel.mention}/attachments/${file.hash}`}
-														alt={file.name}
-														key={file.hash}
-														width={200}
-													/>
-												))}
-											</ImageContainer>
-										</ChatContent>
-									</MessageContentSection>
-								</ChatMessage>
+								<MessageComponent
+									key={msg.id}
+									message={msg}
+									openUserPopup={openUserPopup}
+								/>
 							))}
 						</InfiniteScroll>
 					</Messages>
 
-					<form style={{ display: "flex" }} onSubmit={sendMessage}>
-						<ChatInput placeholder="Send a message..." name="content" />
-
-						<input
-							type="file"
-							multiple
-							name="files"
-							onChange={doImageUploads}
-						/>
-					</form>
+                    <ChatInput channel={channel}/>
 				</History>
 			</Container>
 
@@ -316,16 +168,6 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		</>
 	);
 };
-
-const Image = styled.img`
-`;
-
-const ImageContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    margin-top: 10px;
-`;
 
 const EndMessageContainer = styled.div`
 	padding: 50px 0 50px 0;

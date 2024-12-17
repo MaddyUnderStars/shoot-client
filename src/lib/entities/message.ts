@@ -28,7 +28,13 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
 
         this.files = data.files;
 
-        const channel = shoot.channels.get(data.channel_id);
+        let channel = shoot.channels.get(data.channel_id);
+        if (!channel) {
+            for (const guild of shoot.guilds) {
+                channel = guild.channels.find(x => x.mention === data.channel_id);
+                if (channel) break;
+            }
+        }
         if (channel) {
             this.channel = channel;
             this.channel.addMessage(this);
