@@ -4,6 +4,7 @@ import type { Channel } from "../lib/entities/channel";
 import styled from "styled-components";
 import { MdFileUpload } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import { FilePreview } from "./filepreview";
 
 export const ChatInput = ({ channel }: { channel: Channel }) => {
 	const [attached, setAttached] = useState<File[]>([]);
@@ -18,8 +19,8 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 
 		form.reset();
 
-        const attachments = await doImageUploads();
-        setAttached([]);
+		const attachments = await doImageUploads();
+		setAttached([]);
 
 		await channel?.sendMessage({ content, files: attachments ?? [] });
 	};
@@ -31,7 +32,11 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 		const { data, error } = await createHttpClient().POST(
 			"/channel/{channel_id}/attachments/",
 			{
-				body: [...attached].map((x) => ({ name: x.name, size: x.size })),
+				body: [...attached].map((x) => ({
+					name: x.name,
+					size: x.size,
+					mime: x.type,
+				})),
 				params: {
 					path: {
 						channel_id: channel.mention,
@@ -43,22 +48,25 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 		if (!data || error) return;
 
 		// and then upload the files
-        const ret: { name: string, hash: string }[] = [];
+		const ret: { name: string; hash: string; type: string }[] = [];
 		for (let i = 0; i < data?.length; i++) {
 			const file = attached[i];
 			const signed = data[i];
 
 			if (!file || !signed) continue;
 
-            ret.push({ name: file.name, hash: signed.hash })
+			ret.push({ name: file.name, hash: signed.hash, type: file.type });
 
 			await fetch(signed.url, {
 				method: "PUT",
 				body: await file.arrayBuffer(),
+				headers: {
+					"Content-Type": file.type,
+				},
 			});
 		}
 
-        return ret;
+		return ret;
 	};
 
 	return (
@@ -66,12 +74,7 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 			{attached.length ? (
 				<UploadPreviewSet>
 					{attached.map((x) => (
-						<UploadPreview
-							src={URL.createObjectURL(x)}
-							alt={x.name}
-							key={`${x.name}${x.size}`}
-							width={100}
-						/>
+						<FilePreview file={x} key={x.name + x.type} channel={channel} />
 					))}
 					<button
 						type="reset"
@@ -105,7 +108,7 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 					type="file"
 					multiple
 					hidden
-					onChange={(e) => setAttached([...e.target.files ?? []])}
+					onChange={(e) => setAttached([...(e.target.files ?? [])])}
 				/>
 			</div>
 		</form>
@@ -116,10 +119,6 @@ const UploadPreviewSet = styled.div`
 position: relative;
     background: var(--background-tertiary);
     padding: 10px;
-`;
-
-const UploadPreview = styled.img`
-    margin-right: 10px;
 `;
 
 const ChatBox = styled.input`

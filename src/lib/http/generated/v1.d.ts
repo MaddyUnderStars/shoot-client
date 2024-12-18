@@ -1479,6 +1479,7 @@ export interface paths {
                     "application/json": {
                         size: number;
                         name: string;
+                        mime: string;
                     }[];
                 };
             };
@@ -1520,6 +1521,67 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channel/{channel_id}/attachments/{hash}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    hash: string;
+                    channel_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1635,6 +1697,11 @@ export interface components {
             /** @enum {integer} */
             type: 0 | 1 | 2;
         };
+        PublicFile: {
+            name: string;
+            hash: string;
+            type: string;
+        };
         PublicMessage: {
             id: string;
             content: string;
@@ -1642,10 +1709,7 @@ export interface components {
             updated: string;
             author_id: string;
             channel_id: string;
-            files: {
-                name: string;
-                hash: string;
-            }[];
+            files: components["schemas"]["PublicFile"][];
         };
     };
     responses: never;

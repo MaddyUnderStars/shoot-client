@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import type { Message } from "../lib/entities/message";
 import { shoot } from "../lib/client";
+import { FilePreview } from "./filepreview";
 
 export const MessageComponent = ({
 	message,
@@ -36,12 +37,7 @@ export const MessageComponent = ({
 
 					<ImageContainer>
 						{message.files.map((file) => (
-							<Image
-								src={`https://chat.understars.dev/channel/${channel.mention}/attachments/${file.hash}`}
-								alt={file.name}
-								key={file.hash}
-								width={200}
-							/>
+							<FilePreview key={file.hash} file={file} channel={channel} />
 						))}
 					</ImageContainer>
 				</ChatContent>
@@ -50,14 +46,12 @@ export const MessageComponent = ({
 	);
 };
 
-const Image = styled.img`
-`;
-
 const ImageContainer = styled.div`
     display: flex;
     flex-direction: row;
     gap: 5px;
     margin-top: 10px;
+    flex-wrap: wrap;
 `;
 
 const ProfilePicture = styled.img`

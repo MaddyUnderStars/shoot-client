@@ -1,7 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
-import { lazy, Suspense, useEffect, useState, use } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import type { Message } from "../lib/entities/message";
 import type { User } from "../lib/entities/user";
 import { shoot } from "../lib/client";

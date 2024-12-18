@@ -15,7 +15,7 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
 
     public channel: Channel | null = null;
 
-    public files: { name: string; hash: string; }[];
+    public files: { name: string; hash: string; type: string }[];
 
     constructor(data: MessageSchema) {
         this.id = data.id;

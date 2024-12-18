@@ -12,6 +12,7 @@ import { WebrtcClient } from "./webrtc";
 export type InstanceOptions = {
 	http: URL;
 	gateway: URL;
+    media: URL;
 };
 
 export type ClientOptions = {
@@ -76,6 +77,7 @@ class Shoot extends EventEmitter {
 		this._instance = {
 			http,
 			gateway: gw,
+            media: new URL("https://media.understars.dev")  // TODO TODO TODO TODO
 		};
 
 		this.sequence = 0;
