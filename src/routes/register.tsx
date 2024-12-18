@@ -26,7 +26,7 @@ export function Register() {
 		if (error) {
 			return setError("username", {
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				message: (error as any).message ?? "Invalid login",
+				message: error.message ?? "Invalid login",
 			});
 		}
 

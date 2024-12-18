@@ -7,11 +7,11 @@ export const tryParseUrl = (str: string) => {
 };
 
 export const createLogger = (context: string) => {
-	context = context.toUpperCase();
+	const c = context.toUpperCase();
 	const doLog = (level: "error" | "warn" | "log", ...args: unknown[]) => {
 		console[level](
-			`[${context} ${new Date().toISOString()}] ${args
-				.map((x) => (typeof x == "object" ? JSON.stringify(x) : x))
+			`[${c} ${new Date().toISOString()}] ${args
+				.map((x) => (typeof x === "object" ? JSON.stringify(x) : x))
 				.join(" ")}`,
 		);
 		return args.join(" ");

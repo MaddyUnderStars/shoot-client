@@ -1,5 +1,6 @@
 import type { ClientOptions } from "./client";
 
+// biome-ignore lint/complexity/noStaticOnlyClass: TODO
 export class LoginStore {
 	static save = (data: ClientOptions | null) => {
 		if (!data) {

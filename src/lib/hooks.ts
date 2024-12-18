@@ -8,7 +8,7 @@ export const useChannel = (channel_id: string, guild_id?: string) => {
 	const channel = useMemo(
 		() =>
 			guild
-				? guild.channels?.find((x) => x.mention == channel_id)
+				? guild.channels?.find((x) => x.mention === channel_id)
 				: channels.get(channel_id),
 		[guild, channels, channel_id],
 	);
@@ -19,7 +19,7 @@ export const useChannel = (channel_id: string, guild_id?: string) => {
 export const useGuild = (guild_id?: string) => {
 	const guilds = useShootGuilds();
 	const guild = useMemo(
-		() => guilds.find((x) => x.mention == guild_id),
+		() => guilds.find((x) => x.mention === guild_id),
 		[guilds, guild_id],
 	);
 

@@ -1,12 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import styled from "styled-components";
 import { useChannel } from "../lib/hooks";
-import {
-	lazy,
-	Suspense,
-	useEffect,
-	useState,
-} from "react";
+import { lazy, Suspense, useEffect, useState, use } from "react";
 import type { Message } from "../lib/entities/message";
 import type { User } from "../lib/entities/user";
 import { shoot } from "../lib/client";
@@ -53,7 +48,6 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		y: 0,
 	});
 
-
 	const openUserPopup = async (u: string, x: number, y: number) => {
 		const user = shoot.users.get(u);
 		if (!user) return; // TODO: fetch
@@ -71,8 +65,13 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 	const MESSAGES_PER_PAGE = 50;
 
 	const getNext = async () => {
+        console.log('e');
+
 		const msgs = await channel?.getMessages({});
-		if (!msgs) return;
+		if (!msgs) {
+			setHasNext(false);
+			return;
+		}
 
 		console.log(msgs);
 		setHasNext(msgs.size > MESSAGES_PER_PAGE);
@@ -82,9 +81,10 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 		);
 	};
 
-	useEffect(() => {
-		getNext();
-	}, []);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+        getNext();
+    }, [channel_id]);
 
 	useEffect(() => {
 		const cb = (msg: Message) => {
@@ -137,7 +137,7 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 						</InfiniteScroll>
 					</Messages>
 
-                    <ChatInput channel={channel}/>
+					<ChatInput channel={channel} />
 				</History>
 			</Container>
 

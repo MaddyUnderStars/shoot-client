@@ -10,10 +10,12 @@ import { shoot } from "./lib/client";
 import { useShootConnected } from "./lib/hooks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Login = lazy(async () => ({
 	default: (await import("./routes/login")).Login,
 }));
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Register = lazy(async () => ({
 	default: (await import("./routes/register")).Register,
 }));

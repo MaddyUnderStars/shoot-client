@@ -12,6 +12,7 @@ export const Profile = () => {
 	const webrtc = useWebrtcConnected();
 	const [voiceChannel, setVoiceChannel] = useState<Channel>();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		setVoiceChannel(shoot.webrtc.connected_channel);
 	}, [webrtc]);

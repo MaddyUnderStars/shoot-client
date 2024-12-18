@@ -1,12 +1,12 @@
 import createClient from "openapi-fetch";
 import { shoot } from "../client";
-import { paths } from "./generated/v1";
+import type { paths } from "./generated/v1";
 
 export const createHttpClient = (baseUrl?: URL) => {
-	if (!baseUrl) baseUrl = shoot.instance?.http;
-	if (!baseUrl) throw new Error("no base url for http client");
+    const url = baseUrl ?? shoot.instance?.http;
+	if (!url) throw new Error("no base url for http client");
 	return createClient<paths>({
-		baseUrl: baseUrl.toString(),
+		baseUrl: url.toString(),
 		headers: {
 			Authorization: shoot.token,
 		},

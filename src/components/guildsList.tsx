@@ -51,7 +51,7 @@ export const GuildsList = () => {
 					<Link
 						key={x.id}
 						to={`/channels/${x.id}@${x.domain}/${
-							x.channels![0]?.mention
+							x.channels[0]?.mention
 						}`}
 					>
 						<Guild>

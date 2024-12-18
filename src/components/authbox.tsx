@@ -102,10 +102,11 @@ const validateInstance = async (
 ) => {
 	instanceAbort.abort();
 
-	if (!url.startsWith("https://") && !url.startsWith("http://"))
-		url = `https://${url}`;
-
-	const parsedUrl = tryParseUrl(url);
+	const parsedUrl = tryParseUrl(
+		url.startsWith("https://") && !url.startsWith("http://")
+			? `https://${url}`
+			: url,
+	);
 	if (!parsedUrl) return setError("Invalid URL");
 
 	instanceAbort = new AbortController();
@@ -124,15 +125,15 @@ const validateInstance = async (
 			e.message === "NetworkError when attempting to fetch resource."
 		)
 			e.message = "Offline or misconfigured";
-		setError(e instanceof Error ? e.message : e!.toString());
+		setError(e instanceof Error ? e.message : String(e));
 	}
 };
 
 export const LoginFormInputs = z.object({
 	instance: z.string().refine((url) => {
-		if (!url.startsWith("https://") && !url.startsWith("http://"))
-			url = `https://${url}`;
-		return url;
+		return !url.startsWith("https://") && !url.startsWith("http://")
+			? `https://${url}`
+			: url;
 	}),
 	username: z.string(),
 	password: z.string(),

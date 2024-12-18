@@ -36,7 +36,11 @@ export class Channel {
 		this.name = data.name;
 		this.domain = data.domain;
 		this.guild = guild ?? shoot.guilds.find((x) => x.id === data.guild_id);
-		this.recipients = data.recipients?.map((x) => shoot.users.get(x)!);
+		this.recipients = data.recipients?.reduce<User[]>((arr, x) => {
+            const user = shoot.users.get(x);
+            if (user) arr.push(user);
+            return arr;
+        }, [])
 
 		if (this.guild) {
 			if (!this.guild.channels.find((x) => x.mention === this.mention))
@@ -45,7 +49,7 @@ export class Channel {
 
 		if (this.recipients)
 			this.name =
-				this.recipients.length > 1 ? this.name : this.recipients[0]!.name;
+				this.recipients.length > 1 ? this.name : this.recipients[0]?.name ?? "Unnamed";
 	}
 
 	@action
