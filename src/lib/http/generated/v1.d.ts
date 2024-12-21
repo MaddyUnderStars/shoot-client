@@ -1477,9 +1477,12 @@ export interface paths {
             requestBody?: {
                 content: {
                     "application/json": {
-                        size: number;
                         name: string;
+                        md5: string;
                         mime: string;
+                        size: number;
+                        width?: number;
+                        height?: number;
                     }[];
                 };
             };
@@ -1697,10 +1700,13 @@ export interface components {
             /** @enum {integer} */
             type: 0 | 1 | 2;
         };
-        PublicFile: {
+        PublicAttachment: {
             name: string;
             hash: string;
             type: string;
+            size: number;
+            width?: number | null;
+            height?: number | null;
         };
         PublicMessage: {
             id: string;
@@ -1709,7 +1715,7 @@ export interface components {
             updated: string;
             author_id: string;
             channel_id: string;
-            files: components["schemas"]["PublicFile"][];
+            files: components["schemas"]["PublicAttachment"][];
         };
     };
     responses: never;

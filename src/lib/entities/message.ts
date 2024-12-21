@@ -15,7 +15,14 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
 
     public channel: Channel | null = null;
 
-    public files: { name: string; hash: string; type: string }[];
+    public files: {
+        name: string;
+        hash: string;
+        type: string;
+        size: number;
+        width?: number | null;
+        height?: number | null;
+    }[];
 
     constructor(data: MessageSchema) {
         this.id = data.id;
@@ -31,7 +38,7 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
         let channel = shoot.channels.get(data.channel_id);
         if (!channel) {
             for (const guild of shoot.guilds) {
-                channel = guild.channels.find(x => x.mention === data.channel_id);
+                channel = guild.channels.find((x) => x.mention === data.channel_id);
                 if (channel) break;
             }
         }
