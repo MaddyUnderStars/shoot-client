@@ -1336,7 +1336,7 @@ export interface paths {
             requestBody?: {
                 content: {
                     "application/json": {
-                        content: string;
+                        content?: string;
                         files?: {
                             name: string;
                             hash: string;
