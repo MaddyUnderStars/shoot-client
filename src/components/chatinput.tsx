@@ -129,7 +129,8 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 			if (!file || !signed || !meta) continue;
 
 			ret.push({
-                
+                hash: signed.hash,
+                name: meta.name,
             });
 
             const headers: { [key: string]: string } = {
