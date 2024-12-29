@@ -62,29 +62,32 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [hasNext, setHasNext] = useState(true);
 
-	const MESSAGES_PER_PAGE = 50;
+	const MESSAGES_API_LIMIT = 50;
+	const MESSAGES_PER_PAGE = Math.min(12, MESSAGES_API_LIMIT);
 
 	const getNext = async () => {
-        console.log('e');
+		console.log(`getting before ${messages[messages.length - 1]?.id}`);
 
-		const msgs = await channel?.getMessages({});
+		const msgs = await channel?.getMessages({
+			before: messages[messages.length - 1]?.id,
+			limit: MESSAGES_PER_PAGE,
+		});
 		if (!msgs) {
+			console.log("f");
 			setHasNext(false);
 			return;
 		}
 
-		console.log(msgs);
-		setHasNext(msgs.size > MESSAGES_PER_PAGE);
+		console.log(`has next: ${msgs.size >= MESSAGES_PER_PAGE}`);
+		setHasNext(msgs.size >= MESSAGES_PER_PAGE);
 
-		setMessages(
-			[...msgs.values()].sort((a, b) => (a.published > b.published ? 0 : 1)),
-		);
+		setMessages([...messages, ...msgs.values()]);
 	};
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-        getNext();
-    }, [channel_id]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		getNext();
+	}, [channel_id]);
 
 	useEffect(() => {
 		const cb = (msg: Message) => {
