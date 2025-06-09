@@ -7,7 +7,7 @@ export class LoginStore {
 			localStorage.removeItem("LoginStore");
 			return;
 		}
-		
+
 		localStorage.setItem("LoginStore", JSON.stringify(data));
 	};
 

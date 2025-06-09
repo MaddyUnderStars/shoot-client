@@ -3,12 +3,12 @@ import ReactDOM from "react-dom/client";
 import ReactModal from "react-modal";
 import { Channels } from "./routes/channels";
 import "./index.css";
-import { Fallback } from "./fallback";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Route, Router, Switch } from "wouter";
-import { LoginStore } from "./lib/loginStore";
+import { Fallback } from "./fallback";
 import { shoot } from "./lib/client";
 import { useShootConnected } from "./lib/hooks";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { LoginStore } from "./lib/loginStore";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Login = lazy(async () => ({

@@ -1,11 +1,11 @@
 import { type FormEvent, useState } from "react";
-import { createHttpClient } from "../lib/http";
-import type { Channel } from "../lib/entities/channel";
-import styled from "styled-components";
-import { MdFileUpload } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
-import { FilePreview } from "./filepreview";
+import { MdFileUpload } from "react-icons/md";
 import SparkMD5 from "spark-md5";
+import styled from "styled-components";
+import type { Channel } from "../lib/entities/channel";
+import { createHttpClient } from "../lib/http";
+import { FilePreview } from "./filepreview";
 
 export const ChatInput = ({ channel }: { channel: Channel }) => {
 	const [attached, setAttached] = useState<File[]>([]);
@@ -37,7 +37,8 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 			let currentChunk = 0;
 
 			reader.onload = (e) => {
-				if (!e.target?.result) return reject(new Error("result missing?"));
+				if (!e.target?.result)
+					return reject(new Error("result missing?"));
 
 				spark.append(e.target.result as ArrayBuffer);
 				currentChunk++;
@@ -53,7 +54,9 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 			const loadNext = () => {
 				const start = currentChunk * chunkSize;
 				const end =
-					start + chunkSize >= file.size ? file.size : start + chunkSize;
+					start + chunkSize >= file.size
+						? file.size
+						: start + chunkSize;
 
 				reader.readAsArrayBuffer(file.slice(start, end));
 			};
@@ -123,25 +126,25 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 		const ret = [];
 		for (let i = 0; i < data?.length; i++) {
 			const file = attached[i];
-            const meta = body[i];
+			const meta = body[i];
 			const signed = data[i];
 
 			if (!file || !signed || !meta) continue;
 
 			ret.push({
-                hash: signed.hash,
-                name: meta.name,
-            });
+				hash: signed.hash,
+				name: meta.name,
+			});
 
-            const headers: { [key: string]: string } = {
-                "Content-Type": file.type,
-                "Content-MD5": meta.md5,
-            }
+			const headers: { [key: string]: string } = {
+				"Content-Type": file.type,
+				"Content-MD5": meta.md5,
+			};
 
-            // if (meta.height && meta.width) {
-            //     headers["x-amz-meta-height"] = meta.height.toString();
-            //     headers["x-amz-meta-width"] = meta.width.toString();
-            // }
+			// if (meta.height && meta.width) {
+			//     headers["x-amz-meta-height"] = meta.height.toString();
+			//     headers["x-amz-meta-width"] = meta.width.toString();
+			// }
 
 			await fetch(signed.url, {
 				method: "PUT",
@@ -158,7 +161,11 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 			{attached.length ? (
 				<UploadPreviewSet>
 					{attached.map((x) => (
-						<FilePreview file={x} key={x.name + x.type} channel={channel} />
+						<FilePreview
+							file={x}
+							key={x.name + x.type}
+							channel={channel}
+						/>
 					))}
 					<button
 						type="reset"
@@ -181,7 +188,11 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 			) : null}
 
 			<div style={{ display: "flex" }}>
-				<ChatBox type="text" placeholder="Send a message..." name="content" />
+				<ChatBox
+					type="text"
+					placeholder="Send a message..."
+					name="content"
+				/>
 
 				<UploadBox htmlFor="files" title="Upload">
 					<MdFileUpload />

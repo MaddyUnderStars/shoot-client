@@ -2,8 +2,11 @@ import { shoot } from "../client";
 import type { components } from "../http/generated/v1";
 import { User, type UserSchema } from "./user";
 
-export type RelationshipSchema = Omit<components["schemas"]["PrivateRelationship"], "user"> & {
-	user: UserSchema
+export type RelationshipSchema = Omit<
+	components["schemas"]["PrivateRelationship"],
+	"user"
+> & {
+	user: UserSchema;
 };
 
 export enum RelationshipType {

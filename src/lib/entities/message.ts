@@ -35,6 +35,8 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
 
 		this.published = new Date(data.published);
 		this.updated = new Date(data.updated);
+		this.published = new Date(data.published);
+		this.updated = new Date(data.updated);
 
 		this.files = data.files;
 
@@ -43,7 +45,9 @@ export class Message implements Omit<MessageSchema, "published" | "updated"> {
 		let channel = shoot.channels.get(data.channel_id);
 		if (!channel) {
 			for (const guild of shoot.guilds) {
-				channel = guild.channels.find((x) => x.mention === data.channel_id);
+				channel = guild.channels.find(
+					(x) => x.mention === data.channel_id,
+				);
 				if (channel) break;
 			}
 		}

@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
 import { createHttpClient } from "../../lib/http";
-import { useState } from "react";
 
 export type ModalProps = {
 	close: () => void;
@@ -109,7 +109,7 @@ const OptionButton = styled.button`
 	color: white;
 	text-decoration: underline;
 	cursor: pointer;
-`
+`;
 
 const Input = styled.input`
 	padding: 5px;

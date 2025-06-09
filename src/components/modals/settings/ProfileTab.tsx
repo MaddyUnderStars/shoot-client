@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { useProfile } from "../../../lib/hooks";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createHttpClient } from "../../../lib/http";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import { z } from "zod";
 import { shoot } from "../../../lib/client";
+import { useProfile } from "../../../lib/hooks";
+import { createHttpClient } from "../../../lib/http";
 
 const LabeledField = styled.div`
 	background-color: var(--background-secondary);
@@ -75,7 +75,7 @@ export const ProfileTab = () => {
 			// bug in openapi fetch
 		}
 
-        if (!shoot.user) return;    // shouldn't happen
+		if (!shoot.user) return; // shouldn't happen
 
 		shoot.user.display_name = data.display_name;
 		shoot.user.summary = data.summary;

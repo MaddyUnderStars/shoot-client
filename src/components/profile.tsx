@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { FaCog } from "react-icons/fa";
-import { useProfile, useWebrtcConnected } from "../lib/hooks";
-import { shoot } from "../lib/client";
-import { SettingsModal } from "./modals/settings";
 import { useEffect, useState } from "react";
+import { FaCog } from "react-icons/fa";
 import { ImPhoneHangUp } from "react-icons/im";
+import styled from "styled-components";
+import { shoot } from "../lib/client";
 import type { Channel } from "../lib/entities/channel";
+import { useProfile, useWebrtcConnected } from "../lib/hooks";
+import { SettingsModal } from "./modals/settings";
 
 export const Profile = () => {
 	const profile = useProfile();

@@ -12,7 +12,7 @@ import { WebrtcClient } from "./webrtc";
 export type InstanceOptions = {
 	http: URL;
 	gateway: URL;
-    media: URL;
+	media: URL;
 };
 
 export type ClientOptions = {
@@ -77,7 +77,7 @@ class Shoot extends EventEmitter {
 		this._instance = {
 			http,
 			gateway: gw,
-            media: new URL("https://media.understars.dev")  // TODO TODO TODO TODO
+			media: new URL("https://media.understars.dev"), // TODO TODO TODO TODO
 		};
 
 		this.sequence = 0;
@@ -94,9 +94,9 @@ class Shoot extends EventEmitter {
 		this.send({
 			t: "members",
 			channel_id,
-			range: [0, 100]
+			range: [0, 100],
 		});
-	}
+	};
 
 	onMessage = ({ data }: MessageEvent) => {
 		this._connected = true;
@@ -196,7 +196,8 @@ class Shoot extends EventEmitter {
 				Log.verbose("trying reconnect");
 				this.reconnectAttempt++;
 				this.reconnectTimeout = undefined;
-				if (!this.instance || !this.token) return Log.error("does not have token or instance");
+				if (!this.instance || !this.token)
+					return Log.error("does not have token or instance");
 				this.login({
 					instance: this.instance,
 					token: this.token,
@@ -261,17 +262,16 @@ export type HEARTBEAT = {
 };
 
 export type SUBSCRIBE_MEMBERS = {
-	t: "members",
+	t: "members";
 
 	/** Channel mention to subscribe to */
-	channel_id: string,
+	channel_id: string;
 	/** The range to subscribe to
 	 * @example [0, 100]
 	 */
-	range: [number, number],
+	range: [number, number];
 	/** Subscribe to only online members */
-	online?: boolean,
-}
-
+	online?: boolean;
+};
 
 export const shoot = new Shoot();

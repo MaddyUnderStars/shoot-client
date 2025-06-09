@@ -1,8 +1,8 @@
+import { Link, useLocation } from "wouter";
+import { Authbox, type AuthboxSubmitHandler } from "../components/authbox";
 import { shoot } from "../lib/client";
 import { createHttpClient } from "../lib/http";
 import { LoginStore } from "../lib/loginStore";
-import { Link, useLocation } from "wouter";
-import { Authbox, type AuthboxSubmitHandler } from "../components/authbox";
 
 export function Login() {
 	const [, setLocation] = useLocation();

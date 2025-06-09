@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import type { Message } from "../lib/entities/message";
 import { shoot } from "../lib/client";
-import { FilePreview } from "./filepreview";
+import type { Message } from "../lib/entities/message";
 import { MessageUrlEmbed } from "./embed";
+import { FilePreview } from "./filepreview";
 
 export const MessageComponent = ({
 	message,
@@ -22,14 +22,20 @@ export const MessageComponent = ({
 				<ChatMessageHeader>
 					<ChatAuthor
 						onClick={(event) => {
-							openUserPopup(message.author_id, event.clientX, event.clientY);
+							openUserPopup(
+								message.author_id,
+								event.clientX,
+								event.clientY,
+							);
 						}}
 					>
 						{shoot.users.get(message.author_id)?.display_name ??
 							message.author_id}
 					</ChatAuthor>
 					<ChatTimestamp>
-						{(message.updated ?? message.published).toLocaleString()}
+						{(
+							message.updated ?? message.published
+						).toLocaleString()}
 					</ChatTimestamp>
 				</ChatMessageHeader>
 
@@ -38,7 +44,11 @@ export const MessageComponent = ({
 
 					<ImageContainer>
 						{message.files.map((file) => (
-							<FilePreview key={file.hash} file={file} channel={channel} />
+							<FilePreview
+								key={file.hash}
+								file={file}
+								channel={channel}
+							/>
 						))}
 					</ImageContainer>
 

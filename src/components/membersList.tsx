@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { lazy, Suspense, useEffect, useState } from "react";
-import { shoot } from "../lib/client";
+import { Suspense, lazy, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import type { MEMBERS_CHUNK } from "../lib/types";
 import ReactModal from "react-modal";
+import styled from "styled-components";
+import { shoot } from "../lib/client";
 // import { UserPopout } from "./modals/userPopout";
 import type { User } from "../lib/entities/user";
+import type { MEMBERS_CHUNK } from "../lib/types";
 
 const UserPopout = lazy(async () => ({
 	default: (await import("./modals/userPopout")).UserPopout,

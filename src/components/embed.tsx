@@ -8,7 +8,12 @@ export const MessageUrlEmbed = ({ embed }: { embed: EmbedSchema }) => {
 			body = <image href={embed.thumbnail_url} />;
 			break;
 		case "rich":
-			body = <iframe title={embed.title ?? embed.target} srcDoc={embed.html} />;
+			body = (
+				<iframe
+					title={embed.title ?? embed.target}
+					srcDoc={embed.html}
+				/>
+			);
 			break;
 		case "video":
 			body = (
