@@ -4,6 +4,66 @@
  */
 
 export interface paths {
+    "/upload/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query: {
+                    t: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["HttpError"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/register": {
         parameters: {
             query?: never;
@@ -1708,6 +1768,40 @@ export interface components {
             width?: number | null;
             height?: number | null;
         };
+        PublicEmbed: {
+            /** Format: uri */
+            target: string;
+            title?: string;
+            author_name?: string;
+            author_url?: string;
+            provider_name?: string;
+            provider_url?: string;
+            thumbnail_url?: string;
+            thumbnail_width?: number;
+            thumbnail_height?: number;
+        } & ({
+            /** @enum {string} */
+            type: "link";
+        } | {
+            /** @enum {string} */
+            type: "photo";
+            /** Format: uri */
+            url: string;
+            width: number;
+            height: number;
+        } | {
+            /** @enum {string} */
+            type: "video";
+            html: string;
+            width: number;
+            height: number;
+        } | {
+            /** @enum {string} */
+            type: "rich";
+            html: string;
+            width: number;
+            height: number;
+        });
         PublicMessage: {
             id: string;
             content: string;
@@ -1716,6 +1810,7 @@ export interface components {
             author_id: string;
             channel_id: string;
             files: components["schemas"]["PublicAttachment"][];
+            embeds: components["schemas"]["PublicEmbed"][];
         };
     };
     responses: never;

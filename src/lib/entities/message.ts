@@ -3,48 +3,53 @@ import type { components } from "../http/generated/v1";
 import type { Channel } from "./channel";
 
 export type MessageSchema = components["schemas"]["PublicMessage"];
+export type EmbedSchema = components["schemas"]["PublicEmbed"];
 
 export class Message implements Omit<MessageSchema, "published" | "updated"> {
-    public id: string;
-    public content: string;
-    public author_id: string;
-    public channel_id: string;
+	public id: string;
+	public content: string;
+	public author_id: string;
+	public channel_id: string;
 
-    public published: Date;
-    public updated: Date;
+	public published: Date;
+	public updated: Date;
 
-    public channel: Channel | null = null;
+	public channel: Channel | null = null;
 
-    public files: {
-        name: string;
-        hash: string;
-        type: string;
-        size: number;
-        width?: number | null;
-        height?: number | null;
-    }[];
+	public embeds: EmbedSchema[];
 
-    constructor(data: MessageSchema) {
-        this.id = data.id;
-        this.content = data.content;
-        this.author_id = data.author_id;
-        this.channel_id = data.channel_id;
+	public files: {
+		name: string;
+		hash: string;
+		type: string;
+		size: number;
+		width?: number | null;
+		height?: number | null;
+	}[];
 
-        this.published = new Date(data.published);
-        this.updated = new Date(data.updated);
+	constructor(data: MessageSchema) {
+		this.id = data.id;
+		this.content = data.content;
+		this.author_id = data.author_id;
+		this.channel_id = data.channel_id;
 
-        this.files = data.files;
+		this.published = new Date(data.published);
+		this.updated = new Date(data.updated);
 
-        let channel = shoot.channels.get(data.channel_id);
-        if (!channel) {
-            for (const guild of shoot.guilds) {
-                channel = guild.channels.find((x) => x.mention === data.channel_id);
-                if (channel) break;
-            }
-        }
-        if (channel) {
-            this.channel = channel;
-            this.channel.addMessage(this);
-        }
-    }
+		this.files = data.files;
+
+		this.embeds = data.embeds;
+
+		let channel = shoot.channels.get(data.channel_id);
+		if (!channel) {
+			for (const guild of shoot.guilds) {
+				channel = guild.channels.find((x) => x.mention === data.channel_id);
+				if (channel) break;
+			}
+		}
+		if (channel) {
+			this.channel = channel;
+			this.channel.addMessage(this);
+		}
+	}
 }

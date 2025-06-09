@@ -2,6 +2,7 @@ import styled from "styled-components";
 import type { Message } from "../lib/entities/message";
 import { shoot } from "../lib/client";
 import { FilePreview } from "./filepreview";
+import { MessageUrlEmbed } from "./embed";
 
 export const MessageComponent = ({
 	message,
@@ -40,6 +41,12 @@ export const MessageComponent = ({
 							<FilePreview key={file.hash} file={file} channel={channel} />
 						))}
 					</ImageContainer>
+
+					<div>
+						{message.embeds.map((embed) => (
+							<MessageUrlEmbed key={embed.target} embed={embed} />
+						))}
+					</div>
 				</ChatContent>
 			</MessageContentSection>
 		</ChatMessage>
