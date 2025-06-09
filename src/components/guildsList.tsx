@@ -1,9 +1,9 @@
-import { GiPocketBow } from "react-icons/gi";
-import styled from "styled-components";
-import { useShootGuilds } from "../lib/hooks";
-import { Link } from "wouter";
-import ReactModal from "react-modal";
 import { useState } from "react";
+import { GiPocketBow } from "react-icons/gi";
+import ReactModal from "react-modal";
+import styled from "styled-components";
+import { Link } from "wouter";
+import { useShootGuilds } from "../lib/hooks";
 
 import "./guildsList.css";
 import { CreateGuildModal } from "./modals/createGuild";
@@ -50,9 +50,7 @@ export const GuildsList = () => {
 				{guilds.map((x) => (
 					<Link
 						key={x.id}
-						to={`/channels/${x.id}@${x.domain}/${
-							x.channels[0]?.mention
-						}`}
+						to={`/channels/${x.id}@${x.domain}/${x.channels[0]?.mention}`}
 					>
 						<Guild>
 							{x.name

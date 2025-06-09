@@ -1,13 +1,13 @@
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import { useParams } from "wouter";
-import { Chat } from "../components/chat";
-import { observer } from "mobx-react-lite";
-import { Profile } from "../components/profile";
-import { MembersList } from "../components/membersList";
-import { GuildsList } from "../components/guildsList";
-import { ChannelList } from "../components/channelList";
-import { Friends } from "../components/friends";
 import { UserProfile } from "../components/UserProfile";
+import { ChannelList } from "../components/channelList";
+import { Chat } from "../components/chat";
+import { Friends } from "../components/friends";
+import { GuildsList } from "../components/guildsList";
+import { MembersList } from "../components/membersList";
+import { Profile } from "../components/profile";
 
 const Container = styled.div`
 	display: flex;
@@ -36,10 +36,10 @@ export const Channels = observer(() => {
 	const { channel_id, guild_id, user_id } = params;
 
 	let inner: JSX.Element;
-	if (user_id) inner = <UserProfile user_id={user_id} />
+	if (user_id) inner = <UserProfile user_id={user_id} />;
 	else {
-		if (!channel_id || channel_id === "@me") inner = <Friends />
-		else inner = <Chat channel_id={channel_id} guild_id={guild_id} />
+		if (!channel_id || channel_id === "@me") inner = <Friends />;
+		else inner = <Chat channel_id={channel_id} guild_id={guild_id} />;
 	}
 	return (
 		<Container>

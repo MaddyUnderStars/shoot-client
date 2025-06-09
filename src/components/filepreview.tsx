@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import type { Channel } from "../lib/entities/channel";
 import { shoot } from "../lib/client";
+import type { Channel } from "../lib/entities/channel";
 import type { MessageSchema } from "../lib/entities/message";
 
 export const FilePreview = ({
@@ -32,7 +32,11 @@ export const FilePreview = ({
 		return <video controls src={src} title={file.name} height={200} />;
 	}
 
-	return <a target="_blank" rel="noreferrer" href={src}>{file.name}</a>;
+	return (
+		<a target="_blank" rel="noreferrer" href={src}>
+			{file.name}
+		</a>
+	);
 };
 
 const Image = styled.img`

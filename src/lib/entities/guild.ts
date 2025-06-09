@@ -21,7 +21,8 @@ export class Guild implements GuildSchema {
 
 		for (const ch of data.channels || []) {
 			const channel = new Channel(ch, this);
-			if (this.channels.find(x => x.mention === channel.mention)) continue;
+			if (this.channels.find((x) => x.mention === channel.mention))
+				continue;
 			this.channels.push(channel);
 		}
 	}

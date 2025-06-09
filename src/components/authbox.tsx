@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import debounce from "debounce";
 import { useState } from "react";
 import { type UseFormSetError, useForm } from "react-hook-form";
+import styled from "styled-components";
 import { z } from "zod";
 import { tryParseUrl } from "../lib/util";
-import debounce from "debounce";
-import styled from "styled-components";
 
 const DEFAULT_INSTANCE = "https://chat.understars.dev";
 
@@ -36,7 +36,9 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 			<Modal>
 				<Header>{header}</Header>
 
-				<Form onSubmit={handleSubmit((data) => onSubmit(data, setError))}>
+				<Form
+					onSubmit={handleSubmit((data) => onSubmit(data, setError))}
+				>
 					<InputContainer>
 						<label htmlFor="instance">Instance</label>
 						{errors.instance?.message && (
@@ -44,7 +46,9 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 								{errors.instance.message}
 							</InputError>
 						)}
-						{checkingInstance && <InputStatus>Checking</InputStatus>}
+						{checkingInstance && (
+							<InputStatus>Checking</InputStatus>
+						)}
 						<Input
 							id="instance"
 							defaultValue={DEFAULT_INSTANCE}
@@ -53,11 +57,15 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 								onChange: debounce((event) => {
 									clearErrors("instance");
 									setCheckingInstance(true);
-									return validateInstance(event.target.value, (message) =>
-										setError("instance", { message }),
+									return validateInstance(
+										event.target.value,
+										(message) =>
+											setError("instance", { message }),
 									)
 										.then(() => setCheckingInstance(false))
-										.catch(() => setCheckingInstance(false));
+										.catch(() =>
+											setCheckingInstance(false),
+										);
 								}, 500),
 							})}
 							aria-describedby="instance-error-msg"

@@ -1,14 +1,14 @@
+import { Suspense, lazy, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ReactModal from "react-modal";
 import styled from "styled-components";
-import { useChannel } from "../lib/hooks";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { shoot } from "../lib/client";
 import type { Message } from "../lib/entities/message";
 import type { User } from "../lib/entities/user";
-import { shoot } from "../lib/client";
+import { useChannel } from "../lib/hooks";
 import { ChatHeader } from "./chatheader";
-import ReactModal from "react-modal";
-import { MessageComponent } from "./message";
 import { ChatInput } from "./chatinput";
+import { MessageComponent } from "./message";
 
 const UserPopout = lazy(async () => ({
 	default: (await import("./modals/userPopout")).UserPopout,
@@ -187,7 +187,9 @@ const EndMessage = () => {
 	return (
 		<EndMessageContainer>
 			<EndMessageHeader>That's the end!</EndMessageHeader>
-			<p>You can send messages to this channel using the text box below.</p>
+			<p>
+				You can send messages to this channel using the text box below.
+			</p>
 		</EndMessageContainer>
 	);
 };

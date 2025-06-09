@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useGuild, useShootChannels } from "../lib/hooks";
-import { Link } from "wouter";
 import styled from "styled-components";
+import { Link } from "wouter";
+import { useGuild, useShootChannels } from "../lib/hooks";
 import { ChannelListDropdown } from "./modals/channelListDropdown";
 
 const ChannelsList = styled.div`
@@ -53,9 +53,7 @@ export const ChannelList = ({ guild_id }: ChannelListProps) => {
 			{channels.map((ch) => (
 				<Link
 					key={ch.mention}
-					to={`/channels/${guild ? `${guild.mention}/` : ""}${
-						ch.mention
-					}`}
+					to={`/channels/${guild ? `${guild.mention}/` : ""}${ch.mention}`}
 					asChild
 				>
 					<Channel>{ch.name}</Channel>

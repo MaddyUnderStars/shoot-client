@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import { useLocation } from "wouter";
 import type { User } from "../../lib/entities/user";
 import { createHttpClient } from "../../lib/http/index";
-import { useLocation } from "wouter";
 
 export type UserModalProps = {
 	user?: User;
@@ -40,7 +40,9 @@ export const UserPopout = ({ user }: UserModalProps) => {
 			<Body>
 				<p>{user.summary}</p>
 				<Button onClick={openDm}>Open DM</Button>
-				<Button onClick={() => setLocation(`/users/${user.mention}`)}>Open Profile</Button>
+				<Button onClick={() => setLocation(`/users/${user.mention}`)}>
+					Open Profile
+				</Button>
 			</Body>
 		</Container>
 	);

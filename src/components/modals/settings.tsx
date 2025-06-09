@@ -2,12 +2,12 @@ import ReactModal from "react-modal";
 
 import "./settings.css";
 
+import { Suspense, lazy } from "react";
 // import { LoginStore } from "../../lib/loginStore";
 // import { useLocation } from "wouter";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { LoginStore } from "../../lib/loginStore";
 import { useLocation } from "wouter";
-import { lazy, Suspense } from "react";
+import { LoginStore } from "../../lib/loginStore";
 
 const ProfileTab = lazy(async () => ({
 	default: (await import("./settings/ProfileTab")).ProfileTab,

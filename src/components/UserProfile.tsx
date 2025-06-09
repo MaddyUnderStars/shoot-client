@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createHttpClient } from "../lib/http";
 import { Suspense } from "react";
 import styled from "styled-components";
+import { createHttpClient } from "../lib/http";
 
 export const UserProfile = ({ user_id }: { user_id: string }) => {
 	const { data } = useSuspenseQuery({

@@ -1,7 +1,7 @@
 import styled from "styled-components";
+import { shoot } from "../lib/client";
 import { useChannel } from "../lib/hooks";
 import { createHttpClient } from "../lib/http";
-import { shoot } from "../lib/client";
 
 import { IoIosCall } from "react-icons/io";
 
@@ -47,18 +47,22 @@ export const ChatHeader = ({ guild_id, channel_id }: ChatHeaderProps) => {
 					<IoIosCall />
 				</Call>
 
-				<form onSubmit={async (e) => {
-					e.preventDefault();
+				<form
+					onSubmit={async (e) => {
+						e.preventDefault();
 
-					const query = new FormData(e.currentTarget).get("query")?.toString();
-					if (!query) return;
+						const query = new FormData(e.currentTarget)
+							.get("query")
+							?.toString();
+						if (!query) return;
 
-					const messages = await channel.getMessages({
-						query,
-					})
+						const messages = await channel.getMessages({
+							query,
+						});
 
-					console.log(messages);
-				}}>
+						console.log(messages);
+					}}
+				>
 					<Search placeholder={"Search"} name="query" />
 					<input type="submit" />
 				</form>

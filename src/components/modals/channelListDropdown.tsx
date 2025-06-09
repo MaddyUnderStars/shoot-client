@@ -1,8 +1,8 @@
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { useGuild } from "../../lib/hooks";
-import ReactModal from "react-modal";
 import { type PropsWithChildren, useState } from "react";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import ReactModal from "react-modal";
 import styled from "styled-components";
+import { useGuild } from "../../lib/hooks";
 import { createHttpClient } from "../../lib/http";
 import { CreateInvite } from "./createInvite";
 
@@ -85,7 +85,10 @@ export const ChannelListDropdown = ({
 
 	return (
 		<Dropdown>
-			<span onClick={() => setPopup(true)} onKeyDown={() => setPopup(true)}>
+			<span
+				onClick={() => setPopup(true)}
+				onKeyDown={() => setPopup(true)}
+			>
 				{children}
 				<RiArrowDropDownLine size={20} />
 			</span>

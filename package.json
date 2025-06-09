@@ -6,9 +6,13 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"lint": "npx @biomejs/biome check src",
+		"lint": "npx @biomejs/biome check --write src",
 		"preview": "vite preview",
-		"openapi": "npx openapi-typescript https://raw.githubusercontent.com/MaddyUnderStars/shoot/refs/heads/main/assets/client.json -o ./src/lib/http/generated/v1.d.ts"
+		"openapi": "npx openapi-typescript https://raw.githubusercontent.com/MaddyUnderStars/shoot/refs/heads/main/assets/client.json -o ./src/lib/http/generated/v1.d.ts",
+		"prepare": "husky"
+	},
+	"lint-staged": {
+		"*.{ts,js,md,tsx,jsx,css}": "npx @biomejs/biome format --write"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.3.4",
@@ -40,6 +44,8 @@
 		"@types/spark-md5": "^3.0.5",
 		"@types/web": "^0.0.187",
 		"@vitejs/plugin-react-swc": "^3.5.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.0",
 		"openapi-typescript": "^7.0.0-next.8",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.0"
