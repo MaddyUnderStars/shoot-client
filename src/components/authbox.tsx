@@ -111,7 +111,7 @@ const validateInstance = async (
 	instanceAbort.abort();
 
 	const parsedUrl = tryParseUrl(
-		url.startsWith("https://") && !url.startsWith("http://")
+		!url.startsWith("https://") && !url.startsWith("http://")
 			? `https://${url}`
 			: url,
 	);
@@ -119,8 +119,10 @@ const validateInstance = async (
 
 	instanceAbort = new AbortController();
 
+	parsedUrl.pathname += `${parsedUrl.pathname.endsWith("/") ? "" : "/"}.well-known/nodeinfo/2.0`;
+
 	try {
-		const data = await fetch(`${parsedUrl}.well-known/nodeinfo/2.0`, {
+		const data = await fetch(parsedUrl, {
 			signal: instanceAbort.signal,
 		}).then((x) => x.json());
 
