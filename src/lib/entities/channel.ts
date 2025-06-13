@@ -91,18 +91,23 @@ export class Channel {
 
 	sendMessage = async (message: MessageSendOptions) => {
 		const content = typeof message === "string" ? message : message.content;
-
 		const files = typeof message === "string" ? undefined : message.files;
+
+		const body: MessageSendOptions = {};
+
+		if (content?.length) body.content = content;
+		if (files?.length) body.files = files;
+
+		if (Object.keys(body).length === 0) {
+			throw new Error("cannot send empty message");
+		}
 
 		const { data, error } = await createHttpClient().POST(
 			"/channel/{channel_id}/messages/",
 			{
+				body,
 				params: {
 					path: { channel_id: this.mention },
-				},
-				body: {
-					content,
-					files,
 				},
 			},
 		);

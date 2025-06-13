@@ -23,7 +23,10 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 		const attachments = await doImageUploads();
 		setAttached([]);
 
-		await channel?.sendMessage({ content, files: attachments ?? [] });
+		await channel?.sendMessage({
+			content,
+			files: attachments ?? undefined,
+		});
 	};
 
 	/** mostly taken from the sparkmd5 readme */
@@ -106,6 +109,8 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 				...(await getFileDimensions(file)),
 			});
 		}
+
+		if (!body.length) return;
 
 		// get the upload endpoints
 		const { data, error } = await createHttpClient().POST(
