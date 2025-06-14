@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { shoot } from "../lib/client";
 import type { Channel } from "../lib/entities/channel";
 import type { MessageSchema } from "../lib/entities/message";
+import { makeUrl } from "../lib/util";
 
 export const FilePreview = ({
 	file,
@@ -18,7 +19,10 @@ export const FilePreview = ({
 	const src =
 		file instanceof File
 			? URL.createObjectURL(file)
-			: `${mediaEndpoint.origin}/channel/${channel.mention}/attachments/${file.hash}`;
+			: makeUrl(
+					`/channel/${channel.mention}/attachments/${file.hash}`,
+					mediaEndpoint,
+				);
 
 	if (file.type?.startsWith("image")) {
 		return <Image src={src} alt={file.name} height={200} />;

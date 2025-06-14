@@ -24,3 +24,13 @@ export const createLogger = (context: string) => {
 		verbose: (...args: unknown[]) => doLog("log", ...args),
 	};
 };
+
+export const makeUrl = (path: string, base: URL) => {
+	const url = new URL(base);
+
+	if (path.startsWith("/")) path = path.slice(1);
+
+	url.pathname = `${url.pathname}${url.pathname.endsWith("/") ? "" : "/"}${path}`;
+
+	return url.href;
+};
