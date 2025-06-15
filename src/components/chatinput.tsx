@@ -99,8 +99,10 @@ export const ChatInput = ({ channel }: { channel: Channel }) => {
 		if (!channel) return;
 
 		const body = [];
+		let i = 0;
 		for (const file of attached) {
 			body.push({
+				id: `${i++}`, // TODO: proper usage
 				name: file.name,
 				size: file.size,
 				mime: file.type,
