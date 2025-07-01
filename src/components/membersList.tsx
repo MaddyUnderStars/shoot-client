@@ -88,7 +88,7 @@ export const MembersList = ({ channel_id }: { channel_id: string }) => {
 							});
 							openUserPopup(member.member_id);
 						}}
-						key={member.name}
+						key={member.member_id}
 					>
 						{member.name}
 					</Member>
