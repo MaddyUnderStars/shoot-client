@@ -65,27 +65,29 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 	const MESSAGES_API_LIMIT = 50;
 	const MESSAGES_PER_PAGE = Math.min(12, MESSAGES_API_LIMIT);
 
-	const getNext = async () => {
-		console.log(`getting before ${messages[messages.length - 1]?.id}`);
+	const getNext = async (before?: string) => {
+		console.log(`getting before ${before}`);
 
 		const msgs = await channel?.getMessages({
-			before: messages[messages.length - 1]?.id,
+			before,
 			limit: MESSAGES_PER_PAGE,
 		});
 		if (!msgs) {
 			console.log("f");
 			setHasNext(false);
+			setMessages([]);
 			return;
 		}
 
 		console.log(`has next: ${msgs.size >= MESSAGES_PER_PAGE}`);
 		setHasNext(msgs.size >= MESSAGES_PER_PAGE);
 
-		setMessages([...messages, ...msgs.values()]);
+		setMessages((value) => [...value, ...msgs.values()]);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
+		setMessages([]);
 		getNext();
 	}, [channel_id]);
 
@@ -119,7 +121,9 @@ export const Chat = ({ guild_id, channel_id }: ChatProps) => {
 					<Messages id="chat-scroll">
 						<InfiniteScroll
 							dataLength={messages.length}
-							next={getNext}
+							next={() =>
+								getNext(messages[messages.length - 1]?.id)
+							}
 							hasMore={hasNext}
 							loader={<h4>Loading</h4>}
 							endMessage={<EndMessage />}
