@@ -39,7 +39,13 @@ export const ChatHeader = ({ guild_id, channel_id }: ChatHeaderProps) => {
 		<Container>
 			<Username>
 				<NamePart>{channel.name}</NamePart>
-				<DomainPart>{channel.domain}</DomainPart>
+				{
+					// don't show the domain if this is a dm channel
+					// as it is confusing
+					channel.recipients ? null : (
+						<DomainPart>{channel.domain}</DomainPart>
+					)
+				}
 			</Username>
 
 			<Controls>
@@ -94,7 +100,11 @@ const Controls = styled.div`
 	gap: 10px;
 `;
 
-const Username = styled.div``;
+const Username = styled.div`
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+`;
 
 const NamePart = styled.p`
 	font-weight: bold;
