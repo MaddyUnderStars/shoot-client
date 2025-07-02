@@ -8,7 +8,7 @@ export function Register() {
 	const [, setLocation] = useLocation();
 
 	const onSubmit: AuthboxSubmitHandler = async (input, setError) => {
-		const { instance, username, password } = input;
+		const { instance, username, password, invite } = input;
 
 		let url = instance;
 		if (!instance.startsWith("https://") && !instance.startsWith("http://"))
@@ -20,6 +20,7 @@ export function Register() {
 			body: {
 				username,
 				password,
+				invite,
 			},
 		});
 
@@ -46,6 +47,7 @@ export function Register() {
 	return (
 		<Authbox
 			onSubmit={onSubmit}
+			showRegisterCode={true}
 			header={
 				<>
 					<h1>Register</h1>

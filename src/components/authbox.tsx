@@ -16,9 +16,14 @@ export type AuthboxSubmitHandler = (
 type AuthboxProps = {
 	onSubmit: AuthboxSubmitHandler;
 	header: JSX.Element;
+	showRegisterCode?: boolean;
 };
 
-export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
+export const Authbox = ({
+	onSubmit,
+	header,
+	showRegisterCode,
+}: AuthboxProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -96,6 +101,19 @@ export const Authbox = ({ onSubmit, header }: AuthboxProps) => {
 						/>
 					</InputContainer>
 
+					{!showRegisterCode ? null : (
+						<InputContainer>
+							<label htmlFor="invite">Invite Code</label>
+							{errors.invite?.message && (
+								<InputError>{errors.invite.message}</InputError>
+							)}
+							<Input
+								id="invite"
+								{...register("invite", { required: true })}
+							/>
+						</InputContainer>
+					)}
+
 					<Input type="submit" value="Submit" />
 				</Form>
 			</Modal>
@@ -147,6 +165,7 @@ export const LoginFormInputs = z.object({
 	}),
 	username: z.string(),
 	password: z.string(),
+	invite: z.string().optional(),
 });
 
 export type LoginFormInputs = z.infer<typeof LoginFormInputs>;
