@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import debounce from "debounce";
-import { useState } from "react";
+import debounce from "p-debounce";
+import { useEffect, useState } from "react";
 import { type UseFormSetError, useForm } from "react-hook-form";
 import styled from "styled-components";
 import { z } from "zod";
@@ -35,6 +35,17 @@ export const Authbox = ({
 	});
 
 	const [checkingInstance, setCheckingInstance] = useState(false);
+	const [instanceInfo, setInstanceInfo] = useState<{
+		openRegistrations: boolean;
+	}>({ openRegistrations: true });
+
+	useEffect(() => {
+		validateInstance(DEFAULT_INSTANCE, (message) =>
+			setError("instance", { message }),
+		)
+			.then((x) => setInstanceInfo(x as any))
+			.catch(() => {});
+	}, []);
 
 	return (
 		<Container>
@@ -59,18 +70,23 @@ export const Authbox = ({
 							defaultValue={DEFAULT_INSTANCE}
 							{...register("instance", {
 								required: true,
-								onChange: debounce((event) => {
+								onChange: debounce(async (event) => {
 									clearErrors("instance");
 									setCheckingInstance(true);
-									return validateInstance(
-										event.target.value,
-										(message) =>
-											setError("instance", { message }),
-									)
-										.then(() => setCheckingInstance(false))
-										.catch(() =>
-											setCheckingInstance(false),
+									try {
+										const ret = await validateInstance(
+											event.target.value,
+											(message) =>
+												setError("instance", {
+													message,
+												}),
 										);
+
+										// TODO: type this
+										setInstanceInfo(ret as any);
+									} catch (e) {}
+
+									setCheckingInstance(false);
 								}, 500),
 							})}
 							aria-describedby="instance-error-msg"
@@ -101,7 +117,9 @@ export const Authbox = ({
 						/>
 					</InputContainer>
 
-					{!showRegisterCode ? null : (
+					{!(
+						showRegisterCode && !instanceInfo?.openRegistrations
+					) ? null : (
 						<InputContainer>
 							<label htmlFor="invite">Invite Code</label>
 							{errors.invite?.message && (
@@ -146,6 +164,8 @@ const validateInstance = async (
 
 		if (data.software.name.toLowerCase() !== "shoot")
 			return setError("Does not implement Shoot API");
+
+		return data;
 	} catch (e) {
 		if (e instanceof DOMException && e?.name === "AbortError") return; // ignore aborts
 		if (
