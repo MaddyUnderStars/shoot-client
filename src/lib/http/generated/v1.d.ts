@@ -4,6 +4,46 @@
  */
 
 export interface paths {
+	"/upload/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put: {
+			parameters: {
+				query: {
+					t: string;
+				};
+				header?: never;
+				path?: never;
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/auth/register": {
 		parameters: {
 			query?: never;
@@ -26,6 +66,8 @@ export interface paths {
 						username: string;
 						password: string;
 						email?: string;
+						/** @description Instance registration invite */
+						invite?: string;
 					};
 				};
 			};
@@ -40,30 +82,10 @@ export interface paths {
 						};
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -108,30 +130,10 @@ export interface paths {
 						};
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -168,30 +170,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete: {
@@ -213,30 +195,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		options?: never;
@@ -268,30 +230,10 @@ export interface paths {
 						"application/json": components["schemas"]["PrivateUser"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -311,6 +253,8 @@ export interface paths {
 					"application/json": {
 						display_name?: string;
 						summary?: string;
+						current_password?: string;
+						password?: string;
 						/** Format: email */
 						email?: string;
 					};
@@ -325,30 +269,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		trace?: never;
@@ -377,30 +301,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicGuild"][];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -440,30 +344,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		options?: never;
@@ -495,30 +379,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicChannel"][];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -555,30 +419,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicUser"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -623,30 +467,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicChannel"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -681,30 +505,10 @@ export interface paths {
 						"application/json": components["schemas"]["PrivateRelationship"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -733,30 +537,10 @@ export interface paths {
 						"application/json": components["schemas"]["PrivateRelationship"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete: {
@@ -778,30 +562,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		options?: never;
@@ -841,30 +605,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicGuild"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -899,30 +643,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicGuild"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -946,35 +670,46 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		options?: never;
 		head?: never;
-		patch?: never;
+		patch: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					guild_id: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: {
+				content: {
+					"application/json": {
+						name?: string;
+						summary?: string;
+					};
+				};
+			};
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
 		trace?: never;
 	};
 	"/guild/{guild_id}/invite": {
@@ -1012,30 +747,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -1078,30 +793,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicGuildTextChannel"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -1136,30 +831,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicChannel"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -1183,30 +858,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		options?: never;
@@ -1236,30 +891,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		trace?: never;
@@ -1297,30 +932,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicMessage"][];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -1335,13 +950,7 @@ export interface paths {
 			};
 			requestBody?: {
 				content: {
-					"application/json": {
-						content?: string;
-						files?: {
-							name: string;
-							hash: string;
-						}[];
-					};
+					"application/json": components["schemas"]["MessageCreateRequest"];
 				};
 			};
 			responses: {
@@ -1353,30 +962,10 @@ export interface paths {
 						"application/json": components["schemas"]["PublicMessage"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -1424,30 +1013,10 @@ export interface paths {
 						"application/json": "Accepted";
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -1477,9 +1046,13 @@ export interface paths {
 			requestBody?: {
 				content: {
 					"application/json": {
+						/** @description Client defined ID for cross referencing attachments to output endpoints. Can be any value. Must be unique */
+						id: string;
+						/** @description User defined file name */
 						name: string;
 						md5: string;
 						mime: string;
+						/** @description Size in bytes */
 						size: number;
 						width?: number;
 						height?: number;
@@ -1493,35 +1066,16 @@ export interface paths {
 					};
 					content: {
 						"application/json": {
+							id: string;
 							hash: string;
 							url: string;
 						}[];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		delete?: never;
@@ -1557,30 +1111,10 @@ export interface paths {
 						"application/json": Record<string, never>;
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
@@ -1618,35 +1152,40 @@ export interface paths {
 						"application/json": components["schemas"]["PublicMessage"];
 					};
 				};
-				401: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				404: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
-				500: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["HttpError"];
-					};
-				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
 			};
 		};
 		put?: never;
 		post?: never;
-		delete?: never;
+		delete: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					channel_id: string;
+					message_id: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -1659,6 +1198,35 @@ export interface components {
 		HttpError: {
 			message: string;
 			code: number;
+			detail?: {
+				body?: (
+					| {
+							message: string;
+							code: string;
+							path: string[];
+					  }
+					| unknown
+					| null
+				)[];
+				param?: (
+					| {
+							message: string;
+							code: string;
+							path: string[];
+					  }
+					| unknown
+					| null
+				)[];
+				query?: (
+					| {
+							message: string;
+							code: string;
+							path: string[];
+					  }
+					| unknown
+					| null
+				)[];
+			};
 		};
 		PublicUser: {
 			id: string;
@@ -1717,8 +1285,52 @@ export interface components {
 			channel_id: string;
 			files: components["schemas"]["PublicAttachment"][];
 		};
+		MessageCreateRequest: {
+			content?: string;
+			files?: {
+				name: string;
+				hash: string;
+			}[];
+		};
 	};
-	responses: never;
+	responses: {
+		/** @description Bad request */
+		BadRequest: {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": components["schemas"]["HttpError"];
+			};
+		};
+		/** @description The requested resource was not found */
+		NotFound: {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": components["schemas"]["HttpError"];
+			};
+		};
+		/** @description Unauthorised */
+		Unauthorised: {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": components["schemas"]["HttpError"];
+			};
+		};
+		/** @description Internal server error */
+		InternalServerError: {
+			headers: {
+				[name: string]: unknown;
+			};
+			content: {
+				"application/json": components["schemas"]["HttpError"];
+			};
+		};
+	};
 	parameters: never;
 	requestBodies: never;
 	headers: never;
