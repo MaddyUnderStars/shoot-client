@@ -69,6 +69,8 @@ export class WebrtcClient extends EventEmitter {
 		this.closePc();
 		this.emit("leave");
 		this.socket?.close();
+		this.isTrying = false;
+		this.isReady = false;
 	};
 
 	private closePc = () => {
@@ -105,6 +107,12 @@ export class WebrtcClient extends EventEmitter {
 			if (this.voiceElement && event.streams[0]) {
 				this.voiceElement.srcObject = event.streams[0];
 			}
+		};
+
+		this.pc.onicecandidateerror = (ev) => {
+			console.error(ev);
+
+			this.leave();
 		};
 
 		for (const track of this.local_stream?.getTracks() ?? []) {
