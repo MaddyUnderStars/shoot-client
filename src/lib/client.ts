@@ -153,7 +153,7 @@ class Shoot extends EventEmitter {
 			}
 			case "CHANNEL_CREATE": {
 				const ch = new Channel(json.d.channel);
-				if (!ch.guild) this.channels.set(ch.id, ch);
+				if (!ch.guild) this.channels.set(ch.mention, ch);
 				this.emit("CHANNEL_CREATE", ch);
 				break;
 			}

@@ -405,7 +405,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					user_id: string;
+					user_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -447,7 +447,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					user_id: string;
+					user_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -491,7 +491,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					user_id: string;
+					user_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -517,7 +517,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					user_id: string;
+					user_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -548,7 +548,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					user_id: string;
+					user_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -629,7 +629,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					guild_id: string;
+					guild_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -656,7 +656,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					guild_id: string;
+					guild_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -683,7 +683,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					guild_id: string;
+					guild_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -726,7 +726,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					guild_id: string;
+					guild_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -773,7 +773,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					guild_id: string;
+					guild_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -817,7 +817,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -828,7 +828,9 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": components["schemas"]["PublicChannel"];
+						"application/json":
+							| components["schemas"]["PublicGuildTextChannel"]
+							| components["schemas"]["PublicDmChannel"];
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -844,7 +846,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -871,7 +873,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -918,7 +920,7 @@ export interface paths {
 				};
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -944,7 +946,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -988,7 +990,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -1039,7 +1041,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -1097,7 +1099,7 @@ export interface paths {
 				header?: never;
 				path: {
 					hash: string;
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 				};
 				cookie?: never;
 			};
@@ -1137,7 +1139,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 					message_id: string;
 				};
 				cookie?: never;
@@ -1165,7 +1167,7 @@ export interface paths {
 				query?: never;
 				header?: never;
 				path: {
-					channel_id: string;
+					channel_id: components["schemas"]["ActorMention"];
 					message_id: string;
 				};
 				cookie?: never;
@@ -1199,74 +1201,63 @@ export interface components {
 			message: string;
 			code: number;
 			detail?: {
-				body?: (
-					| {
-							message: string;
-							code: string;
-							path: string[];
-					  }
-					| unknown
-					| null
-				)[];
-				param?: (
-					| {
-							message: string;
-							code: string;
-							path: string[];
-					  }
-					| unknown
-					| null
-				)[];
-				query?: (
-					| {
-							message: string;
-							code: string;
-							path: string[];
-					  }
-					| unknown
-					| null
-				)[];
+				body?: {
+					message: string;
+					code: string;
+					path: string[];
+				}[];
+				param?: {
+					message: string;
+					code: string;
+					path: string[];
+				}[];
+				query?: {
+					message: string;
+					code: string;
+					path: string[];
+				}[];
 			};
 		};
+		ActorMention: string;
 		PublicUser: {
-			id: string;
+			mention: components["schemas"]["ActorMention"];
 			name: string;
 			summary: string;
 			display_name: string;
-			domain: string;
 		};
 		PrivateUser: components["schemas"]["PublicUser"] & {
 			email: string;
 		};
-		PublicGuildTextChannel: {
+		PublicChannel: {
+			mention: components["schemas"]["ActorMention"];
+			name: string;
+		};
+		PublicGuildTextChannel: components["schemas"]["PublicChannel"] & {
+			guild?: components["schemas"]["ActorMention"];
+		};
+		PublicRole: {
+			/** Format: uuid */
 			id: string;
 			name: string;
-			domain: string;
-			guild_id?: string;
+			allow: number[];
+			deny: number[];
+			guild: components["schemas"]["ActorMention"];
 		};
 		PublicGuild: {
-			id: string;
+			mention: components["schemas"]["ActorMention"];
 			name: string;
-			domain: string;
 			channels?: components["schemas"]["PublicGuildTextChannel"][];
-			roles?: {
-				id: string;
-				name: string;
-				allow: number[];
-				deny: number[];
-				guild_id?: string;
-			}[];
-		};
-		PublicChannel: {
-			id: string;
-			name: string;
-			domain: string;
+			roles?: components["schemas"]["PublicRole"][];
 		};
 		PrivateRelationship: {
 			created: string;
 			user: components["schemas"]["PublicUser"];
 			/** @enum {integer} */
 			type: 0 | 1 | 2;
+		};
+		PublicDmChannel: components["schemas"]["PublicChannel"] & {
+			owner: components["schemas"]["ActorMention"];
+			recipients: components["schemas"]["ActorMention"][];
 		};
 		PublicAttachment: {
 			name: string;
@@ -1277,6 +1268,7 @@ export interface components {
 			height?: number | null;
 		};
 		PublicMessage: {
+			/** Format: uuid */
 			id: string;
 			content: string;
 			published: string;

@@ -1,23 +1,24 @@
 import type { components } from "../http/generated/v1";
+import { splitQualifiedMention } from "../util";
 import { Channel } from "./channel";
 
 export type GuildSchema = components["schemas"]["PublicGuild"];
 
-export class Guild implements GuildSchema {
-	public id: string;
+export class Guild implements Omit<GuildSchema, "channels"> {
+	public mention: string;
+
 	public name: string;
-	public domain: string;
 
 	public channels: Channel[] = [];
 
-	get mention() {
-		return `${this.id}@${this.domain}`;
+	public get domain() {
+		const { domain } = splitQualifiedMention(this.mention);
+		return domain;
 	}
 
 	constructor(data: GuildSchema) {
-		this.id = data.id;
+		this.mention = data.mention;
 		this.name = data.name;
-		this.domain = data.domain;
 
 		for (const ch of data.channels || []) {
 			const channel = new Channel(ch, this);

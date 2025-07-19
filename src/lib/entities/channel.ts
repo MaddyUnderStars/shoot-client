@@ -5,10 +5,11 @@ import type { components, paths } from "../http/generated/v1";
 import type { Guild } from "./guild";
 import { Message } from "./message";
 import type { User } from "./user";
+import { splitQualifiedMention } from "../util";
 
-export type ChannelSchema = components["schemas"]["PublicChannel"] & {
-	guild_id?: string;
-} & { owner_id?: string; recipients?: string[] };
+export type ChannelSchema =
+	| components["schemas"]["PublicGuildTextChannel"]
+	| components["schemas"]["PublicDmChannel"];
 
 export type MessageSendOptions =
 	| { content?: string; files?: Array<{ hash: string; name: string }> }
@@ -19,30 +20,34 @@ export type MessageFetchOptions = Partial<
 >;
 
 export class Channel {
-	public id: string;
+	public mention: string;
+
 	public name: string;
-	public domain: string;
 
 	public guild?: Guild;
 
 	public recipients?: User[];
 
-	@observable messages = new Map<string, Message>();
-
-	get mention() {
-		return `${this.id}@${this.domain}`;
+	public get domain() {
+		const { domain } = splitQualifiedMention(this.mention);
+		return domain;
 	}
 
+	@observable messages = new Map<string, Message>();
+
 	constructor(data: ChannelSchema, guild?: Guild) {
-		this.id = data.id;
+		this.mention = data.mention;
 		this.name = data.name;
-		this.domain = data.domain;
-		this.guild = guild ?? shoot.guilds.find((x) => x.id === data.guild_id);
-		this.recipients = data.recipients?.reduce<User[]>((arr, x) => {
-			const user = shoot.users.get(x);
-			if (user) arr.push(user);
-			return arr;
-		}, []);
+		this.guild =
+			guild ?? shoot.guilds.find((x) => x.mention === data.mention);
+		this.recipients =
+			"recipients" in data
+				? data.recipients?.reduce<User[]>((arr, x) => {
+						const user = shoot.users.get(x);
+						if (user) arr.push(user);
+						return arr;
+					}, [])
+				: undefined;
 
 		if (this.guild) {
 			if (!this.guild.channels.find((x) => x.mention === this.mention))

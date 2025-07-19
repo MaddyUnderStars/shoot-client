@@ -23,9 +23,7 @@ export const UserProfile = ({ user_id }: { user_id: string }) => {
 					<Spacer>
 						<ProfilePicture src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png" />
 						<h1>{data?.display_name}</h1>
-						<span>
-							{data?.name}@{data?.domain}
-						</span>
+						<span>{data?.mention}</span>
 					</Spacer>
 
 					<Spacer style={{ display: "flex", alignItems: "end" }}>

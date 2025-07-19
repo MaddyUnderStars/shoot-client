@@ -47,13 +47,13 @@ export const GuildsList = () => {
 					</Guild>
 				</Link>
 
-				{guilds.map((x) => (
+				{guilds.map((guild) => (
 					<Link
-						key={x.id}
-						to={`/channels/${x.id}@${x.domain}/${x.channels[0]?.mention}`}
+						key={guild.mention}
+						to={`/channels/${guild.mention}/${guild.channels[0]?.mention}`}
 					>
 						<Guild>
-							{x.name
+							{guild.name
 								.split(" ")
 								.slice(0, 4)
 								.map((x) => x.charAt(0).toUpperCase())

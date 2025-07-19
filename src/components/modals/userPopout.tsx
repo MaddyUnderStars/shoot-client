@@ -25,7 +25,7 @@ export const UserPopout = ({ user }: UserModalProps) => {
 			},
 		});
 		if (!data) return;
-		setLocation(`/channels/${data.id}@${data.domain}`);
+		setLocation(`/channels/${data.mention}`);
 	};
 
 	return (
