@@ -10,7 +10,6 @@ import { capitalise } from "@/lib/utils";
 import { ModalContainer } from "../modal-container";
 import { Button } from "../ui/button";
 import {
-	Card,
 	CardAction,
 	CardContent,
 	CardDescription,
@@ -151,11 +150,12 @@ export const CreateGuildModal = NiceModal.create(() => {
 			</CardContent>
 
 			<CardFooter className="gap-2 justify-between">
-				<Button form="create-or-join-guild-form" type="submit">
+				<Button variant="outline" form="create-or-join-guild-form" type="submit">
 					{mode === "create" ? "Create" : "Join"}
 				</Button>
 
 				<Button
+					variant="outline"
 					onClick={() =>
 						setMode(mode === "create" ? "join" : "create")
 					}
