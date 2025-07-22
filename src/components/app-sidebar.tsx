@@ -5,7 +5,8 @@ import { BowArrow, Hash, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useGuild } from "@/hooks/use-guild";
 import { getAppStore } from "@/lib/store/AppStore";
-import { CreateGuildModal } from "./modal/create-guild";
+import { ChannelListHeader } from "./channel-list-header";
+import { CreateGuildModal } from "./modal/create-guild-modal";
 import { NavUser } from "./nav-user";
 import {
 	Sidebar,
@@ -94,8 +95,9 @@ const GuildSidebar = observer(() => {
 							>
 								<button
 									type="button"
-									onClick={async () => console.log(await NiceModal.show(CreateGuildModal))}
-									className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+									onClick={() => NiceModal.show(CreateGuildModal)}
+									className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+								>
 									<Plus className="size-4" />
 								</button>
 							</SidebarMenuButton>
@@ -116,11 +118,7 @@ const ChannelSidebar = observer(() => {
 			<SidebarHeader className="gap-3.5 border-b p-4">
 				{/* render guild header here */}
 
-				<div className="flex w-full items-center justify-between">
-					<div className="text-foreground text-base font-medium">
-						{guild ? guild.name : "Private Channels"}
-					</div>
-				</div>
+				<ChannelListHeader guild={guild} />
 			</SidebarHeader>
 
 			<SidebarContent>

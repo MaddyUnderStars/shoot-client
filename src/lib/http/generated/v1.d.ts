@@ -746,7 +746,11 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": Record<string, never>;
+						"application/json": {
+							code: string;
+							guild: components["schemas"]["ActorMention"];
+							expires: string;
+						};
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -1275,8 +1279,8 @@ export interface components {
 			content: string;
 			published: string;
 			updated: string;
-			author_id: ActorMention;
-			channel_id: ActorMention;
+			author_id: components["schemas"]["ActorMention"];
+			channel_id: components["schemas"]["ActorMention"];
 			files: components["schemas"]["PublicAttachment"][];
 		};
 		MessageCreateRequest: {
