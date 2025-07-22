@@ -60,6 +60,7 @@ export const ChatInput = () => {
 						"rounded-r-none border-r-0",
 						attached.length ? "rounded-t-none" : "",
 					)}
+					autoComplete="off"
 				/>
 
 				<label
