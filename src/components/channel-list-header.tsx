@@ -2,6 +2,7 @@ import NiceModal from "@ebay/nice-modal-react";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import type { Guild } from "@/lib/client/entity/guild";
+import { CreateChannelModal } from "./modal/create-channel-modal";
 import { CreateInviteModal } from "./modal/invite-modal";
 import {
 	DropdownMenu,
@@ -36,7 +37,13 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 									Invite
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
-								<DropdownMenuItem disabled>
+								<DropdownMenuItem
+									onClick={() =>
+										NiceModal.show(CreateChannelModal, {
+											guild,
+										})
+									}
+								>
 									Create Channel
 								</DropdownMenuItem>
 								<DropdownMenuItem

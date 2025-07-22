@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { splitQualifiedMention } from "@/lib/utils";
 import type { ActorMention } from "../common/actor";
 
@@ -14,5 +14,7 @@ export class Actor {
 	constructor(opts: { mention: ActorMention; name: string }) {
 		this.mention = opts.mention;
 		this.name = opts.name;
+
+		makeObservable(this);
 	}
 }

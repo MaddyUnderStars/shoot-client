@@ -40,6 +40,10 @@ export class AppStore {
 		this.user = user;
 	};
 
+	@action addDmChannel = (channel: DmChannel) => {
+		this.dmChannels.push(channel);
+	};
+
 	@action setDmChannels = (channels: DmChannel[]) => {
 		this.dmChannels = channels;
 	};

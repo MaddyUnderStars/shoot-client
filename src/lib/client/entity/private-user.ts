@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import type { ApiPrivateUser } from "@/lib/http/types";
 import { PublicUser } from "./public-user";
 
@@ -8,5 +8,7 @@ export class PrivateUser extends PublicUser implements ApiPrivateUser {
 	constructor(opts: ApiPrivateUser) {
 		super(opts);
 		this.email = opts.email;
+
+		makeObservable(this);
 	}
 }

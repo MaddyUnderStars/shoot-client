@@ -5,6 +5,7 @@ import type { GATEWAY_EVENT } from "./common/receive";
 import type { GATEWAY_SEND_PAYLOAD } from "./common/send";
 import { DmChannel } from "./entity/dm-channel";
 import { Guild } from "./entity/guild";
+import { GuildChannel } from "./entity/guild-channel";
 import { PrivateUser } from "./entity/private-user";
 import type { ClientOptions, InstanceOptions } from "./types";
 
@@ -113,6 +114,25 @@ export class ShootGatewayClient extends EventEmitter {
 				);
 
 				app.setGuilds(parsed.d.guilds.map((x) => new Guild(x)));
+				break;
+			}
+			case "CHANNEL_CREATE": {
+				const rawChannel = parsed.d.channel;
+
+				if ("guild" in rawChannel && rawChannel.guild) {
+					const guild = app.getGuild(rawChannel.guild);
+					if (!guild) {
+						Log.error(`Do not know of guild ${rawChannel.guild}`);
+						break;
+					}
+
+					guild.addChannel(new GuildChannel(rawChannel));
+				} else if ("recipients" in rawChannel) {
+					app.addDmChannel(new DmChannel(rawChannel));
+				} else {
+					Log.error("unknown channel structure?");
+				}
+
 				break;
 			}
 		}

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { getHttpClient } from "@/lib/http/client";
 import { capitalise } from "@/lib/utils";
+import { ModalCloseButton } from "../modal-close-btn";
 import { ModalContainer } from "../modal-container";
 import { Button } from "../ui/button";
 import {
@@ -99,15 +100,7 @@ export const CreateGuildModal = NiceModal.create(() => {
 						: "Join a guild using it's invite code"}
 				</CardDescription>
 				<CardAction>
-					<button
-						className="pointer-events-auto"
-						type="button"
-						title="Close"
-						onClick={modal.remove}
-						onKeyDown={modal.remove}
-					>
-						<XIcon />
-					</button>
+					<ModalCloseButton />
 				</CardAction>
 			</CardHeader>
 

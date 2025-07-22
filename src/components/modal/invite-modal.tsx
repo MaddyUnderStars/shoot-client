@@ -1,12 +1,12 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import type { Channel } from "@/lib/client/entity/channel";
 import type { Guild } from "@/lib/client/entity/guild";
 import { getHttpClient } from "@/lib/http/client";
+import { ModalCloseButton } from "../modal-close-btn";
 import { ModalContainer } from "../modal-container";
 import { Button } from "../ui/button";
 import { CardAction, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -27,8 +27,6 @@ const CreateInviteSchema = z.object({
 
 export const CreateInviteModal = NiceModal.create(
 	({ guild, channel }: { guild: Guild; channel?: Channel }) => {
-		const modal = useModal();
-
 		const form = useForm<z.infer<typeof CreateInviteSchema>>({
 			resolver: zodResolver(CreateInviteSchema),
 		});
@@ -79,15 +77,7 @@ export const CreateInviteModal = NiceModal.create(
 					</CardTitle>
 
 					<CardAction>
-						<button
-							className="pointer-events-auto"
-							type="button"
-							title="Close"
-							onClick={modal.remove}
-							onKeyDown={modal.remove}
-						>
-							<XIcon />
-						</button>
+						<ModalCloseButton />
 					</CardAction>
 				</CardHeader>
 
