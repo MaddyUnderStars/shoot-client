@@ -52,7 +52,7 @@ const GuildSidebar = observer(() => {
 						{/* render guilds here */}
 
 						{guilds.map((guild) => (
-							<SidebarMenu key={guild.mention}>
+							<SidebarMenu key={guild.mention} className="mt-2">
 								<SidebarMenuItem>
 									<SidebarMenuButton
 										size="lg"
