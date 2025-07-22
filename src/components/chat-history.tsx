@@ -1,7 +1,6 @@
 import { type InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useGateway } from "@/hooks/use-gateway";
 import type {
 	MESSAGE_CREATE,
 	MESSAGE_DELETE,

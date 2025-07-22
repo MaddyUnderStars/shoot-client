@@ -30,11 +30,6 @@ export const NavUser = observer(() => {
 					</div>
 				</SidebarMenuButton>
 			</SidebarMenuItem>
-
-			<SidebarMenuItem>
-				{/* TODO: remove this from here. add it to settings */}
-				<ThemeToggle />
-			</SidebarMenuItem>
 		</SidebarMenu>
 	);
 });

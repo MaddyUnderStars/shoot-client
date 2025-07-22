@@ -18,6 +18,7 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	useSidebar,
 } from "./ui/sidebar";
 
 const GuildSidebar = observer(() => {
@@ -57,7 +58,7 @@ const GuildSidebar = observer(() => {
 									<SidebarMenuButton
 										size="lg"
 										asChild
-										className="md:h-8 md:p-0"
+										className="h-8 p-0"
 									>
 										<Link
 											to="/channel/$guildId/{-$channelId}"
@@ -83,7 +84,7 @@ const GuildSidebar = observer(() => {
 				</SidebarGroup>
 
 				<SidebarGroup>
-					<SidebarGroupContent>
+					<SidebarGroupContent className="px-1.5 md:px-0">
 						{/* Extra buttons that are not guilds */}
 
 						{/* add guild button */}
@@ -91,7 +92,7 @@ const GuildSidebar = observer(() => {
 							<SidebarMenuButton
 								size="lg"
 								asChild
-								className="md:h-8 md:p-0"
+								className="h-8 p-0"
 							>
 								<button
 									type="button"
@@ -115,11 +116,11 @@ const ChannelSidebar = observer(() => {
 	const guild = useGuild();
 	const channels = guild ? guild.channels : getAppStore().dmChannels;
 
-	return (
-		<Sidebar collapsible="none" className="hidden flex-1 md:flex">
-			<SidebarHeader className="gap-3.5 border-b p-4">
-				{/* render guild header here */}
+	const sidebar = useSidebar();
 
+	return (
+		<Sidebar collapsible="none" className="flex-1 flex">
+			<SidebarHeader className="gap-3.5 border-b p-4">
 				<ChannelListHeader guild={guild} />
 			</SidebarHeader>
 
@@ -143,6 +144,9 @@ const ChannelSidebar = observer(() => {
 												channelId: channel.mention,
 											})}
 											className="flex flex-1 items-center justify-between"
+											onClick={() =>
+												sidebar.setOpenMobile(false)
+											}
 										>
 											{channel.name}
 											<Hash size={14} />
