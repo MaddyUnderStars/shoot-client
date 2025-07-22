@@ -1,3 +1,4 @@
+import EventEmitter from "eventemitter3";
 import { createLogger } from "../log";
 import { getAppStore } from "../store/AppStore";
 import type { GATEWAY_EVENT } from "./common/receive";
@@ -9,7 +10,7 @@ import type { ClientOptions, InstanceOptions } from "./types";
 
 const Log = createLogger("gateway");
 
-export class ShootGatewayClient extends EventTarget {
+export class ShootGatewayClient extends EventEmitter {
 	private socket: WebSocket | null = null;
 	private token: string;
 	private _instance: InstanceOptions;
@@ -97,6 +98,8 @@ export class ShootGatewayClient extends EventTarget {
 
 		const app = getAppStore();
 
+		this.emit(parsed.t, parsed);
+
 		switch (parsed.t) {
 			case "READY": {
 				this.startHeartbeat();
@@ -110,6 +113,7 @@ export class ShootGatewayClient extends EventTarget {
 				);
 
 				app.setGuilds(parsed.d.guilds.map((x) => new Guild(x)));
+				break;
 			}
 		}
 	};

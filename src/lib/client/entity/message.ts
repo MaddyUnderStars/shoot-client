@@ -1,4 +1,5 @@
-import { makeAutoObservable, observable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
+import { getHttpClient } from "@/lib/http/client";
 import type { ApiPublicAttachment, ApiPublicMessage } from "@/lib/http/types";
 import { type AppStore, getAppStore } from "@/lib/store/AppStore";
 import type { ActorMention } from "../common/actor";
@@ -31,4 +32,24 @@ export class Message implements ApiPublicMessage {
 
 		makeAutoObservable(this);
 	}
+
+	public delete = async () => {
+		const { $fetch } = getHttpClient();
+
+		const { data, error } = await $fetch.DELETE(
+			"/channel/{channel_id}/messages/{message_id}/",
+			{
+				params: {
+					path: {
+						message_id: this.id,
+						channel_id: this.channel_id,
+					},
+				},
+			},
+		);
+
+		if (error) throw new Error(error.message);
+
+		return true;
+	};
 }

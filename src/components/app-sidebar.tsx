@@ -37,7 +37,7 @@ const GuildSidebar = observer(() => {
 							className="md:h-8 md:p-0"
 						>
 							<Link to="/channel/@me">
-								<div className="dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+								<div className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
 									<BowArrow className="size-4" />
 								</div>
 							</Link>
@@ -68,7 +68,7 @@ const GuildSidebar = observer(() => {
 														?.mention,
 											}}
 										>
-											<Avatar className="dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+											<Avatar className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
 												<AvatarImage />
 												<AvatarFallback>
 													{guild.initials}
@@ -98,7 +98,7 @@ const GuildSidebar = observer(() => {
 									onClick={() =>
 										NiceModal.show(CreateGuildModal)
 									}
-									className="dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+									className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
 								>
 									<Plus className="size-4" />
 								</button>

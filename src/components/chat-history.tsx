@@ -1,8 +1,15 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { type InfiniteData, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useGateway } from "@/hooks/use-gateway";
+import type {
+	MESSAGE_CREATE,
+	MESSAGE_DELETE,
+} from "@/lib/client/common/receive";
 import type { DmChannel } from "@/lib/client/entity/dm-channel";
 import type { GuildChannel } from "@/lib/client/entity/guild-channel";
 import { Message } from "@/lib/client/entity/message";
+import { getGatewayClient } from "@/lib/client/gateway";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPublicMessage } from "@/lib/http/types";
 import { MessageComponent } from "./message";
@@ -18,20 +25,22 @@ export const ChatHistory = ({
 
 	const { $api } = getHttpClient();
 
+	const fetchOptions = {
+		params: {
+			path: {
+				channel_id: channel?.mention,
+			},
+			query: {
+				limit: API_PAGE_LIMIT,
+			},
+		},
+	};
+
 	const { data, fetchNextPage, hasNextPage, isFetching } =
 		$api.useInfiniteQuery(
 			"get",
 			"/channel/{channel_id}/messages/",
-			{
-				params: {
-					path: {
-						channel_id: channel?.mention,
-					},
-					query: {
-						limit: API_PAGE_LIMIT,
-					},
-				},
-			},
+			fetchOptions,
 			{
 				getNextPageParam: (lastPage: ApiPublicMessage[]) =>
 					lastPage[lastPage.length - 1]?.id,
@@ -44,6 +53,51 @@ export const ChatHistory = ({
 			},
 			client,
 		);
+	const queryKey = ["get", "/channel/{channel_id}/messages/", fetchOptions];
+
+	useEffect(() => {
+		const gw = getGatewayClient();
+
+		const createListener = (event: MESSAGE_CREATE) => {
+			if (!event) return;
+
+			const msg = new Message(event.d.message);
+
+			client.setQueryData(
+				queryKey,
+				(data: InfiniteData<ApiPublicMessage[]>) => {
+					return {
+						pages: [[msg], ...data.pages],
+						pageParams: data.pageParams,
+					};
+				},
+			);
+		};
+
+		const deleteListener = (event: MESSAGE_DELETE) => {
+			client.setQueryData(
+				queryKey,
+				(data: InfiniteData<ApiPublicMessage[]>) => {
+					const ret = data.pages.map((page) =>
+						page.filter((msg) => msg.id !== event.d.message_id),
+					);
+
+					return {
+						pages: ret,
+						pageParams: data.pageParams,
+					};
+				},
+			);
+		};
+
+		gw.addListener("MESSAGE_CREATE", createListener);
+		gw.addListener("MESSAGE_DELETE", deleteListener);
+
+		return () => {
+			gw.removeListener("MESSAGE_CREATE", createListener);
+			gw.removeListener("MESSAGE_DELETE", deleteListener);
+		};
+	});
 
 	return (
 		<div
