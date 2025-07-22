@@ -1,9 +1,11 @@
+import NiceModal from "@ebay/nice-modal-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Link } from "@tanstack/react-router";
 import { BowArrow, Hash, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useGuild } from "@/hooks/use-guild";
 import { getAppStore } from "@/lib/store/AppStore";
+import { CreateGuildModal } from "./modal/create-guild";
 import { NavUser } from "./nav-user";
 import {
 	Sidebar,
@@ -90,9 +92,12 @@ const GuildSidebar = observer(() => {
 								asChild
 								className="md:h-8 md:p-0"
 							>
-								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+								<button
+									type="button"
+									onClick={async () => console.log(await NiceModal.show(CreateGuildModal))}
+									className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
 									<Plus className="size-4" />
-								</div>
+								</button>
 							</SidebarMenuButton>
 						</SidebarMenu>
 					</SidebarGroupContent>
@@ -128,8 +133,15 @@ const ChannelSidebar = observer(() => {
 								<SidebarMenuItem key={channel.mention}>
 									<SidebarMenuButton>
 										<Link
-											to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
-											params={(prev) => ({ ...prev, channelId: channel.mention, })}
+											to={
+												guild
+													? "/channel/$guildId/{-$channelId}"
+													: "/channel/$channelId"
+											}
+											params={(prev) => ({
+												...prev,
+												channelId: channel.mention,
+											})}
 											className="flex flex-1 items-center justify-between"
 										>
 											{channel.name}

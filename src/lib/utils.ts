@@ -49,3 +49,7 @@ export const splitQualifiedMention = (lookup: string | URL) => {
 		user,
 	};
 };
+
+export const capitalise = (str: string) => {
+	return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
+};

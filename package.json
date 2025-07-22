@@ -11,6 +11,7 @@
 		"openapi": "npx openapi-typescript https://raw.githubusercontent.com/MaddyUnderStars/shoot/refs/heads/feat/standard_mentions/assets/client.json -o ./src/lib/http/generated/v1.d.ts"
 	},
 	"dependencies": {
+		"@ebay/nice-modal-react": "^1.2.13",
 		"@hookform/resolvers": "^5.1.1",
 		"@radix-ui/react-avatar": "^1.1.10",
 		"@radix-ui/react-dialog": "^1.1.14",
@@ -24,7 +25,6 @@
 		"@tanstack/react-router-devtools": "^1.128.6",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"i": "^0.3.7",
 		"lucide-react": "^0.525.0",
 		"mobx": "^6.13.7",
 		"mobx-react-lite": "^4.1.0",

@@ -1,3 +1,4 @@
+import NiceModal from "@ebay/nice-modal-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -8,7 +9,9 @@ export const Route = createRootRoute({
 	component: () => (
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider>
-				<Outlet />
+				<NiceModal.Provider>
+					<Outlet />
+				</NiceModal.Provider>
 			</ThemeProvider>
 		</QueryClientProvider>
 	),
