@@ -8,7 +8,7 @@
 		"build": "tsc -b && vite build",
 		"lint": "npx @biomejs/biome check --write .",
 		"preview": "vite preview",
-		"openapi": "npx openapi-typescript https://raw.githubusercontent.com/MaddyUnderStars/shoot/refs/heads/feat/standard_mentions/assets/client.json -o ./src/lib/http/generated/v1.d.ts"
+		"openapi": "npx openapi-typescript https://raw.githubusercontent.com/MaddyUnderStars/shoot/refs/heads/main/assets/client.json -o ./src/lib/http/generated/v1.d.ts"
 	},
 	"dependencies": {
 		"@ebay/nice-modal-react": "^1.2.13",
