@@ -64,12 +64,12 @@ export const CreateGuildModal = NiceModal.create(() => {
 	};
 
 	const joinGuild = async (code: string) => {
-		const { data, error } = await $fetch.POST("/invite/{invite_code}", {
+		const { error } = await $fetch.POST("/invite/{invite_code}", {
 			params: {
 				path: {
 					invite_code: code,
-				}
-			}
+				},
+			},
 		});
 
 		if (error) {
@@ -150,7 +150,11 @@ export const CreateGuildModal = NiceModal.create(() => {
 			</CardContent>
 
 			<CardFooter className="gap-2 justify-between">
-				<Button variant="outline" form="create-or-join-guild-form" type="submit">
+				<Button
+					variant="outline"
+					form="create-or-join-guild-form"
+					type="submit"
+				>
 					{mode === "create" ? "Create" : "Join"}
 				</Button>
 

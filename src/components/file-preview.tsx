@@ -20,10 +20,12 @@ export const FilePreview = ({
 		const src =
 			object instanceof File
 				? URL.createObjectURL(object)
-				: channel?.mention && instance ? makeUrl(
-					`/channel/${channel.mention}/attachments/${object.hash}`,
-					new URL(instance.toString()),
-				).href : "";
+				: channel?.mention && instance
+					? makeUrl(
+							`/channel/${channel.mention}/attachments/${object.hash}`,
+							new URL(instance.toString()),
+						).href
+					: "";
 
 		setUrl(src);
 

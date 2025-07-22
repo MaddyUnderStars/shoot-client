@@ -1,17 +1,19 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChatPane } from "@/components/chat-pane"
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar";
+import { ChatPane } from "@/components/chat-pane";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export const ChannelsPageComponent = () => {
-	return <SidebarProvider
-		style={
-			{
-				"--sidebar-width": "300px",
-			} as React.CSSProperties
-		}
-	>
-		<AppSidebar />
+	return (
+		<SidebarProvider
+			style={
+				{
+					"--sidebar-width": "300px",
+				} as React.CSSProperties
+			}
+		>
+			<AppSidebar />
 
-		<ChatPane />
-	</SidebarProvider>
-}
+			<ChatPane />
+		</SidebarProvider>
+	);
+};

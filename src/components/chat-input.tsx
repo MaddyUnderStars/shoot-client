@@ -26,10 +26,19 @@ export const ChatInput = () => {
 	};
 
 	return (
-		<form className="p-3" onSubmit={sendMessage} onReset={() => setAttached([])}>
+		<form
+			className="p-3"
+			onSubmit={sendMessage}
+			onReset={() => setAttached([])}
+		>
 			{attached.length ? (
 				<div className="relative p-3 dark:bg-input/30 border flex gap-2 flex-wrap overflow-scroll max-h-65 rounded-t-md border-b-0">
-					<button type="button" className="absolute top-0 right-0 p-2" title="Cancel upload" onClick={() => setAttached([])}>
+					<button
+						type="button"
+						className="absolute top-0 right-0 p-2"
+						title="Cancel upload"
+						onClick={() => setAttached([])}
+					>
 						<XIcon size={16} />
 					</button>
 
@@ -49,7 +58,7 @@ export const ChatInput = () => {
 					placeholder="Send a message..."
 					className={cn(
 						"rounded-r-none border-r-0",
-						attached.length ? "rounded-t-none" : ""
+						attached.length ? "rounded-t-none" : "",
 					)}
 				/>
 
@@ -58,7 +67,7 @@ export const ChatInput = () => {
 					title="Upload files"
 					className={cn(
 						"rounded-md rounded-l-none selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm flex items-center justify-center",
-						attached.length ? "rounded-t-none rounded-bl-none" : ""
+						attached.length ? "rounded-t-none rounded-bl-none" : "",
 					)}
 				>
 					<Upload size={14} />
@@ -73,6 +82,6 @@ export const ChatInput = () => {
 					onChange={(e) => setAttached([...(e.target.files ?? [])])}
 				/>
 			</div>
-		</form >
+		</form>
 	);
 };

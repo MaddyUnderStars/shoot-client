@@ -7,7 +7,6 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
@@ -29,7 +28,9 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 							<DropdownMenuGroup>
 								<DropdownMenuItem
 									onClick={() =>
-										NiceModal.show(CreateInviteModal, { guild })
+										NiceModal.show(CreateInviteModal, {
+											guild,
+										})
 									}
 								>
 									Invite

@@ -13,8 +13,12 @@ export const ModalContainer = ({
 		<div
 			role="dialog"
 			onClick={modal.remove}
-			className="flex justify-center items-center absolute top-0 left-0 z-10 w-screen h-screen bg-black/50">
-			<Card onClick={(e) => e.stopPropagation()} className={cn("relative max-w-sm flex-1", props.className)}>
+			className="flex justify-center items-center absolute top-0 left-0 z-10 w-screen h-screen bg-black/50"
+		>
+			<Card
+				onClick={(e) => e.stopPropagation()}
+				className={cn("relative max-w-sm flex-1", props.className)}
+			>
 				{children}
 			</Card>
 		</div>

@@ -95,7 +95,9 @@ const GuildSidebar = observer(() => {
 							>
 								<button
 									type="button"
-									onClick={() => NiceModal.show(CreateGuildModal)}
+									onClick={() =>
+										NiceModal.show(CreateGuildModal)
+									}
 									className="dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
 								>
 									<Plus className="size-4" />

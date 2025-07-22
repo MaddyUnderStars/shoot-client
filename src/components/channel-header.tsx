@@ -7,7 +7,9 @@ export const ChannelHeader = () => {
 
 	return (
 		<div className="p-4 bg-sidebar w-full border-b h-min">
-			<h1><Hash size={16} className="inline" /> {channel.name}</h1>
+			<h1>
+				<Hash size={16} className="inline" /> {channel.name}
+			</h1>
 		</div>
 	);
 };

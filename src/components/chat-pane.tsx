@@ -10,13 +10,13 @@ export const ChatPane = () => {
 		<div className="w-full flex flex-col h-screen">
 			<ChannelHeader />
 
-			{channel ? (<>
-				<ChatHistory channel={channel} />
+			{channel ? (
+				<>
+					<ChatHistory channel={channel} />
 
-				<ChatInput />
-			</>
+					<ChatInput />
+				</>
 			) : null}
-
 		</div>
 	);
 };

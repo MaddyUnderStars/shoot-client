@@ -1,6 +1,6 @@
 import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Clipboard, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -9,12 +9,7 @@ import type { Guild } from "@/lib/client/entity/guild";
 import { getHttpClient } from "@/lib/http/client";
 import { ModalContainer } from "../modal-container";
 import { Button } from "../ui/button";
-import {
-	CardAction,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "../ui/card";
+import { CardAction, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
 	Form,
 	FormControl,
@@ -56,7 +51,9 @@ export const CreateInviteModal = NiceModal.create(
 						},
 					},
 					body: {
-						expiry: input.expiry ? new Date(input.expiry).toISOString() : undefined,
+						expiry: input.expiry
+							? new Date(input.expiry).toISOString()
+							: undefined,
 					},
 				},
 			);
@@ -72,7 +69,7 @@ export const CreateInviteModal = NiceModal.create(
 		useEffect(() => {
 			form.clearErrors();
 			createInvite({});
-		}, [guild])
+		}, [guild]);
 
 		return (
 			<ModalContainer>
@@ -120,7 +117,11 @@ export const CreateInviteModal = NiceModal.create(
 								type="text"
 								readOnly
 								placeholder="Invite code here"
-								value={inviteCode ? `${inviteCode}@${guild.domain}` : "Invite code"}
+								value={
+									inviteCode
+										? `${inviteCode}@${guild.domain}`
+										: "Invite code"
+								}
 							/>
 							<Button type="button" variant="outline">
 								Copy

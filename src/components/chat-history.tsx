@@ -25,7 +25,7 @@ export const ChatHistory = ({
 			{
 				params: {
 					path: {
-						channel_id: channel!.mention,
+						channel_id: channel?.mention,
 					},
 					query: {
 						limit: API_PAGE_LIMIT,
@@ -70,7 +70,7 @@ export const ChatHistory = ({
 								key={message.id}
 							/>
 						);
-					})
+					}),
 				)}
 			</InfiniteScroll>
 		</div>
