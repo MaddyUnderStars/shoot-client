@@ -11,6 +11,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "./ui/sidebar";
+import { UserComponent } from "./user";
 
 export const NavUser = observer(() => {
 	const user = getAppStore().user;
@@ -23,22 +24,7 @@ export const NavUser = observer(() => {
 		<SidebarMenu>
 			<SidebarMenuItem>
 				<SidebarMenuButton size="lg">
-					<Avatar className="h-8 w-8 rounded-lg">
-						<AvatarImage
-							src={
-								"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-							}
-							alt="Username"
-						/>
-						<AvatarFallback>PFP</AvatarFallback>
-					</Avatar>
-
-					<div className="grid flex-1 text-left text-sm leading-right">
-						<span className="truncate font-medium">
-							{user.display_name}
-						</span>
-						<span className="truncate font-xs">@{user.domain}</span>
-					</div>
+					<UserComponent user={user} />
 
 					<SidebarMenuSub className="m-0">
 						<SidebarMenuSubItem>

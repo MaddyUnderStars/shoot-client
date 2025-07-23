@@ -3,9 +3,12 @@ import type { ApiPublicGuild } from "@/lib/http/types";
 import type { ActorMention } from "../common/actor";
 import { Actor } from "./actor";
 import { GuildChannel } from "./guild-channel";
+import { Role } from "./role";
 
 export class Guild extends Actor implements ApiPublicGuild {
 	@observable channels: GuildChannel[];
+
+	@observable roles: Role[];
 
 	public getChannel = (mention: ActorMention) => {
 		return this.channels.find((x) => x.mention === mention);
@@ -26,6 +29,7 @@ export class Guild extends Actor implements ApiPublicGuild {
 		super(opts);
 
 		this.channels = opts.channels?.map((x) => new GuildChannel(x)) ?? [];
+		this.roles = opts.roles?.map((x) => new Role(x)) ?? [];
 
 		makeObservable(this);
 	}
