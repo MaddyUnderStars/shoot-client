@@ -1,6 +1,6 @@
 import type { ClientOptions } from "./client/types";
 
-export const setLogin = (login: ClientOptions) => {
+export const setLogin = (login: ClientOptions | null) => {
 	if (!login) {
 		localStorage.removeItem("login");
 		return;

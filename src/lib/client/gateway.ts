@@ -1,6 +1,8 @@
 import EventEmitter from "eventemitter3";
 import { createLogger } from "../log";
+import { setLogin } from "../storage";
 import { getAppStore } from "../store/AppStore";
+import { CLOSE_CODES } from "../utils";
 import type { GATEWAY_EVENT } from "./common/receive";
 import type { GATEWAY_SEND_PAYLOAD } from "./common/send";
 import { DmChannel } from "./entity/dm-channel";
@@ -12,13 +14,18 @@ import type { ClientOptions, InstanceOptions } from "./types";
 
 const Log = createLogger("gateway");
 
+type Timeout = ReturnType<typeof setTimeout>;
+
 export class ShootGatewayClient extends EventEmitter {
 	private socket: WebSocket | null = null;
 	private token: string;
 	private _instance: InstanceOptions;
 
 	private sequence: number = 0;
-	private heartbeatTimeout?: ReturnType<typeof setTimeout> = undefined;
+	private heartbeatTimeout?: Timeout = undefined;
+
+	private reconnectAttempts = 0;
+	private reconnectTimeout?: Timeout = undefined;
 
 	public get instance() {
 		return this._instance;
@@ -58,6 +65,11 @@ export class ShootGatewayClient extends EventEmitter {
 		this.socket.onclose = this.onClose;
 	};
 
+	public logout = () => {
+		setLogin(null);
+		this.close();
+	};
+
 	public close = () => {
 		this.socket?.close();
 		this.socket = null;
@@ -87,6 +99,9 @@ export class ShootGatewayClient extends EventEmitter {
 
 	private onOpen = () => {
 		Log.verbose(`Connected to gateway on ${this.instance.gateway.href}`);
+		this.reconnectAttempts = 0;
+		clearTimeout(this.reconnectTimeout);
+		this.reconnectTimeout = undefined;
 
 		this.send({ t: "identify", token: this.token });
 	};
@@ -149,7 +164,28 @@ export class ShootGatewayClient extends EventEmitter {
 
 	private onClose = ({ code }: CloseEvent) => {
 		clearTimeout(this.heartbeatTimeout);
+		this.sequence = 0;
 		Log.error(`Disconnected from gateway with code ${code}`);
+
+		if (code === CLOSE_CODES.BAD_TOKEN) {
+			// don't reconnect if our token is wrong
+			this.logout();
+			return;
+		}
+
+		if (!this.reconnectTimeout) {
+			this.reconnectTimeout = setTimeout(() => {
+				Log.verbose(
+					`Trying reconnect attempt ${this.reconnectAttempts}`,
+				);
+				this.reconnectAttempts++;
+				this.reconnectTimeout = undefined;
+
+				if (!this.instance || !this.token) return;
+
+				this.login();
+			}, 1000 * this.reconnectAttempts);
+		}
 	};
 }
 
