@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 
 import "./index.css";
 
-import { createGatewayClient, getGatewayClient } from "./lib/client/gateway";
+import { createGatewayClient } from "./lib/client/gateway";
 import { getLogin } from "./lib/storage";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -22,8 +22,7 @@ declare module "@tanstack/react-router" {
 // If we're logged in, connect to gateway
 const login = getLogin();
 if (login) {
-	createGatewayClient(login);
-	getGatewayClient().login();
+	createGatewayClient(login).login();
 }
 
 // Render the app

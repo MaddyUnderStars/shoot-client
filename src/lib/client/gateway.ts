@@ -193,6 +193,7 @@ let client: ShootGatewayClient;
 
 export const createGatewayClient = (opts: ClientOptions) => {
 	client = new ShootGatewayClient(opts);
+	return client;
 };
 
 export const getGatewayClient = () => {

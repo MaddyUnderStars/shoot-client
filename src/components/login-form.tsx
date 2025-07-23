@@ -8,6 +8,7 @@ import z from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { createGatewayClient } from "@/lib/client/gateway";
 import type { paths } from "@/lib/http/generated/v1";
 import { setLogin } from "@/lib/storage";
 import { cn, makeUrl, tryParseUrl } from "@/lib/utils";
@@ -98,10 +99,14 @@ export function LoginForm({
 			return;
 		}
 
-		setLogin({
+		const login = {
 			token: data.token,
 			instance: values.instance,
-		});
+		};
+
+		setLogin(login);
+
+		createGatewayClient(login).login();
 
 		navigation({ to: "/channel/@me" });
 	};
