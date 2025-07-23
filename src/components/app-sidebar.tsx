@@ -23,6 +23,7 @@ import {
 
 const GuildSidebar = observer(() => {
 	const guilds = getAppStore().guilds;
+	const sidebar = useSidebar();
 
 	return (
 		<Sidebar
@@ -96,9 +97,10 @@ const GuildSidebar = observer(() => {
 							>
 								<button
 									type="button"
-									onClick={() =>
-										NiceModal.show(CreateGuildModal)
-									}
+									onClick={() => {
+										sidebar.setOpenMobile(false);
+										NiceModal.show(CreateGuildModal);
+									}}
 									className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
 								>
 									<Plus className="size-4" />

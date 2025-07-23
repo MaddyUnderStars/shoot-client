@@ -1,6 +1,6 @@
 import NiceModal from "@ebay/nice-modal-react";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, PanelLeftClose, PanelLeftDashed } from "lucide-react";
+import { ChevronDown, PanelLeftClose } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Guild } from "@/lib/client/entity/guild";
 import { CreateChannelModal } from "./modal/create-channel-modal";
@@ -13,7 +13,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { SidebarTrigger, useSidebar } from "./ui/sidebar";
+import { useSidebar } from "./ui/sidebar";
 
 export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 	const isMobile = useIsMobile();
@@ -45,21 +45,23 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 						<DropdownMenuContent className="w-60">
 							<DropdownMenuGroup>
 								<DropdownMenuItem
-									onClick={() =>
+									onClick={() => {
+										sidebar.setOpenMobile(false);
 										NiceModal.show(CreateInviteModal, {
 											guild,
-										})
-									}
+										});
+									}}
 								>
 									Invite
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem
-									onClick={() =>
+									onClick={() => {
+										sidebar.setOpenMobile(false);
 										NiceModal.show(CreateChannelModal, {
 											guild,
-										})
-									}
+										});
+									}}
 								>
 									Create Channel
 								</DropdownMenuItem>
