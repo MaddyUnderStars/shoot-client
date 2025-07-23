@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Moon, Palette, UserPen, XIcon } from "lucide-react";
-import { useEffect } from "react";
+import { Palette, UserPen, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Sidebar,

@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, makeObservable, observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPublicAttachment, ApiPublicMessage } from "@/lib/http/types";
 import { type AppStore, getAppStore } from "@/lib/store/AppStore";
