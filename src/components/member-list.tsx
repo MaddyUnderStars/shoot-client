@@ -40,8 +40,8 @@ export const MemberList = ({
 	}, [channel]);
 
 	return (
-		<div className="bg-sidebar w-sm border">
-			<div className="p-2 flex items-center justify-center">Members</div>
+		<div className="bg-sidebar w-sm border-l">
+			<div className="flex flex-col gap-3.5 border-b p-4">Members</div>
 
 			<div className="flex-1 flex flex-col gap-2 w-full">
 				{members.map((x) => {
