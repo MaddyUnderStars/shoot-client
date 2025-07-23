@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SettingsThemeIndexRouteImport } from './routes/settings/theme/index'
+import { Route as SettingsAccountProfileRouteImport } from './routes/settings/account/profile'
 import { Route as AuthenticatedChannelAtmeRouteImport } from './routes/_authenticated/channel/@me'
 import { Route as AuthenticatedChannelChannelIdRouteImport } from './routes/_authenticated/channel/$channelId'
 import { Route as AuthenticatedChannelGuildIdChar123ChannelIdChar125RouteImport } from './routes/_authenticated/channel/$guildId/{-$channelId}'
@@ -27,14 +27,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsIndexRoute = SettingsIndexRouteImport.update({
-  id: '/settings/',
-  path: '/settings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsThemeIndexRoute = SettingsThemeIndexRouteImport.update({
   id: '/settings/theme/',
   path: '/settings/theme/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsAccountProfileRoute = SettingsAccountProfileRouteImport.update({
+  id: '/settings/account/profile',
+  path: '/settings/account/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedChannelAtmeRoute =
@@ -59,18 +59,18 @@ const AuthenticatedChannelGuildIdChar123ChannelIdChar125Route =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/settings': typeof SettingsIndexRoute
   '/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/channel/@me': typeof AuthenticatedChannelAtmeRoute
+  '/settings/account/profile': typeof SettingsAccountProfileRoute
   '/settings/theme': typeof SettingsThemeIndexRoute
   '/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/settings': typeof SettingsIndexRoute
   '/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/channel/@me': typeof AuthenticatedChannelAtmeRoute
+  '/settings/account/profile': typeof SettingsAccountProfileRoute
   '/settings/theme': typeof SettingsThemeIndexRoute
   '/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -78,9 +78,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/settings/': typeof SettingsIndexRoute
   '/_authenticated/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/_authenticated/channel/@me': typeof AuthenticatedChannelAtmeRoute
+  '/settings/account/profile': typeof SettingsAccountProfileRoute
   '/settings/theme/': typeof SettingsThemeIndexRoute
   '/_authenticated/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -89,27 +89,27 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
-    | '/settings'
     | '/channel/$channelId'
     | '/channel/@me'
+    | '/settings/account/profile'
     | '/settings/theme'
     | '/channel/$guildId/{-$channelId}'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
-    | '/settings'
     | '/channel/$channelId'
     | '/channel/@me'
+    | '/settings/account/profile'
     | '/settings/theme'
     | '/channel/$guildId/{-$channelId}'
   id:
     | '__root__'
     | '/'
     | '/login'
-    | '/settings/'
     | '/_authenticated/channel/$channelId'
     | '/_authenticated/channel/@me'
+    | '/settings/account/profile'
     | '/settings/theme/'
     | '/_authenticated/channel/$guildId/{-$channelId}'
   fileRoutesById: FileRoutesById
@@ -117,9 +117,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
-  SettingsIndexRoute: typeof SettingsIndexRoute
   AuthenticatedChannelChannelIdRoute: typeof AuthenticatedChannelChannelIdRoute
   AuthenticatedChannelAtmeRoute: typeof AuthenticatedChannelAtmeRoute
+  SettingsAccountProfileRoute: typeof SettingsAccountProfileRoute
   SettingsThemeIndexRoute: typeof SettingsThemeIndexRoute
   AuthenticatedChannelGuildIdChar123ChannelIdChar125Route: typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -140,18 +140,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settings/': {
-      id: '/settings/'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings/theme/': {
       id: '/settings/theme/'
       path: '/settings/theme'
       fullPath: '/settings/theme'
       preLoaderRoute: typeof SettingsThemeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/account/profile': {
+      id: '/settings/account/profile'
+      path: '/settings/account/profile'
+      fullPath: '/settings/account/profile'
+      preLoaderRoute: typeof SettingsAccountProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/channel/@me': {
@@ -181,9 +181,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
-  SettingsIndexRoute: SettingsIndexRoute,
   AuthenticatedChannelChannelIdRoute: AuthenticatedChannelChannelIdRoute,
   AuthenticatedChannelAtmeRoute: AuthenticatedChannelAtmeRoute,
+  SettingsAccountProfileRoute: SettingsAccountProfileRoute,
   SettingsThemeIndexRoute: SettingsThemeIndexRoute,
   AuthenticatedChannelGuildIdChar123ChannelIdChar125Route:
     AuthenticatedChannelGuildIdChar123ChannelIdChar125Route,

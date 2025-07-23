@@ -42,9 +42,9 @@ export const SettingsSidebar = () => {
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton asChild disabled>
+								<SidebarMenuButton asChild>
 									<Link
-										to="/settings"
+										to="/settings/account/profile"
 										onClick={() =>
 											sidebar.setOpenMobile(false)
 										}
