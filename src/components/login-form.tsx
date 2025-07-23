@@ -106,6 +106,20 @@ export function LoginForm({
 		navigation({ to: "/channel/@me" });
 	};
 
+	const debounced = debounce(
+		async (event: React.ChangeEvent<HTMLInputElement>) => {
+			form.clearErrors("instance");
+			setValidatingInstance(true);
+			const nodeInfo = await validateInstance(event.target.value);
+			setValidatingInstance(false);
+			if (!nodeInfo)
+				return form.setError("instance", {
+					message: "Offline or misconfigured",
+				});
+		},
+		500,
+	);
+
 	return (
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
 			<Card>
@@ -136,35 +150,7 @@ export function LoginForm({
 											<Input
 												placeholder={DEFAULT_INSTANCE}
 												{...field}
-												onChangeCapture={debounce(
-													async (
-														event: React.ChangeEvent<HTMLInputElement>,
-													) => {
-														form.clearErrors(
-															"instance",
-														);
-														setValidatingInstance(
-															true,
-														);
-														const nodeInfo =
-															await validateInstance(
-																event.target
-																	.value,
-															);
-														setValidatingInstance(
-															false,
-														);
-														if (!nodeInfo)
-															return form.setError(
-																"instance",
-																{
-																	message:
-																		"Offline or misconfigured",
-																},
-															);
-													},
-													500,
-												)}
+												onChangeCapture={debounced}
 											/>
 										</FormControl>
 										<FormMessage />
