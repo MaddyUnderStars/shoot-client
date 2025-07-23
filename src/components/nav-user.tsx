@@ -1,11 +1,22 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useNavigate } from "@tanstack/react-router";
+import { Settings2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { getAppStore } from "@/lib/store/AppStore";
-import { ThemeToggle } from "./theme-toggle";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import {
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarMenuSub,
+	SidebarMenuSubButton,
+	SidebarMenuSubItem,
+} from "./ui/sidebar";
 
 export const NavUser = observer(() => {
 	const user = getAppStore().user;
+
+	const navigate = useNavigate();
+
 	if (!user) return null;
 
 	return (
@@ -28,6 +39,18 @@ export const NavUser = observer(() => {
 						</span>
 						<span className="truncate font-xs">@{user.domain}</span>
 					</div>
+
+					<SidebarMenuSub className="m-0">
+						<SidebarMenuSubItem>
+							<SidebarMenuSubButton
+								onClick={() =>
+									navigate({ to: "/settings/theme" })
+								}
+							>
+								<Settings2 />
+							</SidebarMenuSubButton>
+						</SidebarMenuSubItem>
+					</SidebarMenuSub>
 				</SidebarMenuButton>
 			</SidebarMenuItem>
 		</SidebarMenu>
