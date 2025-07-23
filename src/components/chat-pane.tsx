@@ -8,7 +8,7 @@ export const ChatPane = () => {
 	const channel = useChannel();
 
 	return (
-		<div className="w-full flex flex-col h-screen">
+		<div className="w-full flex flex-col h-dvh">
 			<ChannelHeader />
 
 			{channel ? (
