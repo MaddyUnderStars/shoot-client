@@ -20,3 +20,9 @@ npm run dev
 
 - `VITE_DEFAULT_INSTANCE` - sets the default instance on the registration and login pages
 - `BASE_PATH` - sets the base URL of the SPA
+
+## Screenshots
+
+<img width="1920" height="1040" alt="2025-07-23 21:56:44" src="https://github.com/user-attachments/assets/a9c33c65-591a-465b-a25c-62f54163f63a" />
+<img width="1920" height="1040" alt="2025-07-23 21:57:46" src="https://github.com/user-attachments/assets/2a7a6c7a-de9e-4850-aa9d-ce68ece7b1e2" />
+<img width="1920" height="1040" alt="2025-07-23 21:58:13" src="https://github.com/user-attachments/assets/c2f63f21-7d0a-42ae-9191-acf31cd01a8f" />
