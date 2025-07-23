@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -22,4 +24,8 @@ export default defineConfig({
 			"@": path.resolve(__dirname, "./src"),
 		},
 	},
+	test:{ 
+		globals: true,
+		environment: "jsdom"
+	}
 });

@@ -29,6 +29,10 @@ jobs:
               run: |
                 npm ci
                 BASE_PATH="/shoot-client" npm run build
+                
+            - name: test
+              id: test
+              run: npm run test
 
             - name: Upload artifact
               id: deployment

@@ -7,6 +7,7 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"lint": "npx @biomejs/biome check --write .",
+		"test": "vitest",
 		"preview": "vite preview",
 		"openapi": "npx openapi-typescript https://raw.githubusercontent.com/MaddyUnderStars/shoot/refs/heads/main/assets/client.json -o ./src/lib/http/generated/v1.d.ts",
 		"prepare": "husky"
@@ -49,6 +50,9 @@
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.1.11",
 		"@tanstack/router-plugin": "^1.128.6",
+		"@testing-library/dom": "^10.4.0",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.3.0",
 		"@types/node": "^24.0.15",
 		"@types/react": "^19.1.8",
 		"@types/react-dom": "^19.1.6",
@@ -56,11 +60,13 @@
 		"@vitejs/plugin-react-swc": "^3.10.2",
 		"globals": "^16.3.0",
 		"husky": "^9.1.7",
+		"jsdom": "^26.1.0",
 		"lint-staged": "^16.1.2",
 		"openapi-typescript": "^7.8.0",
 		"tw-animate-css": "^1.3.5",
 		"typescript": "~5.8.3",
 		"typescript-eslint": "^8.35.1",
-		"vite": "^7.0.4"
+		"vite": "^7.0.4",
+		"vitest": "^3.2.4"
 	}
 }
