@@ -7,6 +7,7 @@ import { DmChannel } from "./entity/dm-channel";
 import { Guild } from "./entity/guild";
 import { GuildChannel } from "./entity/guild-channel";
 import { PrivateUser } from "./entity/private-user";
+import { Relationship } from "./entity/relationship";
 import type { ClientOptions, InstanceOptions } from "./types";
 
 const Log = createLogger("gateway");
@@ -114,6 +115,10 @@ export class ShootGatewayClient extends EventEmitter {
 				);
 
 				app.setGuilds(parsed.d.guilds.map((x) => new Guild(x)));
+
+				app.setRelationships(
+					parsed.d.relationships.map((x) => new Relationship(x)),
+				);
 				break;
 			}
 			case "CHANNEL_CREATE": {

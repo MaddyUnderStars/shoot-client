@@ -3,6 +3,7 @@ import type { ActorMention } from "../client/common/actor";
 import type { DmChannel } from "../client/entity/dm-channel";
 import type { Guild } from "../client/entity/guild";
 import type { PrivateUser } from "../client/entity/private-user";
+import type { Relationship } from "../client/entity/relationship";
 
 export class AppStore {
 	@observable user: PrivateUser | null = null;
@@ -10,6 +11,8 @@ export class AppStore {
 	@observable dmChannels: DmChannel[] = [];
 
 	@observable guilds: Guild[] = [];
+
+	@observable relationships: Relationship[] = [];
 
 	constructor() {
 		makeAutoObservable(this);
@@ -33,6 +36,10 @@ export class AppStore {
 		}
 
 		return undefined;
+	};
+
+	@action public setRelationships = (relationships: Relationship[]) => {
+		this.relationships = relationships;
 	};
 
 	@action
