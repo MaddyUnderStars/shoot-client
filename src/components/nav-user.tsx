@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useNavigate } from "@tanstack/react-router";
 import { Settings2 } from "lucide-react";
 import { observer } from "mobx-react-lite";

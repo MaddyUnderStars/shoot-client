@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import type { ActorMention } from "../client/common/actor";
 import type { DmChannel } from "../client/entity/dm-channel";
 import type { Guild } from "../client/entity/guild";
@@ -15,7 +15,7 @@ export class AppStore {
 	@observable relationships: Relationship[] = [];
 
 	constructor() {
-		makeAutoObservable(this);
+		makeObservable(this);
 	}
 
 	public getGuild = (mention: ActorMention) => {

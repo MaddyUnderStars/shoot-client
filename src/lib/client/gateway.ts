@@ -155,6 +155,16 @@ export class ShootGatewayClient extends EventEmitter {
 
 				break;
 			}
+			case "GUILD_CREATE": {
+				const rawGuild = parsed.d.guild;
+
+				app.guilds.push(new Guild(rawGuild));
+				break;
+			}
+			case "RELATIONSHIP_CREATE": {
+				app.relationships.push(new Relationship(parsed.d.relationship));
+				break;
+			}
 		}
 	};
 
