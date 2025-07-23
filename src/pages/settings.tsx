@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Palette, UserPen, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,9 +13,12 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
+import { getGatewayClient } from "@/lib/client/gateway";
 
 export const SettingsSidebar = () => {
 	const sidebar = useSidebar();
+
+	const navigate = useNavigate();
 
 	return (
 		<Sidebar>
@@ -79,7 +82,15 @@ export const SettingsSidebar = () => {
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton asChild>
-							<Button variant="destructive">Logout</Button>
+							<Button
+								variant="destructive"
+								onClick={() => {
+									getGatewayClient().logout();
+									navigate({ to: "/login" });
+								}}
+							>
+								Logout
+							</Button>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 				</SidebarMenu>
