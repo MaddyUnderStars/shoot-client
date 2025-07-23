@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PanelLeftDashed } from "lucide-react";
+import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -24,7 +25,7 @@ const AddFriendSchema = z.object({
 	mention: ActorMention,
 });
 
-export const FriendsPane = () => {
+export const FriendsPane = observer(() => {
 	const isMobile = useIsMobile();
 
 	const relationships = getAppStore().relationships;
@@ -102,4 +103,4 @@ export const FriendsPane = () => {
 			</div>
 		</div>
 	);
-};
+});

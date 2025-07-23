@@ -165,6 +165,14 @@ export class ShootGatewayClient extends EventEmitter {
 				app.relationships.push(new Relationship(parsed.d.relationship));
 				break;
 			}
+			case "RELATIONSHIP_DELETE": {
+				const rel = parsed.d.user;
+
+				app.relationships = app.relationships.filter(
+					(x) => x.user.mention !== rel,
+				);
+				break;
+			}
 		}
 	};
 
