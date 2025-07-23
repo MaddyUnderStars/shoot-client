@@ -29,32 +29,34 @@ import {
 const DEFAULT_INSTANCE =
 	import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
 
-const LoginFormSchema = z.object({
+const RegisterFormSchema = z.object({
 	username: z.string({ error: "Username is required" }),
 	password: z.string({ error: "Incorrect password" }),
 	instance: z.string({ error: "Invalid instance URL" }),
+	invite: z.string().optional(),
 });
 
-export function LoginForm({
+export function RegisterForm({
 	className,
 	...props
 }: React.ComponentProps<"div">) {
 	const navigation = useNavigate();
 
-	const form = useForm<z.infer<typeof LoginFormSchema>>({
-		resolver: zodResolver(LoginFormSchema),
+	const form = useForm<z.infer<typeof RegisterFormSchema>>({
+		resolver: zodResolver(RegisterFormSchema),
 		defaultValues: {
 			instance: DEFAULT_INSTANCE,
 		},
 	});
 
-	const onSubmit = async (values: z.infer<typeof LoginFormSchema>) => {
+	const onSubmit = async (values: z.infer<typeof RegisterFormSchema>) => {
 		const client = createClient<paths>({ baseUrl: values.instance });
 
-		const { data, error } = await client.POST("/auth/login", {
+		const { data, error } = await client.POST("/auth/register", {
 			body: {
 				username: values.username,
 				password: values.password,
+				invite: values.invite,
 			},
 		});
 
@@ -79,10 +81,10 @@ export function LoginForm({
 		<div className={cn("flex flex-col gap-6", className)} {...props}>
 			<Card>
 				<CardHeader>
-					<CardTitle>Login</CardTitle>
+					<CardTitle>Register</CardTitle>
 					<CardDescription>
-						<Link to="/register" className="underline">
-							Register instead?
+						<Link to="/login" className="underline">
+							Login instead?
 						</Link>
 					</CardDescription>
 				</CardHeader>
@@ -92,7 +94,10 @@ export function LoginForm({
 							onSubmit={form.handleSubmit(onSubmit)}
 							className="space-y-8"
 						>
-							<InstanceValidatorField form={form} />
+							<InstanceValidatorField
+								showInviteField={true}
+								form={form}
+							/>
 
 							<FormField
 								control={form.control}
@@ -122,7 +127,7 @@ export function LoginForm({
 								)}
 							/>
 
-							<Button type="submit">Login</Button>
+							<Button type="submit">Register</Button>
 						</form>
 					</Form>
 				</CardContent>
