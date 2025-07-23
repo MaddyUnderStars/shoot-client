@@ -22,6 +22,17 @@ export class AppStore {
 		return this.guilds.find((x) => x.mention === mention);
 	};
 
+	public findDmChannel = (users: ActorMention[]) => {
+		return this.dmChannels.find((x) => {
+			const arr = [x.owner, ...x.recipients];
+
+			return (
+				arr.length === users.length &&
+				arr.every((u) => users.includes(u))
+			);
+		});
+	};
+
 	public getDmChannel = (mention: ActorMention) => {
 		return this.dmChannels.find((x) => x.mention === mention);
 	};

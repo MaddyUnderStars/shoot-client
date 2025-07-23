@@ -1,9 +1,11 @@
+import { useNavigate } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import {
 	type Relationship,
 	RelationshipType,
 } from "@/lib/client/entity/relationship";
 import { getHttpClient } from "@/lib/http/client";
+import { getAppStore } from "@/lib/store/AppStore";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -65,17 +67,68 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 		}
 	};
 
+	const app = getAppStore();
+
+	const navigate = useNavigate();
+
+	const openDm = async () => {
+		if (!app.user) return; // hmm
+
+		const existing = app.findDmChannel([
+			app.user.mention,
+			rel.user.mention,
+		]);
+		if (existing) {
+			return navigate({
+				to: "/channel/$channelId",
+				params: { channelId: existing.mention },
+			});
+		}
+
+		const { data, error } = await $fetch.POST(
+			"/users/{user_id}/channels/",
+			{
+				params: {
+					path: {
+						user_id: rel.user.mention,
+					},
+				},
+				body: {
+					name: `${rel.user.display_name ?? rel.user.name} & ${app.user.display_name ?? app.user.name}`,
+				},
+			},
+		);
+
+		// TODO: better error handling. maybe a toast?
+		if (error) throw new Error(error.message);
+
+		navigate({
+			to: "/channel/$channelId",
+			params: { channelId: data.mention },
+		});
+	};
+
 	const actions: React.ReactNode[] = [];
+
+	actions.push(
+		<DropdownMenuItem key="friend-action-dm" onClick={() => openDm()}>
+			Open DM
+		</DropdownMenuItem>,
+	);
 
 	if (rel.type === RelationshipType.pending)
 		actions.push(
-			<DropdownMenuItem onClick={() => action("accept")}>
+			<DropdownMenuItem
+				key="friend-action-accept"
+				onClick={() => action("accept")}
+			>
 				Accept
 			</DropdownMenuItem>,
 		);
 	else
 		actions.push(
 			<DropdownMenuItem
+				key="friend-action-block"
 				variant="destructive"
 				disabled
 				onClick={() => action("block")}
@@ -87,6 +140,7 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 	if (rel.type === RelationshipType.blocked)
 		actions.push(
 			<DropdownMenuItem
+				key="friend-action-unblock"
 				variant="destructive"
 				disabled
 				onClick={() => action("unblock")}
@@ -97,6 +151,7 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 	else
 		actions.push(
 			<DropdownMenuItem
+				key="friend-action-remove"
 				variant="destructive"
 				onClick={() => action("remove")}
 			>
