@@ -6,22 +6,31 @@ import {
 } from "@/lib/client/entity/relationship";
 import { getHttpClient } from "@/lib/http/client";
 import { getAppStore } from "@/lib/store/AppStore";
+import { UserPopover } from "./popover/user-popover";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Popover, PopoverTrigger } from "./ui/popover";
 
 export const RelationshipComponent = ({ rel }: { rel: Relationship }) => {
 	return (
 		<div className="flex-1 flex items-center justify-between hover:bg-black/20 rounded p-3">
-			<div className="grid flex-1 text-left text-sm leading-right">
-				<span className="truncate font-medium">
-					{rel.user.display_name}
-				</span>
-				<span className="truncate font-xs">@{rel.user.domain}</span>
-			</div>
+			<Popover>
+				<PopoverTrigger>
+					<div className="grid flex-1 text-left text-sm leading-right">
+						<span className="truncate font-medium">
+							{rel.user.display_name}
+						</span>
+						<span className="truncate font-xs">
+							@{rel.user.domain}
+						</span>
+					</div>
+				</PopoverTrigger>
+				<UserPopover user={rel.user.mention} />
+			</Popover>
 
 			<RelationshipActions rel={rel} />
 		</div>

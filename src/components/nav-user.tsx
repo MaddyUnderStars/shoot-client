@@ -2,6 +2,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { Settings2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { getAppStore } from "@/lib/store/AppStore";
+import { UserPopover } from "./popover/user-popover";
+import { Popover, PopoverTrigger } from "./ui/popover";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
@@ -23,7 +25,12 @@ export const NavUser = observer(() => {
 		<SidebarMenu>
 			<SidebarMenuItem>
 				<SidebarMenuButton size="lg">
-					<UserComponent user={user} />
+					<Popover>
+						<PopoverTrigger className="flex gap-2 items-center ">
+							<UserComponent user={user} />
+						</PopoverTrigger>
+						<UserPopover user={user.mention} />
+					</Popover>
 
 					<SidebarMenuSub className="m-0">
 						<SidebarMenuSubItem>
