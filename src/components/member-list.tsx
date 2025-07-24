@@ -5,6 +5,7 @@ import type { Channel } from "@/lib/client/entity/channel";
 import type { Guild } from "@/lib/client/entity/guild";
 import { getGatewayClient } from "@/lib/client/gateway";
 import { splitQualifiedMention } from "@/lib/utils";
+import { Skeleton } from "./ui/skeleton";
 
 export const MemberList = ({
 	channel,
@@ -67,7 +68,9 @@ export const MemberList = ({
 									}
 									alt="Username"
 								/>
-								<AvatarFallback>PFP</AvatarFallback>
+								<AvatarFallback>
+									<Skeleton className="h-8 w-8 rounded-full" />
+								</AvatarFallback>
 							</Avatar>
 
 							<div className="grid flex-1 text-left text-sm leading-right">

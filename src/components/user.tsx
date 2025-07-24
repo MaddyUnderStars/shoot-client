@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import type { PrivateUser } from "@/lib/client/entity/private-user";
 import type { PublicUser } from "@/lib/client/entity/public-user";
+import { Skeleton } from "./ui/skeleton";
 
 export const UserComponent = ({ user }: { user: PublicUser | PrivateUser }) => {
 	return (
@@ -12,7 +13,9 @@ export const UserComponent = ({ user }: { user: PublicUser | PrivateUser }) => {
 					}
 					alt="Username"
 				/>
-				<AvatarFallback>PFP</AvatarFallback>
+				<AvatarFallback>
+					<Skeleton className="h-8 w-8 rounded-full" />
+				</AvatarFallback>
 			</Avatar>
 
 			<div className="grid flex-1 text-left text-sm leading-right">

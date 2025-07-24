@@ -8,6 +8,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Skeleton } from "./ui/skeleton";
 
 export const MessageComponent = ({ message }: { message: Message }) => {
 	return (
@@ -19,7 +20,9 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 							"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
 						}
 					/>
-					<AvatarFallback>PFP</AvatarFallback>
+					<AvatarFallback>
+						<Skeleton className="h-8 w-8 rounded-full" />
+					</AvatarFallback>
 				</Avatar>
 
 				<div>
