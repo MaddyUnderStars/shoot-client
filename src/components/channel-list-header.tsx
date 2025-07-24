@@ -1,5 +1,4 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown, PanelLeftClose } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Guild } from "@/lib/client/entity/guild";
@@ -9,6 +8,7 @@ import { Button } from "./ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,

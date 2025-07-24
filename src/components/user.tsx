@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import type { PrivateUser } from "@/lib/client/entity/private-user";
 import type { PublicUser } from "@/lib/client/entity/public-user";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Skeleton } from "./ui/skeleton";
 
 export const UserComponent = ({ user }: { user: PublicUser | PrivateUser }) => {

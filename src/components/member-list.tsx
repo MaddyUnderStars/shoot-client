@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useEffect, useState } from "react";
 import type { MEMBERS_CHUNK } from "@/lib/client/common/receive";
 import type { Channel } from "@/lib/client/entity/channel";
@@ -6,6 +5,7 @@ import type { Guild } from "@/lib/client/entity/guild";
 import { getGatewayClient } from "@/lib/client/gateway";
 import { splitQualifiedMention } from "@/lib/utils";
 import { UserPopover } from "./popover/user-popover";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Popover, PopoverTrigger } from "./ui/popover";
 import { Skeleton } from "./ui/skeleton";
 

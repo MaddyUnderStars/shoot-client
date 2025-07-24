@@ -1,5 +1,4 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Link } from "@tanstack/react-router";
 import { BowArrow, Hash, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
@@ -8,6 +7,8 @@ import { getAppStore } from "@/lib/store/AppStore";
 import { ChannelListHeader } from "./channel-list-header";
 import { CreateGuildModal } from "./modal/create-guild-modal";
 import { NavUser } from "./nav-user";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
 import {
 	Sidebar,
 	SidebarContent,
@@ -36,10 +37,10 @@ const GuildSidebar = observer(() => {
 						<SidebarMenuButton
 							size="lg"
 							asChild
-							className="md:h-8 md:p-0"
+							className="md:h-8 md:p-0 hover:rounded-sm rounded-lg transition-[border-radius]"
 						>
 							<Link to="/channel/@me">
-								<div className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center">
 									<BowArrow className="size-4" />
 								</div>
 							</Link>
@@ -59,7 +60,7 @@ const GuildSidebar = observer(() => {
 									<SidebarMenuButton
 										size="lg"
 										asChild
-										className="h-8 p-0"
+										className="h-8 p-0 hover:rounded-sm rounded-lg transition-[border-radius]"
 									>
 										<Link
 											to="/channel/$guildId/{-$channelId}"
@@ -70,9 +71,9 @@ const GuildSidebar = observer(() => {
 														?.mention,
 											}}
 										>
-											<Avatar className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+											<Avatar className="rounded-none">
 												<AvatarImage />
-												<AvatarFallback>
+												<AvatarFallback className="rounded-none">
 													{guild.initials}
 												</AvatarFallback>
 											</Avatar>
@@ -93,18 +94,18 @@ const GuildSidebar = observer(() => {
 							<SidebarMenuButton
 								size="lg"
 								asChild
-								className="h-8 p-0"
+								className="h-8 p-0 hover:rounded-sm rounded-lg transition-[border-radius]"
 							>
-								<button
+								<Button
 									type="button"
 									onClick={() => {
 										sidebar.setOpenMobile(false);
 										NiceModal.show(CreateGuildModal);
 									}}
-									className="bg-accent dark:bg-sidebar-primary dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+									className="text-card-foreground bg-muted dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center"
 								>
 									<Plus className="size-4" />
-								</button>
+								</Button>
 							</SidebarMenuButton>
 						</SidebarMenu>
 					</SidebarGroupContent>
