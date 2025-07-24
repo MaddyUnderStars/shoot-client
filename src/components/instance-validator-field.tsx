@@ -14,6 +14,8 @@ import { Input } from "./ui/input";
 const DEFAULT_INSTANCE =
 	import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
 
+const LOCK_INSTANCE = !!import.meta.env.VITE_LOCK_INSTANCE;
+
 // biome-ignore lint/suspicious/noExplicitAny: TODO
 export const InstanceValidatorField = ({
 	showInviteField,
@@ -46,31 +48,35 @@ export const InstanceValidatorField = ({
 
 	return (
 		<>
-			<FormField
-				control={form.control}
-				name="instance"
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>
-							Instance
-							{isValidatingInstance ? (
-								<span> - Checking</span>
-							) : null}
-						</FormLabel>
-						<FormDescription>Your account provider</FormDescription>
-						<FormControl>
-							<Input
-								placeholder={DEFAULT_INSTANCE}
-								{...field}
-								onChangeCapture={(
-									e: React.ChangeEvent<HTMLInputElement>,
-								) => debounced(e.target.value)}
-							/>
-						</FormControl>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
+			{!LOCK_INSTANCE ? (
+				<FormField
+					control={form.control}
+					name="instance"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								Instance
+								{isValidatingInstance ? (
+									<span> - Checking</span>
+								) : null}
+							</FormLabel>
+							<FormDescription>
+								Your account provider
+							</FormDescription>
+							<FormControl>
+								<Input
+									placeholder={DEFAULT_INSTANCE}
+									{...field}
+									onChangeCapture={(
+										e: React.ChangeEvent<HTMLInputElement>,
+									) => debounced(e.target.value)}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			) : null}
 
 			{showInviteField && nodeinfo?.openRegistrations === false ? (
 				<FormField

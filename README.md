@@ -20,6 +20,7 @@ npm run dev
 
 - `VITE_DEFAULT_INSTANCE` - sets the default instance on the registration and login pages
 - `BASE_PATH` - sets the base URL of the SPA
+- `VITE_LOCK_INSTANCE` prevents users from setting their own instance in login/registration
 
 ## Screenshots
 
