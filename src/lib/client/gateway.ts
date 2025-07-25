@@ -76,9 +76,6 @@ export class ShootGatewayClient extends EventEmitter {
 	};
 
 	public send = (data: GATEWAY_SEND_PAYLOAD) => {
-		Log.verbose(
-			`-> ${JSON.stringify({ ...data, token: "token" in data ? "redacted" : undefined })}`,
-		);
 		this.socket?.send(JSON.stringify(data));
 	};
 
@@ -108,8 +105,6 @@ export class ShootGatewayClient extends EventEmitter {
 
 	private onMessage = ({ data }: MessageEvent) => {
 		const parsed = JSON.parse(data) as GATEWAY_EVENT;
-
-		Log.verbose(`<- ${parsed.t}`);
 
 		this.sequence++;
 
@@ -146,7 +141,9 @@ export class ShootGatewayClient extends EventEmitter {
 						break;
 					}
 
-					guild.addChannel(new GuildChannel(rawChannel));
+					guild.addChannel(
+						new GuildChannel(rawChannel, rawChannel.guild),
+					);
 				} else if ("recipients" in rawChannel) {
 					app.addDmChannel(new DmChannel(rawChannel));
 				} else {

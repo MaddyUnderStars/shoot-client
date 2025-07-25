@@ -18,3 +18,18 @@ export type SUBSCRIBE_MEMBERS = {
 };
 
 export type GATEWAY_SEND_PAYLOAD = IDENTIFY | HEARTBEAT | SUBSCRIBE_MEMBERS;
+
+// webrtc types below
+
+export type WEBRTC_IDENTIFY = {
+	t: "identify";
+	token: string;
+	offer: {
+		type: string;
+		sdp: string;
+	};
+
+	candidates: RTCIceCandidateInit[];
+};
+
+export type WEBRTC_SEND_PAYLOAD = WEBRTC_IDENTIFY | HEARTBEAT;

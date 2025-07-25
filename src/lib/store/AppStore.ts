@@ -4,6 +4,7 @@ import type { DmChannel } from "../client/entity/dm-channel";
 import type { Guild } from "../client/entity/guild";
 import type { PrivateUser } from "../client/entity/private-user";
 import type { Relationship } from "../client/entity/relationship";
+import { ShootWebrtcClient } from "../client/webrtc";
 
 export class AppStore {
 	@observable user: PrivateUser | null = null;
@@ -13,6 +14,29 @@ export class AppStore {
 	@observable guilds: Guild[] = [];
 
 	@observable relationships: Relationship[] = [];
+
+	@observable webrtc?: ShootWebrtcClient = undefined;
+
+	@action
+	public startWebrtc = (
+		channel: ActorMention,
+		endpoint: URL,
+		token: string,
+	) => {
+		if (this.webrtc) {
+			this.webrtc.leave();
+		}
+
+		const webrtc = new ShootWebrtcClient(channel, endpoint, token);
+		this.webrtc = webrtc;
+
+		webrtc.login();
+	};
+
+	@action public stopWebrtc = () => {
+		this.webrtc?.leave();
+		this.webrtc = undefined;
+	};
 
 	constructor() {
 		makeObservable(this);

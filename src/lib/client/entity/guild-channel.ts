@@ -1,6 +1,25 @@
+import { makeObservable, observable } from "mobx";
 import type { ApiPublicGuildTextChannel } from "@/lib/http/types";
+import { getAppStore } from "@/lib/store/AppStore";
+import type { ActorMention } from "../common/actor";
 import { Channel } from "./channel";
 
-type TGuildChannel = Omit<ApiPublicGuildTextChannel, "guild">;
+export class GuildChannel extends Channel implements ApiPublicGuildTextChannel {
+	private app = getAppStore();
 
-export class GuildChannel extends Channel implements TGuildChannel {}
+	@observable
+	public guild: ActorMention;
+
+	public get getGuild() {
+		const guild = this.app.getGuild(this.guild);
+		if (!guild) throw new Error("guild channel has no guild?");
+		return guild;
+	}
+
+	constructor(opts: ApiPublicGuildTextChannel, guild: ActorMention) {
+		super(opts);
+		this.guild = guild;
+
+		makeObservable(this);
+	}
+}

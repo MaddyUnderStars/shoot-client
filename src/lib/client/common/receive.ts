@@ -195,3 +195,31 @@ export type GATEWAY_EVENT =
 	| MEMBERS_CHUNK
 	| READY
 	| HEARTBEAT_ACK;
+
+// below is webrtc types
+
+export type WEBRTC_READY = {
+	t: "READY";
+	d: {
+		answer: { jsep: { type: "answer"; sdp: string } };
+	};
+};
+
+export type WEBRTC_PEER_JOINED = {
+	t: "PEER_JOINED";
+	d: {
+		user_id: string;
+	};
+};
+
+export type WEBRTC_PEER_LEFT = {
+	t: "PEER_LEFT";
+	d: {
+		user_id: string;
+	};
+};
+
+export type WEBRTC_GATEWAY_EVENT =
+	| WEBRTC_READY
+	| WEBRTC_PEER_JOINED
+	| WEBRTC_PEER_LEFT;

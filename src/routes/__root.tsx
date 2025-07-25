@@ -6,13 +6,15 @@ import { ThemeProvider } from "@/components/theme-provider";
 const queryClient = new QueryClient();
 
 export const Route = createRootRoute({
-	component: () => (
-		<QueryClientProvider client={queryClient}>
-			<ThemeProvider>
-				<NiceModal.Provider>
-					<Outlet />
-				</NiceModal.Provider>
-			</ThemeProvider>
-		</QueryClientProvider>
-	),
+	component: () => {
+		return (
+			<QueryClientProvider client={queryClient}>
+				<ThemeProvider>
+					<NiceModal.Provider>
+						<Outlet />
+					</NiceModal.Provider>
+				</ThemeProvider>
+			</QueryClientProvider>
+		);
+	},
 });
