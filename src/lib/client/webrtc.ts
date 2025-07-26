@@ -1,5 +1,5 @@
 import EventEmitter from "eventemitter3";
-import { autorun, computed } from "mobx";
+import { action, autorun, computed, makeObservable, observable } from "mobx";
 import { createLogger } from "../log";
 import { getAppStore } from "../store/app-store";
 import type { ActorMention } from "./common/actor";
@@ -32,6 +32,8 @@ export class ShootWebrtcClient extends EventEmitter {
 
 	private app = getAppStore();
 
+	@observable public error?: Error;
+
 	@computed
 	public get channel() {
 		const ch = this.app.getChannel(this._channel);
@@ -43,6 +45,7 @@ export class ShootWebrtcClient extends EventEmitter {
 	constructor(channel: ActorMention, endpoint: URL, token: string) {
 		super();
 
+		this.error = undefined;
 		this._channel = channel;
 		this._endpoint = endpoint;
 		this._token = token;
@@ -50,17 +53,28 @@ export class ShootWebrtcClient extends EventEmitter {
 		autorun(() => {
 			this.audioElement.volume = this.app.settings.voice.output_volume;
 		});
+
+		makeObservable(this);
 	}
 
+	@action
 	public login = async () => {
-		const media = await navigator.mediaDevices.getUserMedia({
-			audio: {
-				autoGainControl: this.app.settings.voice.agc,
-				echoCancellation: this.app.settings.voice.echo,
-				noiseSuppression: this.app.settings.voice.noise,
-				channelCount: 2,
-			},
-		});
+		this.error = undefined;
+
+		let media: MediaStream;
+		try {
+			media = await navigator.mediaDevices.getUserMedia({
+				audio: {
+					autoGainControl: this.app.settings.voice.agc,
+					echoCancellation: this.app.settings.voice.echo,
+					noiseSuppression: this.app.settings.voice.noise,
+					channelCount: 2,
+				},
+			});
+		} catch (e) {
+			if (e instanceof Error) this.error = e;
+			return;
+		}
 
 		this.userMedia = await this.addGainControl(media);
 
