@@ -12,7 +12,8 @@ import {
 const FRIENDLY_NAME = {
 	NotAllowedError: "Microphone access denied",
 	NotFoundError: "Microphone not found",
-	OVerconstrainedError: "Device not supported",
+	OverconstrainedError: "Device not supported",
+	IceCandidateError: "Webrtc ICE candidate error",
 } as Record<string, string>;
 
 export const WebrtcControls = observer(() => {

@@ -121,7 +121,11 @@ export class ShootWebrtcClient extends EventEmitter {
 			this.audioElement.srcObject = this.remoteMedia;
 		};
 
-		this.peerConnection.onicecandidateerror = () => this.leave();
+		this.peerConnection.onicecandidateerror = (e) => {
+			this.error = new Error(e.errorText);
+			this.error.name = "IceCandidateError";
+			this.leave();
+		};
 
 		for (const track of this.userMedia?.getTracks() ?? []) {
 			this.peerConnection.addTrack(track);
