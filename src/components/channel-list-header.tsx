@@ -21,7 +21,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 	const sidebar = useSidebar();
 
 	return (
-		<div className="flex w-full items-center justify-between">
+		<div className="flex p-2 h-full w-full items-center justify-between">
 			<div className="text-foreground text-base font-medium flex-1 flex items-center">
 				{isMobile ? (
 					<Button

@@ -123,7 +123,7 @@ const ChannelSidebar = observer(() => {
 
 	return (
 		<Sidebar collapsible="none" className="flex-1 flex">
-			<SidebarHeader className="gap-3.5 border-b p-4">
+			<SidebarHeader className="gap-3.5 border-b p-2 h-14">
 				<ChannelListHeader guild={guild} />
 			</SidebarHeader>
 
