@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 import type { ApiPublicGuildTextChannel } from "@/lib/http/types";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import type { ActorMention } from "../common/actor";
 import { Channel } from "./channel";
 

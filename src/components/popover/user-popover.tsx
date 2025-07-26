@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import type { ActorMention } from "@/lib/client/common/actor";
 import { PublicUser } from "@/lib/client/entity/public-user";
 import { getHttpClient } from "@/lib/http/client";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { Button } from "../ui/button";
 import { PopoverContent } from "../ui/popover";
 import { UserComponent } from "../user";

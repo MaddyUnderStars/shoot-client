@@ -5,7 +5,7 @@ import {
 	RelationshipType,
 } from "@/lib/client/entity/relationship";
 import { getHttpClient } from "@/lib/http/client";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { UserPopover } from "./popover/user-popover";
 import {
 	DropdownMenu,

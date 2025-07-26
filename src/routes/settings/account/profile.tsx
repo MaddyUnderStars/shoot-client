@@ -85,7 +85,7 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 					</div>
 				</div>
 
-				<div className="p-4 w-md">
+				<div className="p-4 max-w-md">
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(updateProfile)}

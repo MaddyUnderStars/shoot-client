@@ -1,7 +1,7 @@
 import { makeObservable, observable } from "mobx";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPublicAttachment, ApiPublicMessage } from "@/lib/http/types";
-import { type AppStore, getAppStore } from "@/lib/store/AppStore";
+import { type AppStore, getAppStore } from "@/lib/store/app-store";
 import type { ActorMention } from "../common/actor";
 
 export class Message implements ApiPublicMessage {

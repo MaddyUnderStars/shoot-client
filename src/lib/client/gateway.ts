@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
 import { createLogger } from "../log";
 import { setLogin } from "../storage";
-import { getAppStore } from "../store/AppStore";
+import { getAppStore } from "../store/app-store";
 import { CLOSE_CODES } from "../utils";
 import type { GATEWAY_EVENT } from "./common/receive";
 import type { GATEWAY_SEND_PAYLOAD } from "./common/send";

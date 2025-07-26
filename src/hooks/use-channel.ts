@@ -1,6 +1,6 @@
 import { useParams } from "@tanstack/react-router";
 import { isActorMention } from "@/lib/client/common/actor";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { useGuild } from "./use-guild";
 
 export const useChannel = () => {

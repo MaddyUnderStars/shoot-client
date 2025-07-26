@@ -1,7 +1,7 @@
 import EventEmitter from "eventemitter3";
-import { computed } from "mobx";
+import { autorun, computed } from "mobx";
 import { createLogger } from "../log";
-import { getAppStore } from "../store/AppStore";
+import { getAppStore } from "../store/app-store";
 import type { ActorMention } from "./common/actor";
 import type { WEBRTC_GATEWAY_EVENT } from "./common/receive";
 import type { WEBRTC_SEND_PAYLOAD } from "./common/send";
@@ -46,17 +46,23 @@ export class ShootWebrtcClient extends EventEmitter {
 		this._channel = channel;
 		this._endpoint = endpoint;
 		this._token = token;
+
+		autorun(() => {
+			this.audioElement.volume = this.app.settings.voice.output_volume;
+		});
 	}
 
 	public login = async () => {
-		this.userMedia = await navigator.mediaDevices.getUserMedia({
+		const media = await navigator.mediaDevices.getUserMedia({
 			audio: {
-				autoGainControl: true,
-				echoCancellation: false,
-				noiseSuppression: false,
+				autoGainControl: this.app.settings.voice.agc,
+				echoCancellation: this.app.settings.voice.echo,
+				noiseSuppression: this.app.settings.voice.noise,
 				channelCount: 2,
 			},
 		});
+
+		this.userMedia = await this.addGainControl(media);
 
 		this.socket = new WebSocket(this._endpoint);
 
@@ -64,6 +70,24 @@ export class ShootWebrtcClient extends EventEmitter {
 		this.socket.onmessage = this.onMessage;
 		this.socket.onerror = this.onError;
 		this.socket.onclose = this.onClose;
+	};
+
+	private addGainControl = async (media: MediaStream) => {
+		const context = new AudioContext();
+		const mediaStreamSource = context.createMediaStreamSource(media);
+		const mediaStreamDest = context.createMediaStreamDestination();
+
+		const gainNode = context.createGain();
+
+		autorun(() => {
+			const vol = this.app.settings.voice.input_volume;
+			gainNode.gain.value = Math.max(0, Math.min(100, vol));
+		});
+
+		mediaStreamSource.connect(gainNode);
+		gainNode.connect(mediaStreamDest);
+
+		return mediaStreamDest.stream;
 	};
 
 	private doOffer = async () => {
@@ -75,7 +99,7 @@ export class ShootWebrtcClient extends EventEmitter {
 				? candidates.push(event.candidate)
 				: this.identify(candidates);
 
-		this.peerConnection.ontrack = (event) => {
+		this.peerConnection.ontrack = async (event) => {
 			this.remoteMedia = event.streams[0];
 
 			if (!this.remoteMedia) return;

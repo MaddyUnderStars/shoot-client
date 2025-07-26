@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Phone, Settings2, Signal } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { GuildChannel } from "@/lib/client/entity/guild-channel";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { UserPopover } from "./popover/user-popover";
 import { Popover, PopoverTrigger } from "./ui/popover";
 import {

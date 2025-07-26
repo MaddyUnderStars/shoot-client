@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { BowArrow, Hash, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useGuild } from "@/hooks/use-guild";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { ChannelListHeader } from "./channel-list-header";
 import { CreateGuildModal } from "./modal/create-guild-modal";
 import { NavUser } from "./nav-user";

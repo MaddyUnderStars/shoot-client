@@ -13,6 +13,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsThemeIndexRouteImport } from './routes/settings/theme/index'
+import { Route as SettingsVoiceDevicesRouteImport } from './routes/settings/voice/devices'
 import { Route as SettingsAccountProfileRouteImport } from './routes/settings/account/profile'
 import { Route as AuthenticatedChannelAtmeRouteImport } from './routes/_authenticated/channel/@me'
 import { Route as AuthenticatedChannelChannelIdRouteImport } from './routes/_authenticated/channel/$channelId'
@@ -36,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
 const SettingsThemeIndexRoute = SettingsThemeIndexRouteImport.update({
   id: '/settings/theme/',
   path: '/settings/theme/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsVoiceDevicesRoute = SettingsVoiceDevicesRouteImport.update({
+  id: '/settings/voice/devices',
+  path: '/settings/voice/devices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsAccountProfileRoute = SettingsAccountProfileRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/channel/@me': typeof AuthenticatedChannelAtmeRoute
   '/settings/account/profile': typeof SettingsAccountProfileRoute
+  '/settings/voice/devices': typeof SettingsVoiceDevicesRoute
   '/settings/theme': typeof SettingsThemeIndexRoute
   '/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/channel/@me': typeof AuthenticatedChannelAtmeRoute
   '/settings/account/profile': typeof SettingsAccountProfileRoute
+  '/settings/voice/devices': typeof SettingsVoiceDevicesRoute
   '/settings/theme': typeof SettingsThemeIndexRoute
   '/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/_authenticated/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/_authenticated/channel/@me': typeof AuthenticatedChannelAtmeRoute
   '/settings/account/profile': typeof SettingsAccountProfileRoute
+  '/settings/voice/devices': typeof SettingsVoiceDevicesRoute
   '/settings/theme/': typeof SettingsThemeIndexRoute
   '/_authenticated/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/channel/$channelId'
     | '/channel/@me'
     | '/settings/account/profile'
+    | '/settings/voice/devices'
     | '/settings/theme'
     | '/channel/$guildId/{-$channelId}'
   fileRoutesByTo: FileRoutesByTo
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | '/channel/$channelId'
     | '/channel/@me'
     | '/settings/account/profile'
+    | '/settings/voice/devices'
     | '/settings/theme'
     | '/channel/$guildId/{-$channelId}'
   id:
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/_authenticated/channel/$channelId'
     | '/_authenticated/channel/@me'
     | '/settings/account/profile'
+    | '/settings/voice/devices'
     | '/settings/theme/'
     | '/_authenticated/channel/$guildId/{-$channelId}'
   fileRoutesById: FileRoutesById
@@ -133,6 +145,7 @@ export interface RootRouteChildren {
   AuthenticatedChannelChannelIdRoute: typeof AuthenticatedChannelChannelIdRoute
   AuthenticatedChannelAtmeRoute: typeof AuthenticatedChannelAtmeRoute
   SettingsAccountProfileRoute: typeof SettingsAccountProfileRoute
+  SettingsVoiceDevicesRoute: typeof SettingsVoiceDevicesRoute
   SettingsThemeIndexRoute: typeof SettingsThemeIndexRoute
   AuthenticatedChannelGuildIdChar123ChannelIdChar125Route: typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/theme'
       fullPath: '/settings/theme'
       preLoaderRoute: typeof SettingsThemeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/voice/devices': {
+      id: '/settings/voice/devices'
+      path: '/settings/voice/devices'
+      fullPath: '/settings/voice/devices'
+      preLoaderRoute: typeof SettingsVoiceDevicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings/account/profile': {
@@ -205,6 +225,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedChannelChannelIdRoute: AuthenticatedChannelChannelIdRoute,
   AuthenticatedChannelAtmeRoute: AuthenticatedChannelAtmeRoute,
   SettingsAccountProfileRoute: SettingsAccountProfileRoute,
+  SettingsVoiceDevicesRoute: SettingsVoiceDevicesRoute,
   SettingsThemeIndexRoute: SettingsThemeIndexRoute,
   AuthenticatedChannelGuildIdChar123ChannelIdChar125Route:
     AuthenticatedChannelGuildIdChar123ChannelIdChar125Route,

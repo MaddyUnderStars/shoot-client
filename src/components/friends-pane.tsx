@@ -6,7 +6,7 @@ import z from "zod";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ActorMention } from "@/lib/client/common/actor";
 import { getHttpClient } from "@/lib/http/client";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { RelationshipComponent } from "./relationship";
 import { Button } from "./ui/button";
 import {

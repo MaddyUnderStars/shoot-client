@@ -2,7 +2,7 @@ import { Hash, PanelLeftDashed, PhoneCall } from "lucide-react";
 import { useChannel } from "@/hooks/use-channel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getHttpClient } from "@/lib/http/client";
-import { getAppStore } from "@/lib/store/AppStore";
+import { getAppStore } from "@/lib/store/app-store";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
 

@@ -5,6 +5,7 @@ import type { Guild } from "../client/entity/guild";
 import type { PrivateUser } from "../client/entity/private-user";
 import type { Relationship } from "../client/entity/relationship";
 import { ShootWebrtcClient } from "../client/webrtc";
+import { SettingsStore } from "./settings-store";
 
 export class AppStore {
 	@observable user: PrivateUser | null = null;
@@ -16,6 +17,8 @@ export class AppStore {
 	@observable relationships: Relationship[] = [];
 
 	@observable webrtc?: ShootWebrtcClient = undefined;
+
+	@observable settings: SettingsStore = new SettingsStore();
 
 	@action
 	public startWebrtc = (

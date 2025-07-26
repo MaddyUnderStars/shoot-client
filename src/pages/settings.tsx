@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Palette, UserPen, XIcon } from "lucide-react";
+import { Mic, Palette, UserPen, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Sidebar,
@@ -71,6 +71,18 @@ export const SettingsSidebar = () => {
 								>
 									<Palette />
 									<span>Look and Feel</span>
+								</Link>
+							</SidebarMenuButton>
+						</SidebarMenu>
+
+						<SidebarMenu>
+							<SidebarMenuButton asChild>
+								<Link
+									to="/settings/voice/devices"
+									onClick={() => sidebar.setOpenMobile(false)}
+								>
+									<Mic />
+									<span>Voice</span>
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenu>
