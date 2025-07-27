@@ -16,10 +16,10 @@ const DEFAULT_INSTANCE =
 
 const LOCK_INSTANCE = !!import.meta.env.VITE_LOCK_INSTANCE;
 
-// biome-ignore lint/suspicious/noExplicitAny: TODO
 export const InstanceValidatorField = ({
 	showInviteField,
 	form,
+	// biome-ignore lint/suspicious/noExplicitAny: TODO
 }: { showInviteField: boolean } & any) => {
 	const [isValidatingInstance, setValidatingInstance] = useState(false);
 	const [nodeinfo, setNodeinfo] = useState<

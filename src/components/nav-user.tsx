@@ -3,6 +3,7 @@ import { Settings2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { getAppStore } from "@/lib/store/app-store";
 import { UserPopover } from "./popover/user-popover";
+import { Button } from "./ui/button";
 import { Popover, PopoverTrigger } from "./ui/popover";
 import {
 	SidebarMenu,
@@ -41,10 +42,15 @@ export const NavUser = observer(() => {
 
 				<SidebarMenuSub className="m-0">
 					<SidebarMenuSubItem>
-						<SidebarMenuSubButton
-							onClick={() => navigate({ to: "/settings/theme" })}
-						>
-							<Settings2 className="flex items-center justify-center" />
+						<SidebarMenuSubButton asChild>
+							<Button
+								variant="ghost"
+								onClick={() =>
+									navigate({ to: "/settings/theme" })
+								}
+							>
+								<Settings2 className="flex items-center justify-center" />
+							</Button>
 						</SidebarMenuSubButton>
 					</SidebarMenuSubItem>
 				</SidebarMenuSub>

@@ -8,7 +8,6 @@ import { ChannelListHeader } from "./channel-list-header";
 import { CreateGuildModal } from "./modal/create-guild-modal";
 import { NavUser } from "./nav-user";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
 import {
 	Sidebar,
 	SidebarContent,
@@ -37,10 +36,10 @@ const GuildSidebar = observer(() => {
 						<SidebarMenuButton
 							size="lg"
 							asChild
-							className="md:h-8 md:p-0 hover:rounded-sm rounded-lg transition-[border-radius]"
+							className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
 						>
 							<Link to="/channel/@me">
-								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center">
+								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-full items-center justify-center">
 									<BowArrow className="size-4" />
 								</div>
 							</Link>
@@ -51,7 +50,7 @@ const GuildSidebar = observer(() => {
 
 			<SidebarContent>
 				<SidebarGroup>
-					<SidebarGroupContent className="px-1.5 md:px-0">
+					<SidebarGroupContent>
 						{/* render guilds here */}
 
 						{guilds.map((guild) => (
@@ -60,7 +59,7 @@ const GuildSidebar = observer(() => {
 									<SidebarMenuButton
 										size="lg"
 										asChild
-										className="h-8 p-0 hover:rounded-sm rounded-lg transition-[border-radius]"
+										className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
 									>
 										<Link
 											to="/channel/$guildId/{-$channelId}"
@@ -86,27 +85,22 @@ const GuildSidebar = observer(() => {
 				</SidebarGroup>
 
 				<SidebarGroup>
-					<SidebarGroupContent className="px-1.5 md:px-0">
+					<SidebarGroupContent>
 						{/* Extra buttons that are not guilds */}
 
 						{/* add guild button */}
 						<SidebarMenu>
-							<SidebarMenuButton
-								size="lg"
-								asChild
-								className="h-8 p-0 hover:rounded-sm rounded-lg transition-[border-radius]"
+							{/* not using shadcn button here because it adds too much styling */}
+							<button
+								type="button"
+								onClick={() => {
+									sidebar.setOpenMobile(false);
+									NiceModal.show(CreateGuildModal);
+								}}
+								className="h-8 text-sm p-0 hover:rounded-sm rounded-lg transition-[border-radius] flex items-center justify-center bg-sidebar-primary text-sidebar-primary-foreground aspect-square size-full"
 							>
-								<Button
-									type="button"
-									onClick={() => {
-										sidebar.setOpenMobile(false);
-										NiceModal.show(CreateGuildModal);
-									}}
-									className="text-card-foreground bg-muted dark:text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center"
-								>
-									<Plus className="size-4" />
-								</Button>
-							</SidebarMenuButton>
+								<Plus className="size-4" />
+							</button>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
