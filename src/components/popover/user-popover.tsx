@@ -58,7 +58,7 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 	if (error || !apiUser)
 		return (
 			<PopoverContent className="p-0">
-				<div className="p-4 bg-purple-900 flex items-center gap-2">
+				<div className="p-4 text-white bg-purple-900 flex items-center gap-2">
 					{user_id}
 				</div>
 
@@ -72,7 +72,7 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 
 	return (
 		<PopoverContent className="p-0">
-			<div className="p-4 bg-purple-900 flex items-center gap-2">
+			<div className="p-4 text-white bg-purple-900 flex items-center gap-2">
 				<UserComponent user={user} />
 			</div>
 
