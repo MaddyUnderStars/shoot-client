@@ -55,7 +55,18 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 		});
 	};
 
-	if (error || !apiUser) return <p>Error</p>;
+	if (error || !apiUser)
+		return (
+			<PopoverContent className="p-0">
+				<div className="p-4 bg-purple-900 flex items-center gap-2">
+					{user_id}
+				</div>
+
+				<div className="p-4 flex flex-col gap-2">
+					<span>Could not load user profile.</span>
+				</div>
+			</PopoverContent>
+		);
 
 	const user = new PublicUser(apiUser);
 
