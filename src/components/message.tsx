@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import type { Message } from "@/lib/client/entity/message";
+import { EmbedComponent } from "./embed";
 import { FilePreview } from "./file-preview";
 import { UserPopover } from "./popover/user-popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -17,7 +18,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 		<div className="flex justify-between items-center me-5">
 			<div className="flex gap-3 p-2 content-visibility-auto">
 				<Popover>
-					<PopoverTrigger>
+					<PopoverTrigger className="flex items-start mt-2">
 						<Avatar className="cursor-pointer">
 							<AvatarImage
 								src={
@@ -35,9 +36,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 				<div>
 					<Popover>
 						<PopoverTrigger>
-							<span className="cursor-pointer">
-								{message.author_id}
-							</span>
+							<span className="cursor-pointer">{message.author_id}</span>
 						</PopoverTrigger>
 						<UserPopover user={message.author_id} />
 					</Popover>
@@ -45,12 +44,16 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 						{message.content}
 
 						{message.files?.map((file) => (
-							<FilePreview
-								file={file}
-								channel={message.channel}
-								key={file.hash}
-							/>
+							<FilePreview file={file} channel={message.channel} key={file.hash} />
 						))}
+
+						{!message.embeds ? null : (
+							<div className="mt-2">
+								{message.embeds?.map((embed) => (
+									<EmbedComponent embed={embed} key={embed.target} />
+								))}
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
@@ -61,10 +64,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent>
-					<DropdownMenuItem
-						variant="destructive"
-						onClick={() => message.delete()}
-					>
+					<DropdownMenuItem variant="destructive" onClick={() => message.delete()}>
 						Delete
 					</DropdownMenuItem>
 				</DropdownMenuContent>

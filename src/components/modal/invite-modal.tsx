@@ -10,14 +10,7 @@ import { ModalCloseButton } from "../modal-close-btn";
 import { ModalContainer } from "../modal-container";
 import { Button } from "../ui/button";
 import { CardAction, CardContent, CardHeader, CardTitle } from "../ui/card";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
@@ -35,29 +28,24 @@ export const CreateInviteModal = NiceModal.create(
 
 		const { $fetch } = getHttpClient();
 
-		const createInvite = async (
-			input: z.infer<typeof CreateInviteSchema>,
-		) => {
+		const createInvite = async (input: z.infer<typeof CreateInviteSchema>) => {
 			form.clearErrors();
 
-			const { data, error } = await $fetch.POST(
-				"/guild/{guild_id}/invite",
-				{
-					params: {
-						path: {
-							guild_id: guild.mention,
-						},
-					},
-					body: {
-						expiry: input.expiry
-							? new Date(input.expiry).toISOString()
-							: undefined,
+			const { data, error } = await $fetch.POST("/guild/{guild_id}/invite", {
+				params: {
+					path: {
+						guild_id: guild.mention,
 					},
 				},
-			);
+				body: {
+					expiry: input.expiry ? new Date(input.expiry).toISOString() : undefined,
+				},
+			});
 
 			if (error) {
-				return form.setError("expiry", { message: error.message });
+				return form.setError("expiry", {
+					message: error.message,
+				});
 			}
 
 			setInviteCode(data.code);
@@ -72,9 +60,7 @@ export const CreateInviteModal = NiceModal.create(
 		return (
 			<ModalContainer>
 				<CardHeader>
-					<CardTitle>
-						Invite to {channel ? channel.name : guild.name}
-					</CardTitle>
+					<CardTitle>Invite to {channel ? channel.name : guild.name}</CardTitle>
 
 					<CardAction>
 						<ModalCloseButton />
@@ -107,11 +93,7 @@ export const CreateInviteModal = NiceModal.create(
 								type="text"
 								readOnly
 								placeholder="Invite code here"
-								value={
-									inviteCode
-										? `${inviteCode}@${guild.domain}`
-										: "Invite code"
-								}
+								value={inviteCode ? `${inviteCode}@${guild.domain}` : "Invite code"}
 							/>
 							<Button type="button" variant="outline">
 								Copy

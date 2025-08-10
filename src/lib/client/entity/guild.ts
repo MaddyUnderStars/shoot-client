@@ -6,7 +6,8 @@ import { GuildChannel } from "./guild-channel";
 import { Role } from "./role";
 
 export class Guild extends Actor implements ApiPublicGuild {
-	@observable channels: GuildChannel[];
+	@observable
+	channels: GuildChannel[];
 
 	@observable roles: Role[];
 
@@ -28,8 +29,7 @@ export class Guild extends Actor implements ApiPublicGuild {
 	constructor(opts: ApiPublicGuild) {
 		super(opts);
 
-		this.channels =
-			opts.channels?.map((x) => new GuildChannel(x, opts.mention)) ?? [];
+		this.channels = opts.channels?.map((x) => new GuildChannel(x, opts.mention)) ?? [];
 		this.roles = opts.roles?.map((x) => new Role(x)) ?? [];
 
 		makeObservable(this);

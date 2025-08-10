@@ -9,7 +9,12 @@ type AttachmentSchema = Exclude<
 	undefined
 >["content"]["application/json"][0];
 
-type MessageSendOptions = string | { content?: string; files?: File[] };
+type MessageSendOptions =
+	| string
+	| {
+			content?: string;
+			files?: File[];
+	  };
 
 export class Channel extends Actor implements ApiPublicChannel {
 	public sendMessage = async (opts: MessageSendOptions) => {
@@ -25,17 +30,14 @@ export class Channel extends Actor implements ApiPublicChannel {
 						: [],
 		};
 
-		const { data, error } = await $fetch.POST(
-			"/channel/{channel_id}/messages/",
-			{
-				body: normalised,
-				params: {
-					path: {
-						channel_id: this.mention,
-					},
+		const { data, error } = await $fetch.POST("/channel/{channel_id}/messages/", {
+			body: normalised,
+			params: {
+				path: {
+					channel_id: this.mention,
 				},
 			},
-		);
+		});
 
 		if (error) throw new Error(error.message);
 
@@ -45,45 +47,48 @@ export class Channel extends Actor implements ApiPublicChannel {
 	private uploadAttachments = async (files: File[]) => {
 		const { $fetch } = getHttpClient();
 
-		const filesMeta: Array<AttachmentSchema & { file: File }> =
-			await Promise.all(
-				files.map(async (file, i) => ({
-					id: `${i}`,
-					name: file.name,
-					size: file.size,
-					mime: file.type,
-					md5: await getFileMd5(file),
+		const filesMeta: Array<
+			AttachmentSchema & {
+				file: File;
+			}
+		> = await Promise.all(
+			files.map(async (file, i) => ({
+				id: `${i}`,
+				name: file.name,
+				size: file.size,
+				mime: file.type,
+				md5: await getFileMd5(file),
 
-					...(await getFileDimensions(file)),
+				...(await getFileDimensions(file)),
 
-					file,
-				})),
-			);
+				file,
+			})),
+		);
 
-		const { data, error } = await $fetch.POST(
-			"/channel/{channel_id}/attachments/",
-			{
-				body: filesMeta.map((x) => ({ ...x, file: undefined })),
-				params: {
-					path: {
-						channel_id: this.mention,
-					},
+		const { data, error } = await $fetch.POST("/channel/{channel_id}/attachments/", {
+			body: filesMeta.map((x) => ({
+				...x,
+				file: undefined,
+			})),
+			params: {
+				path: {
+					channel_id: this.mention,
 				},
 			},
-		);
+		});
 
 		if (error) throw new Error(error.message);
 
-		const ret: { name: string; hash: string }[] = [];
+		const ret: {
+			name: string;
+			hash: string;
+		}[] = [];
 
 		// now, find the original attachment metadata
 		// and upload the associated file to returned endpoint
 		for (const signed of data) {
 			const file = filesMeta.find((x) => x.id === signed.id);
-			if (!file)
-				throw new Error(
-					"server gave us ID for attachment we didn't send?",
-				);
+			if (!file) throw new Error("server gave us ID for attachment we didn't send?");
 
 			const headers = {
 				"Content-Type": file.mime,

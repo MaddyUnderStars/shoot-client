@@ -2,10 +2,7 @@ import { useModal } from "@ebay/nice-modal-react";
 import { cn } from "@/lib/utils";
 import { Card } from "./ui/card";
 
-export const ModalContainer = ({
-	children,
-	...props
-}: React.ComponentProps<typeof Card>) => {
+export const ModalContainer = ({ children, ...props }: React.ComponentProps<typeof Card>) => {
 	const modal = useModal();
 
 	return (

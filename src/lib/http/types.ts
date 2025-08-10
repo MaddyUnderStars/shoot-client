@@ -5,10 +5,11 @@ export type ApiPublicUser = components["schemas"]["PublicUser"];
 
 export type ApiPrivateUser = components["schemas"]["PrivateUser"];
 
-export type ApiPrivateRelationship =
-	components["schemas"]["PrivateRelationship"];
+export type ApiPrivateRelationship = components["schemas"]["PrivateRelationship"];
 
 export type ApiPublicAttachment = components["schemas"]["PublicAttachment"];
+
+export type ApiPublicEmbed = components["schemas"]["PublicEmbed"];
 
 export type ApiPublicChannel = components["schemas"]["PublicChannel"];
 
@@ -16,8 +17,7 @@ export type ApiPublicDmChannel = components["schemas"]["PublicDmChannel"];
 
 export type ApiPublicGuild = components["schemas"]["PublicGuild"];
 
-export type ApiPublicGuildTextChannel =
-	components["schemas"]["PublicGuildTextChannel"];
+export type ApiPublicGuildTextChannel = components["schemas"]["PublicGuildTextChannel"];
 
 export type ApiPublicMessage = components["schemas"]["PublicMessage"];
 

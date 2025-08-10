@@ -11,8 +11,7 @@ export const getFileMd5 = (file: File) => {
 
 	const loadNext = () => {
 		const start = currentChunk * chunkSize;
-		const end =
-			start + chunkSize >= file.size ? file.size : start + chunkSize;
+		const end = start + chunkSize >= file.size ? file.size : start + chunkSize;
 
 		reader.readAsArrayBuffer(file.slice(start, end));
 	};
@@ -38,12 +37,18 @@ export const getFileMd5 = (file: File) => {
 
 export const getFileDimensions = (
 	file: File,
-): Promise<{ width?: number; height?: number }> =>
+): Promise<{
+	width?: number;
+	height?: number;
+}> =>
 	new Promise((resolve) => {
 		if (file.type.startsWith("image")) {
 			const img = new Image();
 			img.onload = () => {
-				const ret = { width: img.width, height: img.height };
+				const ret = {
+					width: img.width,
+					height: img.height,
+				};
 				URL.revokeObjectURL(img.src);
 				resolve(ret);
 			};

@@ -9,10 +9,7 @@ export const getHttpClient = () => {
 	if (!login) throw new Error("Not logged in");
 
 	const $fetch = createFetchClient<paths>({
-		baseUrl:
-			typeof login.instance === "string"
-				? login.instance
-				: login.instance.http.href,
+		baseUrl: typeof login.instance === "string" ? login.instance : login.instance.http.href,
 		headers: {
 			Authorization: login.token,
 		},

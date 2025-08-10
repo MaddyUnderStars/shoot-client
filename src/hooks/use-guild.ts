@@ -9,8 +9,7 @@ export const useGuild = () => {
 
 	if (!guildId) return undefined;
 
-	if (!isActorMention(guildId))
-		throw new Error("Guild ID is not valid mention");
+	if (!isActorMention(guildId)) throw new Error("Guild ID is not valid mention");
 
 	return getAppStore().getGuild(guildId);
 };

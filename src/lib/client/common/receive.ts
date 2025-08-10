@@ -201,7 +201,12 @@ export type GATEWAY_EVENT =
 export type WEBRTC_READY = {
 	t: "READY";
 	d: {
-		answer: { jsep: { type: "answer"; sdp: string } };
+		answer: {
+			jsep: {
+				type: "answer";
+				sdp: string;
+			};
+		};
 	};
 };
 
@@ -219,7 +224,4 @@ export type WEBRTC_PEER_LEFT = {
 	};
 };
 
-export type WEBRTC_GATEWAY_EVENT =
-	| WEBRTC_READY
-	| WEBRTC_PEER_JOINED
-	| WEBRTC_PEER_LEFT;
+export type WEBRTC_GATEWAY_EVENT = WEBRTC_READY | WEBRTC_PEER_JOINED | WEBRTC_PEER_LEFT;

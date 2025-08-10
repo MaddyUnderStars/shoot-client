@@ -35,16 +35,12 @@ export class ShootGatewayClient extends EventEmitter {
 		super();
 
 		const http = new URL(
-			typeof opts.instance === "string"
-				? opts.instance
-				: opts.instance.http,
+			typeof opts.instance === "string" ? opts.instance : opts.instance.http,
 		);
 		// http.protocol = "https";
 
 		const gw = new URL(
-			typeof opts.instance === "string"
-				? opts.instance
-				: opts.instance.gateway,
+			typeof opts.instance === "string" ? opts.instance : opts.instance.gateway,
 		);
 		gw.protocol = http.protocol === "http:" ? "ws" : "wss";
 
@@ -86,7 +82,10 @@ export class ShootGatewayClient extends EventEmitter {
 		const jitter = () => Math.round(Math.random() * 1900);
 
 		const heartbeat = () => {
-			this.send({ t: "heartbeat", s: this.sequence });
+			this.send({
+				t: "heartbeat",
+				s: this.sequence,
+			});
 
 			this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter());
 		};
@@ -100,7 +99,10 @@ export class ShootGatewayClient extends EventEmitter {
 		clearTimeout(this.reconnectTimeout);
 		this.reconnectTimeout = undefined;
 
-		this.send({ t: "identify", token: this.token });
+		this.send({
+			t: "identify",
+			token: this.token,
+		});
 	};
 
 	private onMessage = ({ data }: MessageEvent) => {
@@ -120,15 +122,11 @@ export class ShootGatewayClient extends EventEmitter {
 
 				app.setPrivateUser(user);
 
-				app.setDmChannels(
-					parsed.d.channels.map((x) => new DmChannel(x)),
-				);
+				app.setDmChannels(parsed.d.channels.map((x) => new DmChannel(x)));
 
 				app.setGuilds(parsed.d.guilds.map((x) => new Guild(x)));
 
-				app.setRelationships(
-					parsed.d.relationships.map((x) => new Relationship(x)),
-				);
+				app.setRelationships(parsed.d.relationships.map((x) => new Relationship(x)));
 				break;
 			}
 			case "CHANNEL_CREATE": {
@@ -141,9 +139,7 @@ export class ShootGatewayClient extends EventEmitter {
 						break;
 					}
 
-					guild.addChannel(
-						new GuildChannel(rawChannel, rawChannel.guild),
-					);
+					guild.addChannel(new GuildChannel(rawChannel, rawChannel.guild));
 				} else if ("recipients" in rawChannel) {
 					app.addDmChannel(new DmChannel(rawChannel));
 				} else {
@@ -165,9 +161,7 @@ export class ShootGatewayClient extends EventEmitter {
 			case "RELATIONSHIP_DELETE": {
 				const rel = parsed.d.user;
 
-				app.relationships = app.relationships.filter(
-					(x) => x.user.mention !== rel,
-				);
+				app.relationships = app.relationships.filter((x) => x.user.mention !== rel);
 				break;
 			}
 		}
@@ -190,9 +184,7 @@ export class ShootGatewayClient extends EventEmitter {
 
 		if (!this.reconnectTimeout) {
 			this.reconnectTimeout = setTimeout(() => {
-				Log.verbose(
-					`Trying reconnect attempt ${this.reconnectAttempts}`,
-				);
+				Log.verbose(`Trying reconnect attempt ${this.reconnectAttempts}`);
 				this.reconnectAttempts++;
 				this.reconnectTimeout = undefined;
 

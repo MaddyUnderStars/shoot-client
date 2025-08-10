@@ -1,9 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
-import {
-	type Relationship,
-	RelationshipType,
-} from "@/lib/client/entity/relationship";
+import { type Relationship, RelationshipType } from "@/lib/client/entity/relationship";
 import { getHttpClient } from "@/lib/http/client";
 import { getAppStore } from "@/lib/store/app-store";
 import { UserPopover } from "./popover/user-popover";
@@ -21,12 +18,8 @@ export const RelationshipComponent = ({ rel }: { rel: Relationship }) => {
 			<Popover>
 				<PopoverTrigger>
 					<div className="grid flex-1 text-left text-sm leading-right">
-						<span className="truncate font-medium">
-							{rel.user.display_name}
-						</span>
-						<span className="truncate font-xs">
-							@{rel.user.domain}
-						</span>
+						<span className="truncate font-medium">{rel.user.display_name}</span>
+						<span className="truncate font-xs">@{rel.user.domain}</span>
 					</div>
 				</PopoverTrigger>
 				<UserPopover user={rel.user.mention} />
@@ -42,16 +35,13 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 
 	const action = async (type: "unblock" | "block" | "accept" | "remove") => {
 		if (type === "remove") {
-			const { error } = await $fetch.DELETE(
-				"/users/{user_id}/relationship/",
-				{
-					params: {
-						path: {
-							user_id: rel.user.mention,
-						},
+			const { error } = await $fetch.DELETE("/users/{user_id}/relationship/", {
+				params: {
+					path: {
+						user_id: rel.user.mention,
 					},
 				},
-			);
+			});
 
 			// TODO: handle errors
 			if (error) throw new Error(error.message);
@@ -59,16 +49,13 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 		}
 
 		if (type === "accept") {
-			const { error } = await $fetch.POST(
-				"/users/{user_id}/relationship/",
-				{
-					params: {
-						path: {
-							user_id: rel.user.mention,
-						},
+			const { error } = await $fetch.POST("/users/{user_id}/relationship/", {
+				params: {
+					path: {
+						user_id: rel.user.mention,
 					},
 				},
-			);
+			});
 
 			// TODO: handle errors
 			if (error) throw new Error(error.message);
@@ -83,37 +70,35 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 	const openDm = async () => {
 		if (!app.user) return; // hmm
 
-		const existing = app.findDmChannel([
-			app.user.mention,
-			rel.user.mention,
-		]);
+		const existing = app.findDmChannel([app.user.mention, rel.user.mention]);
 		if (existing) {
 			return navigate({
 				to: "/channel/$channelId",
-				params: { channelId: existing.mention },
+				params: {
+					channelId: existing.mention,
+				},
 			});
 		}
 
-		const { data, error } = await $fetch.POST(
-			"/users/{user_id}/channels/",
-			{
-				params: {
-					path: {
-						user_id: rel.user.mention,
-					},
-				},
-				body: {
-					name: `${rel.user.display_name ?? rel.user.name} & ${app.user.display_name ?? app.user.name}`,
+		const { data, error } = await $fetch.POST("/users/{user_id}/channels/", {
+			params: {
+				path: {
+					user_id: rel.user.mention,
 				},
 			},
-		);
+			body: {
+				name: `${rel.user.display_name ?? rel.user.name} & ${app.user.display_name ?? app.user.name}`,
+			},
+		});
 
 		// TODO: better error handling. maybe a toast?
 		if (error) throw new Error(error.message);
 
 		navigate({
 			to: "/channel/$channelId",
-			params: { channelId: data.mention },
+			params: {
+				channelId: data.mention,
+			},
 		});
 	};
 
@@ -127,10 +112,7 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 
 	if (rel.type === RelationshipType.pending)
 		actions.push(
-			<DropdownMenuItem
-				key="friend-action-accept"
-				onClick={() => action("accept")}
-			>
+			<DropdownMenuItem key="friend-action-accept" onClick={() => action("accept")}>
 				Accept
 			</DropdownMenuItem>,
 		);

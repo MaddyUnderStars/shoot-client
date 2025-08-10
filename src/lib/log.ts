@@ -1,9 +1,6 @@
 export const createLogger = (context: string) => {
 	context = context.toUpperCase();
-	const doLog = (
-		level: "error" | "warn" | "log" | "debug",
-		...args: unknown[]
-	) => {
+	const doLog = (level: "error" | "warn" | "log" | "debug", ...args: unknown[]) => {
 		console[level](`[${context}]`, ...args);
 		return args.join(" ");
 	};

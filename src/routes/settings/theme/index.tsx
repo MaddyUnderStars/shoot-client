@@ -37,9 +37,7 @@ function RouteComponent() {
 					<div className="flex gap-2 mt-2">
 						<Button onClick={() => setTheme("light")}>Light</Button>
 						<Button onClick={() => setTheme("dark")}>Dark</Button>
-						<Button onClick={() => setTheme("system")}>
-							System
-						</Button>
+						<Button onClick={() => setTheme("system")}>System</Button>
 					</div>
 				</div>
 			</div>

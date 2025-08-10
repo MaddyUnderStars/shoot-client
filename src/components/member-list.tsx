@@ -9,13 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Popover, PopoverTrigger } from "./ui/popover";
 import { Skeleton } from "./ui/skeleton";
 
-export const MemberList = ({
-	channel,
-	guild,
-}: {
-	channel: Channel;
-	guild?: Guild;
-}) => {
+export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild }) => {
 	const [members, setMembers] = useState<MEMBERS_CHUNK["d"]["items"]>([]);
 
 	useEffect(() => {
@@ -75,15 +69,9 @@ export const MemberList = ({
 									</Avatar>
 
 									<div className="grid flex-1 text-left text-sm leading-right">
-										<span className="truncate font-medium">
-											{x.name}
-										</span>
+										<span className="truncate font-medium">{x.name}</span>
 										<span className="truncate font-xs">
-											@
-											{
-												splitQualifiedMention(x.user_id)
-													.domain
-											}
+											@{splitQualifiedMention(x.user_id).domain}
 										</span>
 									</div>
 								</div>

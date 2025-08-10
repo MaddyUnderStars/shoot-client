@@ -1273,6 +1273,45 @@ export interface components {
 			width?: number | null;
 			height?: number | null;
 		};
+		PublicEmbed: {
+			/** Format: uri */
+			target: string;
+			title?: string;
+			author_name?: string;
+			author_url?: string;
+			provider_name?: string;
+			provider_url?: string;
+			thumbnail_url?: string;
+			thumbnail_width?: number;
+			thumbnail_height?: number;
+		} & (
+			| {
+					/** @enum {string} */
+					type: "link";
+			  }
+			| {
+					/** @enum {string} */
+					type: "photo";
+					/** Format: uri */
+					url: string;
+					width: number;
+					height: number;
+			  }
+			| {
+					/** @enum {string} */
+					type: "video";
+					html: string;
+					width: number;
+					height: number;
+			  }
+			| {
+					/** @enum {string} */
+					type: "rich";
+					html: string;
+					width: number;
+					height: number;
+			  }
+		);
 		PublicMessage: {
 			/** Format: uuid */
 			id: string;
@@ -1282,6 +1321,7 @@ export interface components {
 			author_id: components["schemas"]["ActorMention"];
 			channel_id: components["schemas"]["ActorMention"];
 			files: components["schemas"]["PublicAttachment"][];
+			embeds: components["schemas"]["PublicEmbed"][];
 		};
 		MessageCreateRequest: {
 			content?: string;

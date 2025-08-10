@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 import { getHttpClient } from "@/lib/http/client";
-import type { ApiPublicAttachment, ApiPublicMessage } from "@/lib/http/types";
+import type { ApiPublicAttachment, ApiPublicEmbed, ApiPublicMessage } from "@/lib/http/types";
 import { type AppStore, getAppStore } from "@/lib/store/app-store";
 import type { ActorMention } from "../common/actor";
 
@@ -10,8 +10,12 @@ export class Message implements ApiPublicMessage {
 	@observable published: string;
 	@observable updated: string;
 	@observable author_id: ActorMention;
-	@observable channel_id: ActorMention;
-	@observable files: ApiPublicAttachment[];
+	@observable
+	channel_id: ActorMention;
+	@observable
+	files: ApiPublicAttachment[];
+	@observable
+	embeds: ApiPublicEmbed[];
 
 	private app: AppStore;
 
@@ -29,6 +33,7 @@ export class Message implements ApiPublicMessage {
 		this.author_id = opts.author_id;
 		this.channel_id = opts.channel_id;
 		this.files = opts.files;
+		this.embeds = opts.embeds;
 
 		makeObservable(this);
 	}
@@ -36,17 +41,14 @@ export class Message implements ApiPublicMessage {
 	public delete = async () => {
 		const { $fetch } = getHttpClient();
 
-		const { error } = await $fetch.DELETE(
-			"/channel/{channel_id}/messages/{message_id}/",
-			{
-				params: {
-					path: {
-						message_id: this.id,
-						channel_id: this.channel_id,
-					},
+		const { error } = await $fetch.DELETE("/channel/{channel_id}/messages/{message_id}/", {
+			params: {
+				path: {
+					message_id: this.id,
+					channel_id: this.channel_id,
 				},
 			},
-		);
+		});
 
 		if (error) throw new Error(error.message);
 

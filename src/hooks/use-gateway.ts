@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import type { GATEWAY_EVENT } from "@/lib/client/common/receive";
 import { getGatewayClient } from "@/lib/client/gateway";
 
-type NarrowEvent<A, K> = A extends { t: K } ? A : never;
+type NarrowEvent<A, K> = A extends {
+	t: K;
+}
+	? A
+	: never;
 
 type ListenerType<T extends GATEWAY_EVENT, K extends T["t"]> = (
 	payload: NarrowEvent<T, K>,

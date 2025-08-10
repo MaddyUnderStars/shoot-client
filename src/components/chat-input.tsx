@@ -20,17 +20,16 @@ export const ChatInput = () => {
 		const content = formData.get("content")?.toString();
 		const files = [...attached];
 
-		await channel.sendMessage({ content, files });
+		await channel.sendMessage({
+			content,
+			files,
+		});
 
 		form.reset();
 	};
 
 	return (
-		<form
-			className="p-3"
-			onSubmit={sendMessage}
-			onReset={() => setAttached([])}
-		>
+		<form className="p-3" onSubmit={sendMessage} onReset={() => setAttached([])}>
 			{attached.length ? (
 				<div className="relative p-3 dark:bg-input/30 border flex gap-2 flex-wrap overflow-scroll max-h-65 rounded-t-md border-b-0">
 					<button
@@ -43,10 +42,7 @@ export const ChatInput = () => {
 					</button>
 
 					{attached.map((file) => (
-						<FilePreview
-							file={file}
-							key={`${file.name}${file.type}${file.size}`}
-						/>
+						<FilePreview file={file} key={`${file.name}${file.type}${file.size}`} />
 					))}
 				</div>
 			) : null}

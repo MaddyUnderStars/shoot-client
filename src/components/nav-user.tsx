@@ -46,7 +46,9 @@ export const NavUser = observer(() => {
 							<Button
 								variant="ghost"
 								onClick={() =>
-									navigate({ to: "/settings/theme" })
+									navigate({
+										to: "/settings/theme",
+									})
 								}
 							>
 								<Settings2 className="flex items-center justify-center" />

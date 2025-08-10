@@ -26,10 +26,7 @@ const GuildSidebar = observer(() => {
 	const sidebar = useSidebar();
 
 	return (
-		<Sidebar
-			collapsible="none"
-			className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r"
-		>
+		<Sidebar collapsible="none" className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r">
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
@@ -65,9 +62,7 @@ const GuildSidebar = observer(() => {
 											to="/channel/$guildId/{-$channelId}"
 											params={{
 												guildId: guild.mention,
-												channelId:
-													guild.channels?.[0]
-														?.mention,
+												channelId: guild.channels?.[0]?.mention,
 											}}
 										>
 											<Avatar className="rounded-none">
@@ -141,9 +136,7 @@ const ChannelSidebar = observer(() => {
 												channelId: channel.mention,
 											})}
 											className="flex flex-1 items-center justify-between"
-											onClick={() =>
-												sidebar.setOpenMobile(false)
-											}
+											onClick={() => sidebar.setOpenMobile(false)}
 										>
 											{channel.name}
 											<Hash size={14} />
@@ -163,9 +156,7 @@ const ChannelSidebar = observer(() => {
 	);
 });
 
-export const AppSidebar = ({
-	...props
-}: React.ComponentProps<typeof Sidebar>) => {
+export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
 	return (
 		<Sidebar
 			collapsible="icon"

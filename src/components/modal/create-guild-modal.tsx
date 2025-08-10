@@ -17,14 +17,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../ui/card";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 
 const CreateOrJoinGuildSchema = z.object({
@@ -52,14 +45,18 @@ export const CreateGuildModal = NiceModal.create(() => {
 		});
 
 		if (error) {
-			form.setError("data", { message: error.message });
+			form.setError("data", {
+				message: error.message,
+			});
 			return;
 		}
 
 		modal.remove();
 		await navigate({
 			to: "/channel/$guildId/{-$channelId}",
-			params: { guildId: data.mention },
+			params: {
+				guildId: data.mention,
+			},
 		});
 	};
 
@@ -73,7 +70,9 @@ export const CreateGuildModal = NiceModal.create(() => {
 		});
 
 		if (error) {
-			form.setError("data", { message: error.message });
+			form.setError("data", {
+				message: error.message,
+			});
 			return;
 		}
 
@@ -82,9 +81,7 @@ export const CreateGuildModal = NiceModal.create(() => {
 		modal.remove();
 	};
 
-	const formAction = async ({
-		data,
-	}: z.infer<typeof CreateOrJoinGuildSchema>) => {
+	const formAction = async ({ data }: z.infer<typeof CreateOrJoinGuildSchema>) => {
 		if (mode === "create") return createGuild(data);
 		else return joinGuild(data);
 	};
@@ -109,19 +106,14 @@ export const CreateGuildModal = NiceModal.create(() => {
 				</form> */}
 
 				<Form {...form}>
-					<form
-						id="create-or-join-guild-form"
-						onSubmit={form.handleSubmit(formAction)}
-					>
+					<form id="create-or-join-guild-form" onSubmit={form.handleSubmit(formAction)}>
 						<FormField
 							control={form.control}
 							name="data"
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>
-										{mode === "join"
-											? "Invite Code"
-											: "Title"}
+										{mode === "join" ? "Invite Code" : "Title"}
 									</FormLabel>
 									<FormControl>
 										<Input
@@ -142,19 +134,13 @@ export const CreateGuildModal = NiceModal.create(() => {
 			</CardContent>
 
 			<CardFooter className="gap-2 justify-between">
-				<Button
-					variant="outline"
-					form="create-or-join-guild-form"
-					type="submit"
-				>
+				<Button variant="outline" form="create-or-join-guild-form" type="submit">
 					{mode === "create" ? "Create" : "Join"}
 				</Button>
 
 				<Button
 					variant="outline"
-					onClick={() =>
-						setMode(mode === "create" ? "join" : "create")
-					}
+					onClick={() => setMode(mode === "create" ? "join" : "create")}
 				>
 					{mode === "create" ? "Join" : "Create"} instead?
 				</Button>

@@ -1,10 +1,7 @@
 import { type InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import type {
-	MESSAGE_CREATE,
-	MESSAGE_DELETE,
-} from "@/lib/client/common/receive";
+import type { MESSAGE_CREATE, MESSAGE_DELETE } from "@/lib/client/common/receive";
 import type { DmChannel } from "@/lib/client/entity/dm-channel";
 import type { GuildChannel } from "@/lib/client/entity/guild-channel";
 import { Message } from "@/lib/client/entity/message";
@@ -15,11 +12,7 @@ import { MessageComponent } from "./message";
 
 const API_PAGE_LIMIT = 50;
 
-export const ChatHistory = ({
-	channel,
-}: {
-	channel: DmChannel | GuildChannel;
-}) => {
+export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) => {
 	const client = useQueryClient();
 
 	const { $api } = getHttpClient();
@@ -35,23 +28,21 @@ export const ChatHistory = ({
 		},
 	};
 
-	const { data, fetchNextPage, hasNextPage, isFetching } =
-		$api.useInfiniteQuery(
-			"get",
-			"/channel/{channel_id}/messages/",
-			fetchOptions,
-			{
-				getNextPageParam: (lastPage: ApiPublicMessage[]) =>
-					lastPage[lastPage.length - 1]?.id,
-				initialPageParam: "",
-				pageParamName: "before",
-				// select: (data: InfiniteData<ApiPublicMessage[]>) => ({
-				// 	pages: [...data.pages].reverse(),
-				// 	pageParams: [...data.pageParams].reverse(),
-				// }),
-			},
-			client,
-		);
+	const { data, fetchNextPage, hasNextPage, isFetching } = $api.useInfiniteQuery(
+		"get",
+		"/channel/{channel_id}/messages/",
+		fetchOptions,
+		{
+			getNextPageParam: (lastPage: ApiPublicMessage[]) => lastPage[lastPage.length - 1]?.id,
+			initialPageParam: "",
+			pageParamName: "before",
+			// select: (data: InfiniteData<ApiPublicMessage[]>) => ({
+			// 	pages: [...data.pages].reverse(),
+			// 	pageParams: [...data.pageParams].reverse(),
+			// }),
+		},
+		client,
+	);
 	const queryKey = ["get", "/channel/{channel_id}/messages/", fetchOptions];
 
 	useEffect(() => {
@@ -62,31 +53,25 @@ export const ChatHistory = ({
 
 			const msg = new Message(event.d.message);
 
-			client.setQueryData(
-				queryKey,
-				(data: InfiniteData<ApiPublicMessage[]>) => {
-					return {
-						pages: [[msg], ...data.pages],
-						pageParams: data.pageParams,
-					};
-				},
-			);
+			client.setQueryData(queryKey, (data: InfiniteData<ApiPublicMessage[]>) => {
+				return {
+					pages: [[msg], ...data.pages],
+					pageParams: data.pageParams,
+				};
+			});
 		};
 
 		const deleteListener = (event: MESSAGE_DELETE) => {
-			client.setQueryData(
-				queryKey,
-				(data: InfiniteData<ApiPublicMessage[]>) => {
-					const ret = data.pages.map((page) =>
-						page.filter((msg) => msg.id !== event.d.message_id),
-					);
+			client.setQueryData(queryKey, (data: InfiniteData<ApiPublicMessage[]>) => {
+				const ret = data.pages.map((page) =>
+					page.filter((msg) => msg.id !== event.d.message_id),
+				);
 
-					return {
-						pages: ret,
-						pageParams: data.pageParams,
-					};
-				},
-			);
+				return {
+					pages: ret,
+					pageParams: data.pageParams,
+				};
+			});
 		};
 
 		gw.addListener("MESSAGE_CREATE", createListener);
@@ -99,17 +84,17 @@ export const ChatHistory = ({
 	});
 
 	return (
-		<div
-			id="chat-history"
-			className="overflow-auto flex flex-col-reverse flex-1"
-		>
+		<div id="chat-history" className="overflow-auto flex flex-col-reverse flex-1">
 			<InfiniteScroll
 				dataLength={(data?.pages?.length ?? 0) * API_PAGE_LIMIT}
 				next={() => hasNextPage && !isFetching && fetchNextPage()}
 				hasMore={hasNextPage}
 				loader={<h4>Loading...</h4>}
 				endMessage={<EndMessage />}
-				style={{ display: "flex", flexDirection: "column-reverse" }}
+				style={{
+					display: "flex",
+					flexDirection: "column-reverse",
+				}}
 				inverse={true}
 				scrollableTarget="chat-history"
 			>
@@ -117,12 +102,7 @@ export const ChatHistory = ({
 					page.map((raw) => {
 						const message = new Message(raw);
 
-						return (
-							<MessageComponent
-								message={message}
-								key={message.id}
-							/>
-						);
+						return <MessageComponent message={message} key={message.id} />;
 					}),
 				)}
 			</InfiniteScroll>
@@ -134,9 +114,7 @@ const EndMessage = () => {
 	return (
 		<div className="p-14 flex flex-col items-center">
 			<h1 className="font-bold">That's the end!</h1>
-			<p>
-				You can send messages to this channel using the text box below.
-			</p>
+			<p>You can send messages to this channel using the text box below.</p>
 		</div>
 	);
 };

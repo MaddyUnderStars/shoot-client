@@ -66,7 +66,10 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 			},
 		});
 
-		if (error) return form.setError("name", { message: error.message });
+		if (error)
+			return form.setError("name", {
+				message: error.message,
+			});
 	};
 
 	return (
@@ -87,10 +90,7 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 
 				<div className="p-4 max-w-md">
 					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(updateProfile)}
-							className="space-y-4"
-						>
+						<form onSubmit={form.handleSubmit(updateProfile)} className="space-y-4">
 							<FormField
 								control={form.control}
 								name="name"
@@ -102,10 +102,7 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 											You cannot change your username.
 										</FormDescription>
 										<FormControl>
-											<Input
-												{...field}
-												autoComplete="off"
-											/>
+											<Input {...field} autoComplete="off" />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -133,9 +130,8 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 									<FormItem>
 										<FormLabel>Display Name</FormLabel>
 										<FormDescription>
-											This name will overwrite your
-											username for display purposes. It
-											will not change your handle
+											This name will overwrite your username for display
+											purposes. It will not change your handle
 										</FormDescription>
 										<FormControl>
 											<Input {...field} />
@@ -151,9 +147,7 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Summary</FormLabel>
-										<FormDescription>
-											Your profile summary/bio
-										</FormDescription>
+										<FormDescription>Your profile summary/bio</FormDescription>
 										<FormControl>
 											<Input {...field} />
 										</FormControl>

@@ -24,10 +24,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 		<div className="flex p-2 h-full w-full items-center justify-between">
 			<div className="text-foreground text-base font-medium flex-1 flex items-center">
 				{isMobile ? (
-					<Button
-						variant="ghost"
-						onClick={() => sidebar.setOpenMobile(false)}
-					>
+					<Button variant="ghost" onClick={() => sidebar.setOpenMobile(false)}>
 						<PanelLeftClose />
 					</Button>
 				) : null}
@@ -65,10 +62,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 								>
 									Create Channel
 								</DropdownMenuItem>
-								<DropdownMenuItem
-									disabled
-									variant="destructive"
-								>
+								<DropdownMenuItem disabled variant="destructive">
 									Delete Guild
 								</DropdownMenuItem>
 							</DropdownMenuGroup>

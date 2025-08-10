@@ -8,24 +8,25 @@ import { ShootWebrtcClient } from "../client/webrtc";
 import { SettingsStore } from "./settings-store";
 
 export class AppStore {
-	@observable user: PrivateUser | null = null;
+	@observable
+	user: PrivateUser | null = null;
 
-	@observable dmChannels: DmChannel[] = [];
+	@observable
+	dmChannels: DmChannel[] = [];
 
 	@observable guilds: Guild[] = [];
 
-	@observable relationships: Relationship[] = [];
+	@observable
+	relationships: Relationship[] = [];
 
-	@observable webrtc?: ShootWebrtcClient = undefined;
+	@observable
+	webrtc?: ShootWebrtcClient = undefined;
 
-	@observable settings: SettingsStore = new SettingsStore();
+	@observable
+	settings: SettingsStore = new SettingsStore();
 
 	@action
-	public startWebrtc = (
-		channel: ActorMention,
-		endpoint: URL,
-		token: string,
-	) => {
+	public startWebrtc = (channel: ActorMention, endpoint: URL, token: string) => {
 		if (this.webrtc) {
 			this.webrtc.leave();
 		}
@@ -53,10 +54,7 @@ export class AppStore {
 		return this.dmChannels.find((x) => {
 			const arr = [x.owner, ...x.recipients];
 
-			return (
-				arr.length === users.length &&
-				arr.every((u) => users.includes(u))
-			);
+			return arr.length === users.length && arr.every((u) => users.includes(u));
 		});
 	};
 

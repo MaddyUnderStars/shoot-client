@@ -26,9 +26,7 @@ export class ShootWebrtcClient extends EventEmitter {
 
 	private localOffer?: RTCSessionDescriptionInit;
 
-	private audioElement = document.getElementById(
-		"voice-call-element",
-	) as HTMLAudioElement;
+	private audioElement = document.getElementById("voice-call-element") as HTMLAudioElement;
 
 	private app = getAppStore();
 
@@ -109,9 +107,7 @@ export class ShootWebrtcClient extends EventEmitter {
 		const candidates: RTCIceCandidate[] = [];
 
 		this.peerConnection.onicecandidate = (event) =>
-			event.candidate
-				? candidates.push(event.candidate)
-				: this.identify(candidates);
+			event.candidate ? candidates.push(event.candidate) : this.identify(candidates);
 
 		this.peerConnection.ontrack = async (event) => {
 			this.remoteMedia = event.streams[0];
@@ -147,10 +143,7 @@ export class ShootWebrtcClient extends EventEmitter {
 
 		this.peerConnection.close();
 
-		const tracks = [
-			...this.peerConnection.getSenders(),
-			...this.peerConnection.getReceivers(),
-		];
+		const tracks = [...this.peerConnection.getSenders(), ...this.peerConnection.getReceivers()];
 		for (const { track } of tracks) {
 			if (track) track.stop();
 		}
@@ -212,7 +205,10 @@ export class ShootWebrtcClient extends EventEmitter {
 		const jitter = () => Math.round(Math.random() * 1900);
 
 		const heartbeat = () => {
-			this.send({ t: "heartbeat", s: this.sequence });
+			this.send({
+				t: "heartbeat",
+				s: this.sequence,
+			});
 
 			this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter());
 		};

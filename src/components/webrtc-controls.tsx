@@ -29,9 +29,7 @@ export const WebrtcControls = observer(() => {
 					<div className="flex flex-1 gap-2 items-center">
 						<PhoneMissed size={14} className="text-red-700 w-8" />
 						<div className="flex flex-col">
-							<span className="text-sm">
-								{FRIENDLY_NAME[webrtc.error.name]}
-							</span>
+							<span className="text-sm">{FRIENDLY_NAME[webrtc.error.name]}</span>
 						</div>
 					</div>
 				</SidebarMenuButton>
@@ -65,10 +63,7 @@ export const WebrtcControls = observer(() => {
 
 			<SidebarMenuSub className="m-0">
 				<SidebarMenuSubButton onClick={() => app.stopWebrtc()}>
-					<Phone
-						size={14}
-						className="rotate-135 flex items-center justify-center"
-					/>
+					<Phone size={14} className="rotate-135 flex items-center justify-center" />
 				</SidebarMenuSubButton>
 			</SidebarMenuSub>
 		</SidebarMenuItem>

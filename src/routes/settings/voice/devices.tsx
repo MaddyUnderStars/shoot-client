@@ -42,7 +42,9 @@ const RouteComponent = observer(() => {
 							step={0.1}
 							onValueChange={(v) =>
 								settings.setSettings({
-									voice: { input_volume: v[0] },
+									voice: {
+										input_volume: v[0],
+									},
 								})
 							}
 						/>
@@ -59,17 +61,16 @@ const RouteComponent = observer(() => {
 							step={0.01}
 							onValueChange={(v) =>
 								settings.setSettings({
-									voice: { output_volume: v[0] },
+									voice: {
+										output_volume: v[0],
+									},
 								})
 							}
 						/>
 					</div>
 
 					<Separator />
-					<span>
-						The below settings will apply the next time you join a
-						voice call.
-					</span>
+					<span>The below settings will apply the next time you join a voice call.</span>
 
 					<div className="flex items-center gap-3">
 						<Checkbox
@@ -83,9 +84,7 @@ const RouteComponent = observer(() => {
 								})
 							}
 						/>
-						<Label htmlFor="agc-option">
-							Automatic gain control
-						</Label>
+						<Label htmlFor="agc-option">Automatic gain control</Label>
 					</div>
 
 					<div className="flex items-center gap-3">
@@ -95,8 +94,7 @@ const RouteComponent = observer(() => {
 							onCheckedChange={(v) =>
 								settings.setSettings({
 									voice: {
-										echo:
-											typeof v === "boolean" ? v : false,
+										echo: typeof v === "boolean" ? v : false,
 									},
 								})
 							}
@@ -111,8 +109,7 @@ const RouteComponent = observer(() => {
 							onCheckedChange={(v) =>
 								settings.setSettings({
 									voice: {
-										noise:
-											typeof v === "boolean" ? v : false,
+										noise: typeof v === "boolean" ? v : false,
 									},
 								})
 							}

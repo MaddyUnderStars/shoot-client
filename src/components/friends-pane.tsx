@@ -48,7 +48,10 @@ export const FriendsPane = observer(() => {
 			},
 		});
 
-		if (error) return form.setError("mention", { message: error.message });
+		if (error)
+			return form.setError("mention", {
+				message: error.message,
+			});
 	};
 
 	return (
@@ -77,14 +80,10 @@ export const FriendsPane = observer(() => {
 								<FormItem className="flex-1">
 									<FormLabel>Add friend</FormLabel>
 									<FormDescription>
-										Enter the mention of the user you wish
-										to friend below.
+										Enter the mention of the user you wish to friend below.
 									</FormDescription>
 									<FormControl>
-										<Input
-											{...field}
-											placeholder="user@example.com"
-										/>
+										<Input {...field} placeholder="user@example.com" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

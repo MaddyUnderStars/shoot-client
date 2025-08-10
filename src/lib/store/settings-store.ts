@@ -30,8 +30,7 @@ export class SettingsStore {
 			this.voice.output_volume = opts.voice.output_volume;
 
 		if (opts.voice?.agc !== undefined) this.voice.agc = opts.voice.agc;
-		if (opts.voice?.noise !== undefined)
-			this.voice.noise = opts.voice.noise;
+		if (opts.voice?.noise !== undefined) this.voice.noise = opts.voice.noise;
 		if (opts.voice?.echo !== undefined) this.voice.echo = opts.voice.echo;
 	};
 }

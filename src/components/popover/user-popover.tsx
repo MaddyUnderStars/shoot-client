@@ -28,30 +28,31 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 		if (existing) {
 			return navigate({
 				to: "/channel/$channelId",
-				params: { channelId: existing.mention },
+				params: {
+					channelId: existing.mention,
+				},
 			});
 		}
 
-		const { data, error } = await $fetch.POST(
-			"/users/{user_id}/channels/",
-			{
-				params: {
-					path: {
-						user_id: user.mention,
-					},
-				},
-				body: {
-					name: `${user.display_name ?? user.name} & ${app.user.display_name ?? app.user.name}`,
+		const { data, error } = await $fetch.POST("/users/{user_id}/channels/", {
+			params: {
+				path: {
+					user_id: user.mention,
 				},
 			},
-		);
+			body: {
+				name: `${user.display_name ?? user.name} & ${app.user.display_name ?? app.user.name}`,
+			},
+		});
 
 		// TODO: better error handling. maybe a toast?
 		if (error) throw new Error(error.message);
 
 		navigate({
 			to: "/channel/$channelId",
-			params: { channelId: data.mention },
+			params: {
+				channelId: data.mention,
+			},
 		});
 	};
 

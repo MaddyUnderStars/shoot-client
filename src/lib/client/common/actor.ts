@@ -11,5 +11,4 @@ export const ActorMention = z.custom<`${string}@${string}`>(
 
 export type ActorMention = z.infer<typeof ActorMention>;
 
-export const isActorMention = (str: string): str is ActorMention =>
-	!!str.match(ActorMentionRegex);
+export const isActorMention = (str: string): str is ActorMention => !!str.match(ActorMentionRegex);

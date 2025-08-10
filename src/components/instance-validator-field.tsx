@@ -11,19 +11,23 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 
-const DEFAULT_INSTANCE =
-	import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
+const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
 
 const LOCK_INSTANCE = !!import.meta.env.VITE_LOCK_INSTANCE;
 
 export const InstanceValidatorField = ({
 	showInviteField,
 	form,
+}: {
+	showInviteField: boolean;
 	// biome-ignore lint/suspicious/noExplicitAny: TODO
-}: { showInviteField: boolean } & any) => {
+} & any) => {
 	const [isValidatingInstance, setValidatingInstance] = useState(false);
 	const [nodeinfo, setNodeinfo] = useState<
-		{ openRegistrations: boolean } | undefined
+		| {
+				openRegistrations: boolean;
+		  }
+		| undefined
 	>();
 
 	const debounced = pDebounce(async (instance: string) => {
@@ -56,20 +60,16 @@ export const InstanceValidatorField = ({
 						<FormItem>
 							<FormLabel>
 								Instance
-								{isValidatingInstance ? (
-									<span> - Checking</span>
-								) : null}
+								{isValidatingInstance ? <span> - Checking</span> : null}
 							</FormLabel>
-							<FormDescription>
-								Your account provider
-							</FormDescription>
+							<FormDescription>Your account provider</FormDescription>
 							<FormControl>
 								<Input
 									placeholder={DEFAULT_INSTANCE}
 									{...field}
-									onChangeCapture={(
-										e: React.ChangeEvent<HTMLInputElement>,
-									) => debounced(e.target.value)}
+									onChangeCapture={(e: React.ChangeEvent<HTMLInputElement>) =>
+										debounced(e.target.value)
+									}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -86,8 +86,8 @@ export const InstanceValidatorField = ({
 						<FormItem>
 							<FormLabel>Invite Token</FormLabel>
 							<FormDescription>
-								This instance has closed registration. You may
-								use an invite token to join.
+								This instance has closed registration. You may use an invite token
+								to join.
 							</FormDescription>
 							<FormControl>
 								<Input {...field} />

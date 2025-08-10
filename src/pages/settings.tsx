@@ -47,9 +47,7 @@ export const SettingsSidebar = () => {
 								<SidebarMenuButton asChild>
 									<Link
 										to="/settings/account/profile"
-										onClick={() =>
-											sidebar.setOpenMobile(false)
-										}
+										onClick={() => sidebar.setOpenMobile(false)}
 									>
 										<UserPen />
 										<span>Profile</span>
@@ -98,7 +96,9 @@ export const SettingsSidebar = () => {
 								variant="destructive"
 								onClick={() => {
 									getGatewayClient().logout();
-									navigate({ to: "/login" });
+									navigate({
+										to: "/login",
+									});
 								}}
 							>
 								Logout

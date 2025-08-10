@@ -17,22 +17,22 @@ export const ChannelHeader = () => {
 	const startCall = async () => {
 		if (!channel) return;
 
-		const { data, error, response } = await $fetch.POST(
-			"/channel/{channel_id}/call/",
-			{
-				params: {
-					path: {
-						channel_id: channel.mention,
-					},
+		const { data, error, response } = await $fetch.POST("/channel/{channel_id}/call/", {
+			params: {
+				path: {
+					channel_id: channel.mention,
 				},
 			},
-		);
+		});
 
 		// TODO
 		if (error || !data || response.status !== 200)
 			throw new Error(error?.message ?? "unknown error with webrtc");
 
-		const { token, ip } = data as { token: string; ip: string };
+		const { token, ip } = data as {
+			token: string;
+			ip: string;
+		};
 
 		app.startWebrtc(channel.mention, new URL(ip), token);
 	};
