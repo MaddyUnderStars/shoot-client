@@ -18,7 +18,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 	const [open, setOpen] = useState<boolean>();
 
 	return (
-		<div className="flex justify-between items-center me-5 group">
+		<div className="flex justify-between items-center pe-5 group hover:bg-black/20">
 			<div className="flex gap-3 p-2 content-visibility-auto">
 				<Popover>
 					<PopoverTrigger>
