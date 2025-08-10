@@ -1,5 +1,7 @@
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 import type { Message } from "@/lib/client/entity/message";
+import { cn } from "@/lib/utils";
 import { FilePreview } from "./file-preview";
 import { UserPopover } from "./popover/user-popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -13,8 +15,10 @@ import { Popover, PopoverTrigger } from "./ui/popover";
 import { Skeleton } from "./ui/skeleton";
 
 export const MessageComponent = ({ message }: { message: Message }) => {
+	const [open, setOpen] = useState<boolean>();
+
 	return (
-		<div className="flex justify-between items-center me-5">
+		<div className="flex justify-between items-center me-5 group">
 			<div className="flex gap-3 p-2 content-visibility-auto">
 				<Popover>
 					<PopoverTrigger>
@@ -55,8 +59,13 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 				</div>
 			</div>
 
-			<DropdownMenu>
-				<DropdownMenuTrigger className="p-2 bg-accent rounded">
+			<DropdownMenu onOpenChange={(open) => setOpen(open)}>
+				<DropdownMenuTrigger
+					className={cn([
+						"p-2 bg-accent rounded group-hover:block",
+						open ? "" : "hidden",
+					])}
+				>
 					<ChevronDown size={16} />
 				</DropdownMenuTrigger>
 
