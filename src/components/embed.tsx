@@ -6,7 +6,7 @@ export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 	if (embed.type === 1) return <SimpleEmbedComponent embed={embed} />;
 
 	return (
-		<Card className="w-100 gap-1 rounded-sm p-3">
+		<Card className="max-w-100 gap-1 rounded-sm p-3">
 			<CardHeader className="p-0">
 				<CardTitle>
 					<LinkOr url={embed.target}>
