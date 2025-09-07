@@ -20,6 +20,13 @@ export type MESSAGE_CREATE = {
 	};
 };
 
+export type MESSAGE_UPDATE = {
+	t: "MESSAGE_UPDATE";
+	d: {
+		message: Partial<ApiPublicMessage> & Pick<ApiPublicMessage, "id">;
+	};
+};
+
 export type MESSAGE_DELETE = {
 	t: "MESSAGE_DELETE";
 	d: {
@@ -175,6 +182,7 @@ export type HEARTBEAT_ACK = {
 
 export type GATEWAY_EVENT =
 	| MESSAGE_CREATE
+	| MESSAGE_UPDATE
 	| MESSAGE_DELETE
 	| CHANNEL_CREATE
 	| CHANNEL_UPDATE

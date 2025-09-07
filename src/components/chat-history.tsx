@@ -1,7 +1,7 @@
 import { type InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import type { MESSAGE_CREATE, MESSAGE_DELETE } from "@/lib/client/common/receive";
+import type { MESSAGE_CREATE, MESSAGE_DELETE, MESSAGE_UPDATE } from "@/lib/client/common/receive";
 import type { DmChannel } from "@/lib/client/entity/dm-channel";
 import type { GuildChannel } from "@/lib/client/entity/guild-channel";
 import { Message } from "@/lib/client/entity/message";
@@ -74,11 +74,28 @@ export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) 
 			});
 		};
 
+		const updateListener = (event: MESSAGE_UPDATE) => {
+			if (!event) return;
+
+			const id = event.d.message.id;
+
+			client.setQueryData(queryKey, (data: InfiniteData<ApiPublicMessage[]>) => {
+				return {
+					pages: data.pages.map((page) =>
+						page.map((msg) => (msg.id === id ? { ...msg, ...event.d.message } : msg)),
+					),
+					pageParams: data.pageParams,
+				};
+			});
+		};
+
 		gw.addListener("MESSAGE_CREATE", createListener);
+		gw.addListener("MESSAGE_UPDATE", updateListener);
 		gw.addListener("MESSAGE_DELETE", deleteListener);
 
 		return () => {
 			gw.removeListener("MESSAGE_CREATE", createListener);
+			gw.removeListener("MESSAGE_UPDATE", updateListener);
 			gw.removeListener("MESSAGE_DELETE", deleteListener);
 		};
 	});

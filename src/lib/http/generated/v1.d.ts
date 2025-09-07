@@ -1276,42 +1276,38 @@ export interface components {
 		PublicEmbed: {
 			/** Format: uri */
 			target: string;
+			created_at: string;
+			/** @enum {integer} */
+			type: 0 | 1 | 2 | 3;
 			title?: string;
-			author_name?: string;
-			author_url?: string;
-			provider_name?: string;
-			provider_url?: string;
-			thumbnail_url?: string;
-			thumbnail_width?: number;
-			thumbnail_height?: number;
-		} & (
-			| {
-					/** @enum {string} */
-					type: "link";
-			  }
-			| {
-					/** @enum {string} */
-					type: "photo";
-					/** Format: uri */
-					url: string;
-					width: number;
-					height: number;
-			  }
-			| {
-					/** @enum {string} */
-					type: "video";
-					html: string;
-					width: number;
-					height: number;
-			  }
-			| {
-					/** @enum {string} */
-					type: "rich";
-					html: string;
-					width: number;
-					height: number;
-			  }
-		);
+			description?: string;
+			images: {
+				/** Format: uri */
+				url: string;
+				width?: number;
+				height?: number;
+				alt?: string;
+			}[];
+			videos: {
+				/** Format: uri */
+				url: string;
+				width?: number;
+				height?: number;
+				alt?: string;
+			}[];
+			author?: {
+				name?: string;
+				url?: string;
+			};
+			footer?: {
+				text?: string;
+				icon?: string;
+			};
+			provider?: {
+				name?: string;
+				url?: string;
+			};
+		};
 		PublicMessage: {
 			/** Format: uuid */
 			id: string;
