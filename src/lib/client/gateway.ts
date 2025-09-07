@@ -72,14 +72,16 @@ export class ShootGatewayClient extends EventEmitter {
 	};
 
 	public send = (data: GATEWAY_SEND_PAYLOAD) => {
-		this.socket?.send(JSON.stringify(data));
+		if (!this.socket || this.socket.readyState !== WebSocket.OPEN) return;
+
+		this.socket.send(JSON.stringify(data));
 	};
+
+	private jitter = (n = 1900) => Math.round(Math.random() * n);
 
 	// TODO: should wait for ack before sending next heartbeat
 	private startHeartbeat = () => {
 		Log.verbose("Starting heartbeat");
-
-		const jitter = () => Math.round(Math.random() * 1900);
 
 		const heartbeat = () => {
 			this.send({
@@ -87,10 +89,12 @@ export class ShootGatewayClient extends EventEmitter {
 				s: this.sequence,
 			});
 
-			this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter());
+			const t = 8000 + this.jitter();
+			console.log(t);
+			this.heartbeatTimeout = setTimeout(heartbeat, t);
 		};
 
-		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter());
+		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + this.jitter());
 	};
 
 	private onOpen = () => {
@@ -183,15 +187,18 @@ export class ShootGatewayClient extends EventEmitter {
 		}
 
 		if (!this.reconnectTimeout) {
-			this.reconnectTimeout = setTimeout(() => {
-				Log.verbose(`Trying reconnect attempt ${this.reconnectAttempts}`);
-				this.reconnectAttempts++;
-				this.reconnectTimeout = undefined;
+			this.reconnectTimeout = setTimeout(
+				() => {
+					Log.verbose(`Trying reconnect attempt ${this.reconnectAttempts}`);
+					this.reconnectAttempts++;
+					this.reconnectTimeout = undefined;
 
-				if (!this.instance || !this.token) return;
+					if (!this.instance || !this.token) return;
 
-				this.login();
-			}, 1000 * this.reconnectAttempts);
+					this.login();
+				},
+				1000 * this.reconnectAttempts + this.jitter(this.reconnectAttempts * 1000),
+			);
 		}
 	};
 }
@@ -199,7 +206,7 @@ export class ShootGatewayClient extends EventEmitter {
 let client: ShootGatewayClient;
 
 export const createGatewayClient = (opts: ClientOptions) => {
-	client = new ShootGatewayClient(opts);
+	client = client ?? new ShootGatewayClient(opts);
 	return client;
 };
 

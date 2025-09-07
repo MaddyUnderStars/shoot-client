@@ -1,8 +1,10 @@
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { type Relationship, RelationshipType } from "@/lib/client/entity/relationship";
 import { getHttpClient } from "@/lib/http/client";
 import { getAppStore } from "@/lib/store/app-store";
+import { cn } from "@/lib/utils";
 import { UserPopover } from "./popover/user-popover";
 import {
 	DropdownMenu,
@@ -14,7 +16,7 @@ import { Popover, PopoverTrigger } from "./ui/popover";
 
 export const RelationshipComponent = ({ rel }: { rel: Relationship }) => {
 	return (
-		<div className="flex-1 flex items-center justify-between hover:bg-black/20 rounded p-3">
+		<div className="flex-1 flex items-center justify-between hover:bg-black/20 rounded p-3 group">
 			<Popover>
 				<PopoverTrigger>
 					<div className="grid flex-1 text-left text-sm leading-right">
@@ -31,6 +33,8 @@ export const RelationshipComponent = ({ rel }: { rel: Relationship }) => {
 };
 
 const RelationshipActions = ({ rel }: { rel: Relationship }) => {
+	const [open, setOpen] = useState<boolean>();
+
 	const { $fetch } = getHttpClient();
 
 	const action = async (type: "unblock" | "block" | "accept" | "remove") => {
@@ -151,8 +155,10 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 		);
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger className="bg-accent rounded p-1">
+		<DropdownMenu onOpenChange={(open) => setOpen(open)}>
+			<DropdownMenuTrigger
+				className={cn(["p-2 bg-accent rounded group-hover:block", open ? "" : "hidden"])}
+			>
 				<ChevronDown size={16} />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>{actions}</DropdownMenuContent>
