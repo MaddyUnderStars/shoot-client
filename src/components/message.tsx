@@ -52,7 +52,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 						))}
 
 						{!message.embeds ? null : (
-							<div className="mt-2">
+							<div className="mt-2 flex gap-2 flex-wrap">
 								{message.embeds?.map((embed) => (
 									<EmbedComponent embed={embed} key={embed.target} />
 								))}
