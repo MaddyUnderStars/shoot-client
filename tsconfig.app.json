@@ -29,7 +29,8 @@
 			"@/*": [
 				"./src/*"
 			]
-		}
+		},
+		"experimentalDecorators": true
 	},
 	"include": [
 		"src"

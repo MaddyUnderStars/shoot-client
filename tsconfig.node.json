@@ -19,7 +19,8 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
-		"noUncheckedIndexedAccess": true
+		"noUncheckedIndexedAccess": true,
+		"experimentalDecorators": true
 	},
 	"include": [
 		"vite.config.ts"
