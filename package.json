@@ -38,7 +38,6 @@
 		"mobx": "^6.13.7",
 		"mobx-persist-store": "^1.1.8",
 		"mobx-react-lite": "^4.1.0",
-		"npm": "^11.4.2",
 		"openapi-fetch": "^0.14.0",
 		"openapi-react-query": "^0.5.0",
 		"p-debounce": "^4.0.0",
@@ -52,6 +51,7 @@
 		"zod": "^4.0.5"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^2.2.3",
 		"@tailwindcss/vite": "^4.1.11",
 		"@tanstack/router-plugin": "^1.128.6",
 		"@testing-library/dom": "^10.4.0",
