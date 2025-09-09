@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.2.3/schema.json",
 	"formatter": {
 		"enabled": true,
 		"formatWithErrors": true,
@@ -14,7 +14,8 @@
 		"rules": {
 			"recommended": true,
 			"correctness": {
-				"noUnusedImports": "error"
+				"noUnusedImports": "error",
+				"useUniqueElementIds": "off"
 			}
 		}
 	},
