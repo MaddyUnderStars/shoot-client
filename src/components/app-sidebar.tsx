@@ -2,7 +2,11 @@ import NiceModal from "@ebay/nice-modal-react";
 import { Link } from "@tanstack/react-router";
 import { BowArrow, Hash, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
+import React from "react";
 import { useGuild } from "@/hooks/use-guild";
+import type { DmChannel } from "@/lib/client/entity/dm-channel";
+import type { Guild } from "@/lib/client/entity/guild";
+import type { GuildChannel } from "@/lib/client/entity/guild-channel";
 import { getAppStore } from "@/lib/store/app-store";
 import { ChannelListHeader } from "./channel-list-header";
 import { CreateGuildModal } from "./modal/create-guild-modal";
@@ -21,37 +25,37 @@ import {
 	useSidebar,
 } from "./ui/sidebar";
 
+const GuildSidebarListItem = React.memo(({ guild }: { guild: Guild }) => (
+	<SidebarMenuItem>
+		<SidebarMenuButton
+			size="lg"
+			asChild
+			className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
+		>
+			<Link
+				to="/channel/$guildId/{-$channelId}"
+				params={{
+					guildId: guild.mention,
+					channelId: guild.channels?.[0]?.mention,
+				}}
+			>
+				<Avatar className="rounded-none">
+					<AvatarImage />
+					<AvatarFallback className="rounded-none">{guild.initials}</AvatarFallback>
+				</Avatar>
+			</Link>
+		</SidebarMenuButton>
+	</SidebarMenuItem>
+));
+
 const GuildsSidebarList = observer(() => {
 	const guilds = getAppStore().guilds;
 
 	return (
 		<SidebarGroupContent>
-			{/* render guilds here */}
-
 			{guilds.map((guild) => (
 				<SidebarMenu key={guild.mention} className="mt-2">
-					<SidebarMenuItem>
-						<SidebarMenuButton
-							size="lg"
-							asChild
-							className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
-						>
-							<Link
-								to="/channel/$guildId/{-$channelId}"
-								params={{
-									guildId: guild.mention,
-									channelId: guild.channels?.[0]?.mention,
-								}}
-							>
-								<Avatar className="rounded-none">
-									<AvatarImage />
-									<AvatarFallback className="rounded-none">
-										{guild.initials}
-									</AvatarFallback>
-								</Avatar>
-							</Link>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
+					<GuildSidebarListItem guild={guild} />
 				</SidebarMenu>
 			))}
 		</SidebarGroupContent>
@@ -111,32 +115,41 @@ const GuildSidebar = observer(() => {
 	);
 });
 
+const ChannelSidebarListItem = React.memo(
+	({ channel, guild }: { channel: GuildChannel | DmChannel; guild?: Guild }) => {
+		const sidebar = useSidebar();
+
+		return (
+			<SidebarMenuItem key={channel.mention}>
+				<SidebarMenuButton>
+					<Link
+						to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
+						params={(prev) => ({
+							...prev,
+							channelId: channel.mention,
+						})}
+						className="flex flex-1 items-center justify-between"
+						onClick={() => sidebar.setOpenMobile(false)}
+					>
+						{channel.name}
+						<Hash size={14} />
+					</Link>
+				</SidebarMenuButton>
+			</SidebarMenuItem>
+		);
+	},
+);
+
 const ChannelSidebarList = observer(() => {
 	const guild = useGuild();
 	const channels = guild ? guild.channels : getAppStore().dmChannels;
-	const sidebar = useSidebar();
 
 	return (
 		<SidebarMenu>
 			{/* render guild channels here, or private dm channels */}
 
-			{channels.map((channel) => (
-				<SidebarMenuItem key={channel.mention}>
-					<SidebarMenuButton>
-						<Link
-							to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
-							params={(prev) => ({
-								...prev,
-								channelId: channel.mention,
-							})}
-							className="flex flex-1 items-center justify-between"
-							onClick={() => sidebar.setOpenMobile(false)}
-						>
-							{channel.name}
-							<Hash size={14} />
-						</Link>
-					</SidebarMenuButton>
-				</SidebarMenuItem>
+			{channels.map((ch) => (
+				<ChannelSidebarListItem channel={ch} guild={guild} key={ch.mention} />
 			))}
 		</SidebarMenu>
 	);
