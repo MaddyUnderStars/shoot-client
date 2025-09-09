@@ -10,13 +10,20 @@ import { UserComponent } from "../user";
 export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 	const { $api, $fetch } = getHttpClient();
 
-	const { data: apiUser, error } = $api.useQuery("get", "/users/{user_id}/", {
-		params: {
-			path: {
-				user_id: user_id,
+	const { data: apiUser, error } = $api.useQuery(
+		"get",
+		"/users/{user_id}/",
+		{
+			params: {
+				path: {
+					user_id: user_id,
+				},
 			},
 		},
-	});
+		{
+			staleTime: 2 * 60 * 1000,
+		},
+	);
 
 	const navigate = useNavigate();
 	const app = getAppStore();

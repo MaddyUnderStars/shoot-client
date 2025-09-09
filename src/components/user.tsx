@@ -1,9 +1,10 @@
+import React from "react";
 import type { PrivateUser } from "@/lib/client/entity/private-user";
 import type { PublicUser } from "@/lib/client/entity/public-user";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Skeleton } from "./ui/skeleton";
 
-export const UserComponent = ({ user }: { user: PublicUser | PrivateUser }) => {
+export const UserComponent = React.memo(({ user }: { user: PublicUser | PrivateUser }) => {
 	return (
 		<>
 			<Avatar className="h-8 w-8 rounded-lg">
@@ -22,4 +23,4 @@ export const UserComponent = ({ user }: { user: PublicUser | PrivateUser }) => {
 			</div>
 		</>
 	);
-};
+});
