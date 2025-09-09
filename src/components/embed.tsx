@@ -17,7 +17,7 @@ export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 					<span>{embed.description}</span>
 				</CardDescription>
 			</CardHeader>
-			<CardContent className="p-0">
+			<CardContent className="p-0 max-h-100">
 				{embed.images.map((img) => (
 					<img
 						className="rounded-sm"
@@ -50,7 +50,7 @@ export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 
 const SimpleEmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 	return (
-		<div>
+		<div className="max-w-100 max-h-100">
 			{embed.images.map((img) => (
 				<img
 					src={img.url}
