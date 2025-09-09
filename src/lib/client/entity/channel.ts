@@ -25,7 +25,7 @@ export class Channel extends Actor implements ApiPublicChannel {
 			files:
 				typeof opts === "string"
 					? []
-					: opts.files
+					: opts.files?.length
 						? await this.uploadAttachments(opts.files)
 						: [],
 		};
