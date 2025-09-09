@@ -1,3 +1,5 @@
+/* biome-ignore-all lint/suspicious/noUnknownAtRules: . */
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
