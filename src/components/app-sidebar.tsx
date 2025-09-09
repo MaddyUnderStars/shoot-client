@@ -21,8 +21,44 @@ import {
 	useSidebar,
 } from "./ui/sidebar";
 
-const GuildSidebar = observer(() => {
+const GuildsSidebarList = observer(() => {
 	const guilds = getAppStore().guilds;
+
+	return (
+		<SidebarGroupContent>
+			{/* render guilds here */}
+
+			{guilds.map((guild) => (
+				<SidebarMenu key={guild.mention} className="mt-2">
+					<SidebarMenuItem>
+						<SidebarMenuButton
+							size="lg"
+							asChild
+							className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
+						>
+							<Link
+								to="/channel/$guildId/{-$channelId}"
+								params={{
+									guildId: guild.mention,
+									channelId: guild.channels?.[0]?.mention,
+								}}
+							>
+								<Avatar className="rounded-none">
+									<AvatarImage />
+									<AvatarFallback className="rounded-none">
+										{guild.initials}
+									</AvatarFallback>
+								</Avatar>
+							</Link>
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+				</SidebarMenu>
+			))}
+		</SidebarGroupContent>
+	);
+});
+
+const GuildSidebar = observer(() => {
 	const sidebar = useSidebar();
 
 	return (
@@ -47,36 +83,7 @@ const GuildSidebar = observer(() => {
 
 			<SidebarContent>
 				<SidebarGroup>
-					<SidebarGroupContent>
-						{/* render guilds here */}
-
-						{guilds.map((guild) => (
-							<SidebarMenu key={guild.mention} className="mt-2">
-								<SidebarMenuItem>
-									<SidebarMenuButton
-										size="lg"
-										asChild
-										className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
-									>
-										<Link
-											to="/channel/$guildId/{-$channelId}"
-											params={{
-												guildId: guild.mention,
-												channelId: guild.channels?.[0]?.mention,
-											}}
-										>
-											<Avatar className="rounded-none">
-												<AvatarImage />
-												<AvatarFallback className="rounded-none">
-													{guild.initials}
-												</AvatarFallback>
-											</Avatar>
-										</Link>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							</SidebarMenu>
-						))}
-					</SidebarGroupContent>
+					<GuildsSidebarList />
 				</SidebarGroup>
 
 				<SidebarGroup>
@@ -104,11 +111,39 @@ const GuildSidebar = observer(() => {
 	);
 });
 
-const ChannelSidebar = observer(() => {
+const ChannelSidebarList = observer(() => {
 	const guild = useGuild();
 	const channels = guild ? guild.channels : getAppStore().dmChannels;
-
 	const sidebar = useSidebar();
+
+	return (
+		<SidebarMenu>
+			{/* render guild channels here, or private dm channels */}
+
+			{channels.map((channel) => (
+				<SidebarMenuItem key={channel.mention}>
+					<SidebarMenuButton>
+						<Link
+							to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
+							params={(prev) => ({
+								...prev,
+								channelId: channel.mention,
+							})}
+							className="flex flex-1 items-center justify-between"
+							onClick={() => sidebar.setOpenMobile(false)}
+						>
+							{channel.name}
+							<Hash size={14} />
+						</Link>
+					</SidebarMenuButton>
+				</SidebarMenuItem>
+			))}
+		</SidebarMenu>
+	);
+});
+
+const ChannelSidebar = observer(() => {
+	const guild = useGuild();
 
 	return (
 		<Sidebar collapsible="none" className="flex-1 flex">
@@ -119,32 +154,7 @@ const ChannelSidebar = observer(() => {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupContent className="px-1.5 md:px-0">
-						<SidebarMenu>
-							{/* render guild channels here, or private dm channels */}
-
-							{channels.map((channel) => (
-								<SidebarMenuItem key={channel.mention}>
-									<SidebarMenuButton>
-										<Link
-											to={
-												guild
-													? "/channel/$guildId/{-$channelId}"
-													: "/channel/$channelId"
-											}
-											params={(prev) => ({
-												...prev,
-												channelId: channel.mention,
-											})}
-											className="flex flex-1 items-center justify-between"
-											onClick={() => sidebar.setOpenMobile(false)}
-										>
-											{channel.name}
-											<Hash size={14} />
-										</Link>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
-						</SidebarMenu>
+						<ChannelSidebarList />
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
