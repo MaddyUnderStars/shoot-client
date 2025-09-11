@@ -40,14 +40,17 @@ export const ChannelHeader = () => {
 	if (!channel) return undefined;
 
 	return (
-		<div className="p-2 h-14 bg-sidebar w-full border-b border-b flex justify-between items-center">
-			<h1>
+		<div className="p-2 h-14 bg-sidebar w-full border-b flex justify-between items-center">
+			<h1 className="flex items-center">
 				{!isMobile ? null : (
 					<SidebarTrigger variant="ghost">
 						<PanelLeftDashed />
 					</SidebarTrigger>
 				)}
-				<Hash size={16} className="inline" /> {channel.name}
+
+				<span>
+					<Hash size={16} className="inline" /> {channel.name}
+				</span>
 			</h1>
 
 			<div className="flex gap-4">

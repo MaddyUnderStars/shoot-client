@@ -25,8 +25,13 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 		<div className="flex p-2 h-full w-full items-center justify-between">
 			<div className="text-foreground text-base font-medium flex-1 flex items-center">
 				{isMobile ? (
-					<Button variant="ghost" onClick={() => sidebar.setOpenMobile(false)}>
-						<PanelLeftClose />
+					<Button
+						className="me-2"
+						variant="ghost"
+						size="sm"
+						onClick={() => sidebar.setOpenMobile(false)}
+					>
+						<PanelLeftClose className="p-0" />
 					</Button>
 				) : null}
 
