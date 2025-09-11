@@ -90,7 +90,6 @@ export class ShootGatewayClient extends EventEmitter {
 			});
 
 			const t = 8000 + this.jitter();
-			console.log(t);
 			this.heartbeatTimeout = setTimeout(heartbeat, t);
 		};
 
