@@ -30,7 +30,7 @@ const GuildSidebarListItem = React.memo(({ guild }: { guild: Guild }) => (
 		<SidebarMenuButton
 			size="lg"
 			asChild
-			className="p-0 size-8 hover:rounded-sm rounded-lg transition-[border-radius]"
+			className="p-0 size-8 hover:rounded-sm rounded-lg transition-colors border flex justify-center items-center hover:bg-accent"
 		>
 			<Link
 				to="/channel/$guildId/{-$channelId}"

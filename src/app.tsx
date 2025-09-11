@@ -1,4 +1,6 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { observer } from "mobx-react-lite";
+import { getAppStore } from "./lib/store/app-store";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
@@ -13,6 +15,12 @@ declare module "@tanstack/react-router" {
 	}
 }
 
-export const App = () => {
-	return <RouterProvider router={router} />;
-};
+export const App = observer(() => {
+	const density = getAppStore().settings.ui_density;
+
+	return (
+		<div style={{ "--spacing": `${density}rem` }}>
+			<RouterProvider router={router} />
+		</div>
+	);
+});

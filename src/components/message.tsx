@@ -16,7 +16,14 @@ import {
 import { Popover, PopoverTrigger } from "./ui/popover";
 import { Skeleton } from "./ui/skeleton";
 
-export const MessageComponent = ({ message }: { message: Message }) => {
+export const MessageComponent = ({
+	message,
+	showControls,
+}: {
+	message: Message;
+	showControls?: boolean;
+}) => {
+	if (showControls === undefined) showControls = true;
 	const [open, setOpen] = useState<boolean>();
 
 	return (
@@ -63,22 +70,24 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 				</div>
 			</div>
 
-			<DropdownMenu onOpenChange={(open) => setOpen(open)}>
-				<DropdownMenuTrigger
-					className={cn([
-						"p-2 bg-accent rounded group-hover:block mt-5",
-						open ? "" : "hidden",
-					])}
-				>
-					<ChevronDown size={16} />
-				</DropdownMenuTrigger>
+			{showControls ? (
+				<DropdownMenu onOpenChange={(open) => setOpen(open)}>
+					<DropdownMenuTrigger
+						className={cn([
+							"p-2 bg-accent rounded group-hover:block mt-5",
+							open ? "" : "hidden",
+						])}
+					>
+						<ChevronDown size={16} />
+					</DropdownMenuTrigger>
 
-				<DropdownMenuContent>
-					<DropdownMenuItem variant="destructive" onClick={() => message.delete()}>
-						Delete
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+					<DropdownMenuContent>
+						<DropdownMenuItem variant="destructive" onClick={() => message.delete()}>
+							Delete
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			) : null}
 		</div>
 	);
 };

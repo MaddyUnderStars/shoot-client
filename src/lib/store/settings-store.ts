@@ -11,12 +11,14 @@ export class SettingsStore {
 		noise: true,
 	};
 
+	@observable ui_density: number = 0.22;
+
 	constructor() {
 		makeAutoObservable(this);
 
 		makePersistable(this, {
 			name: "settings-store",
-			properties: ["voice"],
+			properties: ["voice", "ui_density"],
 			storage: window.localStorage,
 		});
 	}
@@ -32,5 +34,7 @@ export class SettingsStore {
 		if (opts.voice?.agc !== undefined) this.voice.agc = opts.voice.agc;
 		if (opts.voice?.noise !== undefined) this.voice.noise = opts.voice.noise;
 		if (opts.voice?.echo !== undefined) this.voice.echo = opts.voice.echo;
+
+		if (opts.ui_density) this.ui_density = opts.ui_density;
 	};
 }

@@ -95,7 +95,7 @@
 	--primary-foreground: #1e1c21;
 	--secondary: #1e1c21;
 	--secondary-foreground: oklch(0.984 0.003 247.858);
-	--muted: #17171b;
+	--muted: #1e1c21;
 	--muted-foreground: oklch(0.704 0.04 256.788);
 	--accent: #6d6beb;
 	--accent-foreground: oklch(0.984 0.003 247.858);
@@ -116,6 +116,7 @@
 	--sidebar-accent-foreground: oklch(0.984 0.003 247.858);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.551 0.027 264.364);
+	--link: #6d6beb;
 }
 
 @layer base {
