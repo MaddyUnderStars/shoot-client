@@ -1,5 +1,6 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
+import type React from "react";
 import { getAppStore } from "./lib/store/app-store";
 import { routeTree } from "./routeTree.gen";
 
@@ -19,7 +20,7 @@ export const App = observer(() => {
 	const density = getAppStore().settings.ui_density;
 
 	return (
-		<div style={{ "--spacing": `${density}rem` }}>
+		<div style={{ "--spacing": `${density}rem` } as React.CSSProperties}>
 			<RouterProvider router={router} />
 		</div>
 	);

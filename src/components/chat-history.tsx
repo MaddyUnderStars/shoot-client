@@ -2,8 +2,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { MESSAGE_API_PAGE_LIMIT, useMessageHistory } from "@/hooks/use-message-history";
 import type { DmChannel } from "@/lib/client/entity/dm-channel";
 import type { GuildChannel } from "@/lib/client/entity/guild-channel";
-import { Message } from "@/lib/client/entity/message";
 import { MessageComponent } from "./message";
+
+const MSG_GROUP_LIMIT_DT = 1000 * 60 * 5; // 5 minutes
 
 export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) => {
 	const { data, hasNextPage, fetchNextPage, isFetching } = useMessageHistory(channel.mention);
@@ -24,10 +25,20 @@ export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) 
 				scrollableTarget="chat-history"
 			>
 				{data?.pages.map((page) =>
-					page.map((raw) => {
-						const message = new Message(raw);
+					page.map((msg, j, arr) => {
+						// TODO: this won't work across multiple pages of results
+						const lastMessage = arr[j + 1];
 
-						return <MessageComponent message={message} key={message.id} />;
+						const showAuthor =
+							lastMessage &&
+							(lastMessage.author_id !== msg.author_id ||
+								new Date(msg.published).valueOf() -
+									new Date(lastMessage.published).valueOf() >
+									MSG_GROUP_LIMIT_DT);
+
+						return (
+							<MessageComponent message={msg} key={msg.id} showAuthor={showAuthor} />
+						);
 					}),
 				)}
 			</InfiniteScroll>

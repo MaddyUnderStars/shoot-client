@@ -6,6 +6,7 @@ import { EmbedComponent } from "./embed";
 import { FilePreview } from "./file-preview";
 import { MarkdownRenderer } from "./markdown";
 import { UserPopover } from "./popover/user-popover";
+import { Timestamp } from "./timestamp";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
 	DropdownMenu,
@@ -18,40 +19,51 @@ import { Skeleton } from "./ui/skeleton";
 
 export const MessageComponent = ({
 	message,
-	showControls,
+	showAuthor = true,
+	showControls = true,
 }: {
 	message: Message;
+	showAuthor?: boolean;
 	showControls?: boolean;
 }) => {
-	if (showControls === undefined) showControls = true;
 	const [open, setOpen] = useState<boolean>();
 
 	return (
 		<div className="flex justify-between items-start pe-5 group hover:bg-secondary">
-			<div className="flex gap-3 p-2 content-visibility-auto">
-				<Popover>
-					<PopoverTrigger className="flex items-start mt-2">
-						<Avatar className="cursor-pointer">
-							<AvatarImage
-								src={
-									"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-								}
-							/>
-							<AvatarFallback>
-								<Skeleton className="h-8 w-8 rounded-full" />
-							</AvatarFallback>
-						</Avatar>
-					</PopoverTrigger>
-					<UserPopover user={message.author_id} />
-				</Popover>
-
-				<div>
+			<div
+				className={cn("flex gap-3 content-visibility-auto ps-2", showAuthor ? "pt-2" : "")}
+			>
+				{showAuthor ? (
 					<Popover>
-						<PopoverTrigger>
-							<span className="cursor-pointer">{message.author_id}</span>
+						<PopoverTrigger className="flex items-start mt-2">
+							<Avatar className="cursor-pointer">
+								<AvatarImage
+									src={
+										"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
+									}
+								/>
+								<AvatarFallback>
+									<Skeleton className="h-8 w-8 rounded-full" />
+								</AvatarFallback>
+							</Avatar>
 						</PopoverTrigger>
 						<UserPopover user={message.author_id} />
 					</Popover>
+				) : (
+					<span className="w-8"></span>
+				)}
+
+				<div>
+					{showAuthor ? (
+						<Popover>
+							<PopoverTrigger className="flex gap-2 cursor-pointer">
+								<span>{message.author_id}</span>
+
+								<Timestamp date={new Date(message.published)} />
+							</PopoverTrigger>
+							<UserPopover user={message.author_id} />
+						</Popover>
+					) : null}
 					<div>
 						<MarkdownRenderer content={message.content} />
 
@@ -74,7 +86,7 @@ export const MessageComponent = ({
 				<DropdownMenu onOpenChange={(open) => setOpen(open)}>
 					<DropdownMenuTrigger
 						className={cn([
-							"p-2 bg-accent rounded group-hover:block mt-5",
+							"bg-accent rounded group-hover:block mt-2 p-0.5",
 							open ? "" : "hidden",
 						])}
 					>

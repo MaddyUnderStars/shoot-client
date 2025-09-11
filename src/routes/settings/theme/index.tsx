@@ -63,7 +63,7 @@ function RouteComponent() {
 					</div>
 				</div>
 
-				<div className="border-2 m-5 w-lg">
+				<div className="border-2 m-5 w-lg p-5">
 					<MessageComponent
 						showControls={false}
 						message={
@@ -75,6 +75,7 @@ function RouteComponent() {
 					/>
 					<MessageComponent
 						showControls={false}
+						showAuthor={false}
 						message={
 							{
 								content: "Here's a second message",
@@ -84,6 +85,7 @@ function RouteComponent() {
 					/>
 					<MessageComponent
 						showControls={false}
+						showAuthor={true}
 						message={
 							{
 								content: "And a third :)",
@@ -93,6 +95,7 @@ function RouteComponent() {
 					/>
 					<MessageComponent
 						showControls={false}
+						showAuthor={false}
 						message={
 							{
 								content: "https://understars.dev",
