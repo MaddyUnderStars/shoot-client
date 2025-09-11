@@ -54,7 +54,7 @@ const GuildsSidebarList = observer(() => {
 	return (
 		<SidebarGroupContent>
 			{guilds.map((guild) => (
-				<SidebarMenu key={guild.mention} className="mt-2">
+				<SidebarMenu key={guild.mention} className="mt-[--spacing(2)]">
 					<GuildSidebarListItem guild={guild} />
 				</SidebarMenu>
 			))}
@@ -66,7 +66,10 @@ const GuildSidebar = observer(() => {
 	const sidebar = useSidebar();
 
 	return (
-		<Sidebar collapsible="none" className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r">
+		<Sidebar
+			collapsible="none"
+			className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r flex items-center"
+		>
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
@@ -86,7 +89,7 @@ const GuildSidebar = observer(() => {
 			</SidebarHeader>
 
 			<SidebarContent>
-				<SidebarGroup>
+				<SidebarGroup className="pb-0 pt-0">
 					<GuildsSidebarList />
 				</SidebarGroup>
 

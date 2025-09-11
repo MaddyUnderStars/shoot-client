@@ -40,7 +40,7 @@ export const ChannelHeader = () => {
 	if (!channel) return undefined;
 
 	return (
-		<div className="p-2 h-14 bg-sidebar w-full border-b flex justify-between items-center">
+		<div className="p-2 h-14 bg-sidebar w-full border-b border-b flex justify-between items-center">
 			<h1>
 				{!isMobile ? null : (
 					<SidebarTrigger variant="ghost">

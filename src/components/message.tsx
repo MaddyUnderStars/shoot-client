@@ -4,6 +4,7 @@ import type { Message } from "@/lib/client/entity/message";
 import { cn } from "@/lib/utils";
 import { EmbedComponent } from "./embed";
 import { FilePreview } from "./file-preview";
+import { MarkdownRenderer } from "./markdown";
 import { UserPopover } from "./popover/user-popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -19,7 +20,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 	const [open, setOpen] = useState<boolean>();
 
 	return (
-		<div className="flex justify-between items-center pe-5 group hover:bg-black/20">
+		<div className="flex justify-between items-start pe-5 group hover:bg-secondary">
 			<div className="flex gap-3 p-2 content-visibility-auto">
 				<Popover>
 					<PopoverTrigger className="flex items-start mt-2">
@@ -45,7 +46,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 						<UserPopover user={message.author_id} />
 					</Popover>
 					<div>
-						{message.content}
+						<MarkdownRenderer content={message.content} />
 
 						{message.files?.map((file) => (
 							<FilePreview file={file} channel={message.channel} key={file.hash} />
@@ -65,7 +66,7 @@ export const MessageComponent = ({ message }: { message: Message }) => {
 			<DropdownMenu onOpenChange={(open) => setOpen(open)}>
 				<DropdownMenuTrigger
 					className={cn([
-						"p-2 bg-accent rounded group-hover:block",
+						"p-2 bg-accent rounded group-hover:block mt-5",
 						open ? "" : "hidden",
 					])}
 				>

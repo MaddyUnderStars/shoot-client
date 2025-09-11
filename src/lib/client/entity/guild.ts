@@ -23,7 +23,9 @@ export class Guild extends Actor implements ApiPublicGuild {
 		return this.name
 			.split(" ")
 			.map((x) => x.charAt(0))
-			.join("");
+			.slice(0, 2)
+			.join("")
+			.toUpperCase();
 	}
 
 	constructor(opts: ApiPublicGuild) {

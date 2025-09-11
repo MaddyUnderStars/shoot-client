@@ -56,7 +56,7 @@ export const FriendsPane = observer(() => {
 
 	return (
 		<div>
-			<div className="p-4 bg-sidebar w-full border-b h-min">
+			<div className="p-4 bg-sidebar w-full border-b h-14">
 				<h1>
 					{!isMobile ? null : (
 						<SidebarTrigger variant="ghost">

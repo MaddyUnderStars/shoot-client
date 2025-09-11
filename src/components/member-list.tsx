@@ -38,9 +38,9 @@ export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild
 
 	return (
 		<div className="bg-sidebar w-sm border-l">
-			<div className="flex flex-col gap-3.5 border-b p-4">Members</div>
+			<div className="flex flex-col gap-3.5 border-b p-4 h-14">Members</div>
 
-			<div className="flex-1 flex flex-col gap-2 w-full">
+			<div className="flex-1 flex flex-col gap-2 w-full m-2">
 				{members.map((x) => {
 					if (typeof x === "string") {
 						const role = guild?.roles.find((r) => r.id === x);
