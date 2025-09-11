@@ -158,6 +158,11 @@ export class ShootGatewayClient extends EventEmitter {
 				app.guilds.push(new Guild(rawGuild));
 				break;
 			}
+			case "GUILD_DELETE": {
+				app.guilds = app.guilds.filter((x) => x.mention !== parsed.d.guild);
+
+				break;
+			}
 			case "RELATIONSHIP_CREATE": {
 				app.relationships.push(new Relationship(parsed.d.relationship));
 				break;

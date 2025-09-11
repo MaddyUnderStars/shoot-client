@@ -6,7 +6,7 @@ export const ModalCloseButton = () => {
 
 	return (
 		<button
-			className="pointer-events-auto"
+			className="pointer-events-auto cursor-pointer"
 			type="button"
 			title="Close"
 			onClick={modal.remove}

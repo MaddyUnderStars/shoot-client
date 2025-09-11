@@ -3,6 +3,7 @@ import { ChevronDown, PanelLeftClose } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Guild } from "@/lib/client/entity/guild";
 import { CreateChannelModal } from "./modal/create-channel-modal";
+import { DeleteGuildModal } from "./modal/delete-guild-modal";
 import { CreateInviteModal } from "./modal/invite-modal";
 import { Button } from "./ui/button";
 import {
@@ -62,7 +63,15 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 								>
 									Create Channel
 								</DropdownMenuItem>
-								<DropdownMenuItem disabled variant="destructive">
+								<DropdownMenuItem
+									variant="destructive"
+									onClick={() => {
+										sidebar.setOpenMobile(false);
+										NiceModal.show(DeleteGuildModal, {
+											guild,
+										});
+									}}
+								>
 									Delete Guild
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
