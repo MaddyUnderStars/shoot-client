@@ -24,10 +24,13 @@ export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) 
 				inverse={true}
 				scrollableTarget="chat-history"
 			>
-				{data?.pages.map((page) =>
+				{data?.pages.map((page, i, pages) =>
 					page.map((msg, j, arr) => {
-						// TODO: this won't work across multiple pages of results
-						const lastMessage = arr[j + 1];
+						let lastMessage = arr[j + 1];
+						if (!lastMessage) {
+							const lastPage = pages[i + 1];
+							if (lastPage) lastMessage = lastPage[0];
+						}
 
 						const showAuthor =
 							lastMessage &&
