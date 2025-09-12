@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,6 +20,11 @@ import { Route as AuthenticatedChannelAtmeRouteImport } from './routes/_authenti
 import { Route as AuthenticatedChannelChannelIdRouteImport } from './routes/_authenticated/channel/$channelId'
 import { Route as AuthenticatedChannelGuildIdChar123ChannelIdChar125RouteImport } from './routes/_authenticated/channel/$guildId/{-$channelId}'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -35,19 +41,19 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsThemeIndexRoute = SettingsThemeIndexRouteImport.update({
-  id: '/settings/theme/',
-  path: '/settings/theme/',
-  getParentRoute: () => rootRouteImport,
+  id: '/theme/',
+  path: '/theme/',
+  getParentRoute: () => SettingsRoute,
 } as any)
 const SettingsVoiceDevicesRoute = SettingsVoiceDevicesRouteImport.update({
-  id: '/settings/voice/devices',
-  path: '/settings/voice/devices',
-  getParentRoute: () => rootRouteImport,
+  id: '/voice/devices',
+  path: '/voice/devices',
+  getParentRoute: () => SettingsRoute,
 } as any)
 const SettingsAccountProfileRoute = SettingsAccountProfileRouteImport.update({
-  id: '/settings/account/profile',
-  path: '/settings/account/profile',
-  getParentRoute: () => rootRouteImport,
+  id: '/account/profile',
+  path: '/account/profile',
+  getParentRoute: () => SettingsRoute,
 } as any)
 const AuthenticatedChannelAtmeRoute =
   AuthenticatedChannelAtmeRouteImport.update({
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRouteWithChildren
   '/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/channel/@me': typeof AuthenticatedChannelAtmeRoute
   '/settings/account/profile': typeof SettingsAccountProfileRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRouteWithChildren
   '/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/channel/@me': typeof AuthenticatedChannelAtmeRoute
   '/settings/account/profile': typeof SettingsAccountProfileRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRouteWithChildren
   '/_authenticated/channel/$channelId': typeof AuthenticatedChannelChannelIdRoute
   '/_authenticated/channel/@me': typeof AuthenticatedChannelAtmeRoute
   '/settings/account/profile': typeof SettingsAccountProfileRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/settings'
     | '/channel/$channelId'
     | '/channel/@me'
     | '/settings/account/profile'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/settings'
     | '/channel/$channelId'
     | '/channel/@me'
     | '/settings/account/profile'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/settings'
     | '/_authenticated/channel/$channelId'
     | '/_authenticated/channel/@me'
     | '/settings/account/profile'
@@ -142,16 +154,21 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  SettingsRoute: typeof SettingsRouteWithChildren
   AuthenticatedChannelChannelIdRoute: typeof AuthenticatedChannelChannelIdRoute
   AuthenticatedChannelAtmeRoute: typeof AuthenticatedChannelAtmeRoute
-  SettingsAccountProfileRoute: typeof SettingsAccountProfileRoute
-  SettingsVoiceDevicesRoute: typeof SettingsVoiceDevicesRoute
-  SettingsThemeIndexRoute: typeof SettingsThemeIndexRoute
   AuthenticatedChannelGuildIdChar123ChannelIdChar125Route: typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -175,24 +192,24 @@ declare module '@tanstack/react-router' {
     }
     '/settings/theme/': {
       id: '/settings/theme/'
-      path: '/settings/theme'
+      path: '/theme'
       fullPath: '/settings/theme'
       preLoaderRoute: typeof SettingsThemeIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof SettingsRoute
     }
     '/settings/voice/devices': {
       id: '/settings/voice/devices'
-      path: '/settings/voice/devices'
+      path: '/voice/devices'
       fullPath: '/settings/voice/devices'
       preLoaderRoute: typeof SettingsVoiceDevicesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof SettingsRoute
     }
     '/settings/account/profile': {
       id: '/settings/account/profile'
-      path: '/settings/account/profile'
+      path: '/account/profile'
       fullPath: '/settings/account/profile'
       preLoaderRoute: typeof SettingsAccountProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof SettingsRoute
     }
     '/_authenticated/channel/@me': {
       id: '/_authenticated/channel/@me'
@@ -218,15 +235,29 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SettingsRouteChildren {
+  SettingsAccountProfileRoute: typeof SettingsAccountProfileRoute
+  SettingsVoiceDevicesRoute: typeof SettingsVoiceDevicesRoute
+  SettingsThemeIndexRoute: typeof SettingsThemeIndexRoute
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsAccountProfileRoute: SettingsAccountProfileRoute,
+  SettingsVoiceDevicesRoute: SettingsVoiceDevicesRoute,
+  SettingsThemeIndexRoute: SettingsThemeIndexRoute,
+}
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  SettingsRoute: SettingsRouteWithChildren,
   AuthenticatedChannelChannelIdRoute: AuthenticatedChannelChannelIdRoute,
   AuthenticatedChannelAtmeRoute: AuthenticatedChannelAtmeRoute,
-  SettingsAccountProfileRoute: SettingsAccountProfileRoute,
-  SettingsVoiceDevicesRoute: SettingsVoiceDevicesRoute,
-  SettingsThemeIndexRoute: SettingsThemeIndexRoute,
   AuthenticatedChannelGuildIdChar123ChannelIdChar125Route:
     AuthenticatedChannelGuildIdChar123ChannelIdChar125Route,
 }

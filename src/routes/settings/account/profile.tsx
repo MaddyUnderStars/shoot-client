@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute } from "@tanstack/react-router";
-import { PanelLeftDashed } from "lucide-react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { SettingsHeader } from "@/components/settings-header";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -14,11 +14,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPrivateUser } from "@/lib/http/types";
-import { SettingsSidebar } from "@/pages/settings";
 
 export const Route = createFileRoute("/settings/account/profile")({
 	component: Wrapper,
@@ -46,8 +43,6 @@ function Wrapper() {
 }
 
 function RouteComponent({ user }: { user: ApiPrivateUser }) {
-	const isMobile = useIsMobile();
-
 	const { $fetch } = getHttpClient();
 
 	const form = useForm<z.infer<typeof ProfileEditSchema>>({
@@ -73,43 +68,31 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 	};
 
 	return (
-		<SidebarProvider>
-			<SettingsSidebar />
+		<>
+			<SettingsHeader>Profile</SettingsHeader>
 
-			<div className="w-full">
-				<div className="w-full">
-					<div className="p-4 bg-sidebar w-full border-b h-min">
-						{!isMobile ? null : (
-							<SidebarTrigger variant="ghost">
-								<PanelLeftDashed />
-							</SidebarTrigger>
-						)}
-						Profile
-					</div>
-				</div>
+			<div className="p-4 max-w-md">
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(updateProfile)} className="space-y-4">
+						<FormField
+							control={form.control}
+							name="name"
+							disabled
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Username</FormLabel>
+									<FormDescription>
+										You cannot change your username.
+									</FormDescription>
+									<FormControl>
+										<Input {...field} autoComplete="off" />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-				<div className="p-4 max-w-md">
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(updateProfile)} className="space-y-4">
-							<FormField
-								control={form.control}
-								name="name"
-								disabled
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Username</FormLabel>
-										<FormDescription>
-											You cannot change your username.
-										</FormDescription>
-										<FormControl>
-											<Input {...field} autoComplete="off" />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							{/* <FormField
+						{/* <FormField
 								control={form.control}
 								name="email"
 								render={({ field }) => (
@@ -123,44 +106,43 @@ function RouteComponent({ user }: { user: ApiPrivateUser }) {
 								)}
 							/> */}
 
-							<FormField
-								control={form.control}
-								name="display_name"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Display Name</FormLabel>
-										<FormDescription>
-											This name will overwrite your username for display
-											purposes. It will not change your handle
-										</FormDescription>
-										<FormControl>
-											<Input {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+						<FormField
+							control={form.control}
+							name="display_name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Display Name</FormLabel>
+									<FormDescription>
+										This name will overwrite your username for display purposes.
+										It will not change your handle
+									</FormDescription>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-							<FormField
-								control={form.control}
-								name="summary"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Summary</FormLabel>
-										<FormDescription>Your profile summary/bio</FormDescription>
-										<FormControl>
-											<Input {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+						<FormField
+							control={form.control}
+							name="summary"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Summary</FormLabel>
+									<FormDescription>Your profile summary/bio</FormDescription>
+									<FormControl>
+										<Input {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-							<Button type="submit">Save</Button>
-						</form>
-					</Form>
-				</div>
+						<Button type="submit">Save</Button>
+					</form>
+				</Form>
 			</div>
-		</SidebarProvider>
+		</>
 	);
 }
