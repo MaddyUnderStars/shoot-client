@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { getHttpClient } from "@/lib/http/client";
 import { getAppStore } from "@/lib/store/app-store";
 
-export const Route = createFileRoute("/settings/account/security")({
+export const Route = createFileRoute("/_authenticated/settings/account/security")({
 	component: RouteComponent,
 });
 

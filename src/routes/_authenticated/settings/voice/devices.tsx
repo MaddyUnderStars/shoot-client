@@ -105,6 +105,6 @@ const RouteComponent = observer(() => {
 	);
 });
 
-export const Route = createFileRoute("/settings/voice/devices")({
+export const Route = createFileRoute("/_authenticated/settings/voice/devices")({
 	component: RouteComponent,
 });

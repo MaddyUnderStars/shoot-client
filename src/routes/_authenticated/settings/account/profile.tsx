@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPrivateUser } from "@/lib/http/types";
 
-export const Route = createFileRoute("/settings/account/profile")({
+export const Route = createFileRoute("/_authenticated/settings/account/profile")({
 	component: Wrapper,
 });
 
