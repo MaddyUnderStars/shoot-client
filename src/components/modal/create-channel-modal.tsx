@@ -12,7 +12,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input";
 
 const CreateChannelSchema = z.object({
-	name: z.string().min(1),
+	name: z
+		.string({ error: "Must specify channel name" })
+		.min(1, { error: "Channel name must not be empty" }),
 });
 
 export const CreateChannelModal = NiceModal.create(({ guild }: { guild: Guild }) => {
