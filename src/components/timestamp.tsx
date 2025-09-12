@@ -1,18 +1,18 @@
-import { useIsMobile } from "@/hooks/use-mobile";
-
-const TIMESTAMP_LIMIT = 12 * 60 * 60 * 1000; // 12 hours
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
+import { Tooltip, TooltipContent } from "./ui/tooltip";
 
 export const Timestamp = ({ date }: { date: Date }) => {
-	const isMobile = useIsMobile();
-
 	if (Number.isNaN(date.getTime())) return null;
 
 	return (
 		<span>
-			{date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-			{!isMobile && Date.now() - date.valueOf() > TIMESTAMP_LIMIT
-				? ` - ${date.toLocaleDateString()}`
-				: null}
+			<Tooltip>
+				<TooltipTrigger>
+					{date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+				</TooltipTrigger>
+
+				<TooltipContent>{date.toLocaleString()}</TooltipContent>
+			</Tooltip>
 		</span>
 	);
 };
