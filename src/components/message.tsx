@@ -56,11 +56,14 @@ export const MessageComponent = ({
 				<div>
 					{showAuthor ? (
 						<Popover>
-							<PopoverTrigger className="flex gap-2 cursor-pointer">
-								<span>{message.author_id}</span>
+							<div className="flex gap-2">
+								<PopoverTrigger className="cursor-pointer inline">
+									<span>{message.author_id}</span>
+								</PopoverTrigger>
 
 								<Timestamp date={new Date(message.published)} />
-							</PopoverTrigger>
+							</div>
+
 							<UserPopover user={message.author_id} />
 						</Popover>
 					) : null}
