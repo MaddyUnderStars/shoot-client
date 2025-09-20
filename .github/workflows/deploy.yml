@@ -28,7 +28,7 @@ jobs:
               id: build
               run: |
                 npm ci
-                BASE_PATH="/shoot-client" npm run build
+                BASE_PATH="/shoot-client" VITE_USE_HASH_ROUTER=1 npm run build
                 
             - name: test
               id: test
