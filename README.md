@@ -20,7 +20,8 @@ npm run dev
 
 - `VITE_DEFAULT_INSTANCE` - sets the default instance on the registration and login pages
 - `BASE_PATH` - sets the base URL of the SPA
-- `VITE_LOCK_INSTANCE` prevents users from setting their own instance in login/registration
+- `VITE_LOCK_INSTANCE` - prevents users from setting their own instance in login/registration
+- `VITE_USE_HASH_ROUTER` - use a hash-based router instead of path-based for environments like github pages
 
 ## Screenshots
 
