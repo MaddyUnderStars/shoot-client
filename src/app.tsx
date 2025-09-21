@@ -15,7 +15,9 @@ const router = createRouter({
 	history,
 	routeTree,
 	pathParamsAllowedCharacters: ["@"],
-	basepath: import.meta.env.BASE_URL,
+
+	// if we're using hash routing, tanstack router will add the base url to the hash as well
+	basepath: !import.meta.env.VITE_USE_HASH_ROUTER ? import.meta.env.BASE_URL : undefined,
 });
 
 declare module "@tanstack/react-router" {
