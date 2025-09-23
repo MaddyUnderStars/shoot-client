@@ -134,15 +134,21 @@ export const CreateGuildModal = NiceModal.create(() => {
 			</CardContent>
 
 			<CardFooter className="gap-2 justify-between">
-				<Button variant="outline" form="create-or-join-guild-form" type="submit">
-					{mode === "create" ? "Create" : "Join"}
-				</Button>
-
 				<Button
 					variant="outline"
+					className="cursor-pointer"
 					onClick={() => setMode(mode === "create" ? "join" : "create")}
 				>
 					{mode === "create" ? "Join" : "Create"} instead?
+				</Button>
+
+				<Button
+					className="cursor-pointer"
+					variant="default"
+					form="create-or-join-guild-form"
+					type="submit"
+				>
+					{mode === "create" ? "Create" : "Join"}
 				</Button>
 			</CardFooter>
 		</ModalContainer>
