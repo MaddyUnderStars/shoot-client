@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { MEMBERS_CHUNK } from "@/lib/client/common/receive";
 import type { Channel } from "@/lib/client/entity/channel";
 import type { Guild } from "@/lib/client/entity/guild";
-import { getGatewayClient } from "@/lib/client/gateway";
+import { gatewayClient } from "@/lib/client/gateway";
 import { splitQualifiedMention } from "@/lib/utils";
 import { UserPopover } from "./popover/user-popover";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -17,19 +17,15 @@ export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild
 			setMembers(data.d.items);
 		};
 
-		const gw = getGatewayClient();
-
-		gw.addListener("MEMBERS_CHUNK", cb);
+		gatewayClient.addListener("MEMBERS_CHUNK", cb);
 
 		return () => {
-			gw.removeListener("MEMBERS_CHUNK", cb);
+			gatewayClient.removeListener("MEMBERS_CHUNK", cb);
 		};
 	}, []);
 
 	useEffect(() => {
-		const gw = getGatewayClient();
-
-		gw.send({
+		gatewayClient.send({
 			t: "members",
 			range: [0, 100],
 			channel_id: channel.mention,

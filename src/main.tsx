@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import { App } from "./app";
-import { createGatewayClient } from "./lib/client/gateway";
+import { gatewayClient } from "./lib/client/gateway";
 import { getLogin } from "./lib/storage";
 
 import "./index.css";
@@ -10,7 +10,7 @@ import "./index.css";
 // If we're logged in, connect to gateway
 const login = getLogin();
 if (login) {
-	createGatewayClient(login).login();
+	gatewayClient.login(login);
 }
 
 // Render the app

@@ -18,8 +18,8 @@ type Timeout = ReturnType<typeof setTimeout>;
 
 export class ShootGatewayClient extends EventEmitter {
 	private socket: WebSocket | null = null;
-	private token: string;
-	private _instance: InstanceOptions;
+	private token!: string;
+	private _instance!: InstanceOptions;
 
 	private sequence: number = 0;
 	private heartbeatTimeout?: Timeout = undefined;
@@ -27,13 +27,17 @@ export class ShootGatewayClient extends EventEmitter {
 	private reconnectAttempts = 0;
 	private reconnectTimeout?: Timeout = undefined;
 
+	private isReady = false;
+
+	public get ready() {
+		return this.isReady;
+	}
+
 	public get instance() {
 		return this._instance;
 	}
 
-	constructor(opts: ClientOptions) {
-		super();
-
+	public login = (opts: ClientOptions) => {
 		const http = new URL(
 			typeof opts.instance === "string" ? opts.instance : opts.instance.http,
 		);
@@ -50,11 +54,10 @@ export class ShootGatewayClient extends EventEmitter {
 		};
 
 		this.token = opts.token;
-	}
 
-	public login = () => {
 		this.socket = new WebSocket(this.instance.gateway);
 
+		this.isReady = false;
 		this.socket.onopen = this.onOpen;
 		this.socket.onmessage = this.onMessage;
 		this.socket.onerror = this.onError;
@@ -69,6 +72,7 @@ export class ShootGatewayClient extends EventEmitter {
 	public close = () => {
 		this.socket?.close();
 		this.socket = null;
+		this.isReady = false;
 	};
 
 	public send = (data: GATEWAY_SEND_PAYLOAD) => {
@@ -102,6 +106,8 @@ export class ShootGatewayClient extends EventEmitter {
 		clearTimeout(this.reconnectTimeout);
 		this.reconnectTimeout = undefined;
 
+		this.emit("SOCKET_OPEN");
+
 		this.send({
 			t: "identify",
 			token: this.token,
@@ -114,8 +120,6 @@ export class ShootGatewayClient extends EventEmitter {
 		this.sequence++;
 
 		const app = getAppStore();
-
-		this.emit(parsed.t, parsed);
 
 		switch (parsed.t) {
 			case "READY": {
@@ -130,6 +134,8 @@ export class ShootGatewayClient extends EventEmitter {
 				app.setGuilds(parsed.d.guilds.map((x) => new Guild(x)));
 
 				app.setRelationships(parsed.d.relationships.map((x) => new Relationship(x)));
+
+				this.isReady = true;
 				break;
 			}
 			case "CHANNEL_CREATE": {
@@ -173,16 +179,22 @@ export class ShootGatewayClient extends EventEmitter {
 				break;
 			}
 		}
+
+		this.emit(parsed.t, parsed);
 	};
 
 	private onError = (event: Event) => {
 		Log.error("Websocket error", event);
+
+		this.emit("SOCKET_ERROR", event);
 	};
 
 	private onClose = ({ code }: CloseEvent) => {
 		clearTimeout(this.heartbeatTimeout);
 		this.sequence = 0;
 		Log.error(`Disconnected from gateway with code ${code}`);
+
+		this.emit("SOCKET_CLOSE", code);
 
 		if (code === CLOSE_CODES.BAD_TOKEN) {
 			// don't reconnect if our token is wrong
@@ -199,7 +211,7 @@ export class ShootGatewayClient extends EventEmitter {
 
 					if (!this.instance || !this.token) return;
 
-					this.login();
+					this.login({ instance: this._instance, token: this.token });
 				},
 				1000 * this.reconnectAttempts + this.jitter(this.reconnectAttempts * 1000),
 			);
@@ -207,15 +219,4 @@ export class ShootGatewayClient extends EventEmitter {
 	};
 }
 
-let client: ShootGatewayClient;
-
-export const createGatewayClient = (opts: ClientOptions) => {
-	client = client ?? new ShootGatewayClient(opts);
-	return client;
-};
-
-export const getGatewayClient = () => {
-	if (!client) throw new Error("Shoot gateway not initialised");
-
-	return client;
-};
+export const gatewayClient = new ShootGatewayClient();

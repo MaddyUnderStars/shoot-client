@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { GATEWAY_EVENT } from "@/lib/client/common/receive";
-import { getGatewayClient } from "@/lib/client/gateway";
+import { gatewayClient } from "@/lib/client/gateway";
 
 type NarrowEvent<A, K> = A extends {
 	t: K;
@@ -17,12 +17,10 @@ export const useGateway = <T extends GATEWAY_EVENT, K extends T["t"]>(
 	listener: ListenerType<T, K>,
 ) => {
 	useEffect(() => {
-		const gw = getGatewayClient();
-
-		gw.addListener(event, listener);
+		gatewayClient.addListener(event, listener);
 
 		return () => {
-			gw.removeListener(event, listener);
+			gatewayClient.removeListener(event, listener);
 		};
 	}, [event, listener]);
 };

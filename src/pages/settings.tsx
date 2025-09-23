@@ -13,7 +13,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import { getGatewayClient } from "@/lib/client/gateway";
+import { gatewayClient } from "@/lib/client/gateway";
 
 export const SettingsSidebar = () => {
 	const sidebar = useSidebar();
@@ -107,7 +107,7 @@ export const SettingsSidebar = () => {
 							<Button
 								variant="destructive"
 								onClick={() => {
-									getGatewayClient().logout();
+									gatewayClient.logout();
 									navigate({
 										to: "/login",
 									});

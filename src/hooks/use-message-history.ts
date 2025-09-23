@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import type { ActorMention } from "@/lib/client/common/actor";
 import type { MESSAGE_CREATE, MESSAGE_DELETE, MESSAGE_UPDATE } from "@/lib/client/common/receive";
 import { Message } from "@/lib/client/entity/message";
-import { getGatewayClient } from "@/lib/client/gateway";
+import { gatewayClient } from "@/lib/client/gateway";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPublicMessage } from "@/lib/http/types";
 
@@ -44,8 +44,6 @@ export const useMessageHistory = (channel: ActorMention) => {
 	);
 
 	useEffect(() => {
-		const gw = getGatewayClient();
-
 		const createListener = (event: MESSAGE_CREATE) => {
 			if (!event) return;
 
@@ -87,14 +85,14 @@ export const useMessageHistory = (channel: ActorMention) => {
 			});
 		};
 
-		gw.addListener("MESSAGE_CREATE", createListener);
-		gw.addListener("MESSAGE_UPDATE", updateListener);
-		gw.addListener("MESSAGE_DELETE", deleteListener);
+		gatewayClient.addListener("MESSAGE_CREATE", createListener);
+		gatewayClient.addListener("MESSAGE_UPDATE", updateListener);
+		gatewayClient.addListener("MESSAGE_DELETE", deleteListener);
 
 		return () => {
-			gw.removeListener("MESSAGE_CREATE", createListener);
-			gw.removeListener("MESSAGE_UPDATE", updateListener);
-			gw.removeListener("MESSAGE_DELETE", deleteListener);
+			gatewayClient.removeListener("MESSAGE_CREATE", createListener);
+			gatewayClient.removeListener("MESSAGE_UPDATE", updateListener);
+			gatewayClient.removeListener("MESSAGE_DELETE", deleteListener);
 		};
 	});
 

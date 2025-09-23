@@ -6,7 +6,7 @@ import z from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { createGatewayClient } from "@/lib/client/gateway";
+import { gatewayClient } from "@/lib/client/gateway";
 import type { paths } from "@/lib/http/generated/v1";
 import { setLogin } from "@/lib/storage";
 import { cn } from "@/lib/utils";
@@ -63,7 +63,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
 		setLogin(login);
 
-		createGatewayClient(login).login();
+		gatewayClient.login(login);
 
 		navigation({
 			to: "/channel/@me",

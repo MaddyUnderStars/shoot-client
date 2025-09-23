@@ -132,3 +132,30 @@
 .content-visibility-auto {
 	content-visibility: auto;
 }
+
+/* for ready loading animation */
+.fade-enter {
+	opacity: 0;
+	background-color: transparent;
+}
+
+.fade-enter-active {
+	background-color: var(--color-background);
+	opacity: 1;
+	transition:
+		opacity 200ms ease-in-out,
+		background-color 200ms ease-in-out;
+}
+
+.fade-exit {
+	background-color: var(--color-background);
+	opacity: 1;
+}
+
+.fade-exit-active {
+	opacity: 0;
+	background-color: transparent;
+	transition:
+		opacity 200ms ease-in-out,
+		background-color 200ms ease-in-out;
+}
