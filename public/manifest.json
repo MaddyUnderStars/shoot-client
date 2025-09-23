@@ -12,7 +12,7 @@
 			"sizes": "192x192"
 		}
 	],
-	"start_url": "/",
+	"start_url": "./",
 	"display": "standalone",
 	"prefer_related_applications": false
 }
