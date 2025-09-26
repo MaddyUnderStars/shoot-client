@@ -27,6 +27,7 @@ export default defineConfig({
 				name: "Shoot Client",
 				short_name: "Shoot",
 				theme_color: "#6d6beb",
+				background_color: "#17171b",
 				icons: [
 					{
 						src: "512.png",
@@ -39,7 +40,6 @@ export default defineConfig({
 						sizes: "192x192",
 					},
 				],
-				start_url: "./",
 				display: "standalone",
 				prefer_related_applications: false,
 			},
