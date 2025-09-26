@@ -44,13 +44,6 @@ export default defineConfig({
 			},
 		}),
 	],
-	build: {
-		lib: {
-			entry: "./src/serviceWorker.ts",
-			formats: ["es"],
-			fileName: "serviceWorker",
-		},
-	},
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
