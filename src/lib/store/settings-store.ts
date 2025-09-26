@@ -13,12 +13,17 @@ export class SettingsStore {
 
 	@observable ui_density: number = 0.22;
 
+	@observable notifications = {
+		enabled: false,
+		device_name: navigator.userAgent,
+	};
+
 	constructor() {
 		makeAutoObservable(this);
 
 		makePersistable(this, {
 			name: "settings-store",
-			properties: ["voice", "ui_density"],
+			properties: ["voice", "ui_density", "notifications"],
 			storage: window.localStorage,
 		});
 	}

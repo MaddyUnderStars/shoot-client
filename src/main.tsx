@@ -6,11 +6,18 @@ import { gatewayClient } from "./lib/client/gateway";
 import { getLogin } from "./lib/storage";
 
 import "./index.css";
+import { subscribeNotifications } from "./lib/notifications";
+import { getAppStore } from "./lib/store/app-store";
 
 // If we're logged in, connect to gateway
 const login = getLogin();
 if (login) {
 	gatewayClient.login(login);
+
+	if (getAppStore().settings.notifications.enabled) {
+		// Resubscribe to notifications if there's enabled
+		subscribeNotifications();
+	}
 }
 
 // Render the app

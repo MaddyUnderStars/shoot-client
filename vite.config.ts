@@ -21,10 +21,11 @@ export default defineConfig({
 		tailwindcss(),
 		VitePWA({
 			workbox: {
-				importScripts: ["./serviceWorker.ts"],
+				importScripts: ["./serviceWorker.js"],
 			},
 			manifest: {
-				name: "Shoot",
+				name: "Shoot Client",
+				short_name: "Shoot",
 				theme_color: "#6d6beb",
 				icons: [
 					{

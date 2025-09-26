@@ -395,6 +395,135 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/users/@me/push/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path?: never;
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": {
+							name: string;
+							created: string;
+						}[];
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		put?: never;
+		post: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path?: never;
+				cookie?: never;
+			};
+			requestBody?: {
+				content: {
+					"application/json": {
+						name: string;
+						/** Format: uri */
+						endpoint: string;
+						p256dh: string;
+						auth: string;
+					};
+				};
+			};
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				204: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": "No Content";
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/users/@me/push/{name}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					name: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				202: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": "Accepted";
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/users/{user_id}/": {
 		parameters: {
 			query?: never;
