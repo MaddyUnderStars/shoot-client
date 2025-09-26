@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import type { Message } from "@/lib/client/entity/message";
 import { getAppStore } from "@/lib/store/app-store";
 
-export const Route = createFileRoute("/_authenticated/settings/theme/")({
+export const Route = createFileRoute("/_authenticated/settings/app/theme")({
 	component: RouteComponent,
 });
 

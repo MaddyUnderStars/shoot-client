@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { KeyRound, Mic, Palette, UserPen, XIcon } from "lucide-react";
+import { BellRing, KeyRound, Mic, Palette, UserPen, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Sidebar,
@@ -14,6 +14,8 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { gatewayClient } from "@/lib/client/gateway";
+
+// todo: https://web.dev/articles/push-notifications-subscribing-a-user
 
 export const SettingsSidebar = () => {
 	const sidebar = useSidebar();
@@ -76,11 +78,23 @@ export const SettingsSidebar = () => {
 						<SidebarMenu>
 							<SidebarMenuButton asChild>
 								<Link
-									to="/settings/theme"
+									to="/settings/app/theme"
 									onClick={() => sidebar.setOpenMobile(false)}
 								>
 									<Palette />
 									<span>Look and Feel</span>
+								</Link>
+							</SidebarMenuButton>
+						</SidebarMenu>
+
+						<SidebarMenu>
+							<SidebarMenuButton asChild>
+								<Link
+									to="/settings/app/notifications"
+									onClick={() => sidebar.setOpenMobile(false)}
+								>
+									<BellRing />
+									<span>Notifications</span>
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenu>

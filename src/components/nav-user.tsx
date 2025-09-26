@@ -47,7 +47,7 @@ export const NavUser = observer(() => {
 								variant="ghost"
 								onClick={() =>
 									navigate({
-										to: "/settings/theme",
+										to: "/settings/account/profile",
 									})
 								}
 							>

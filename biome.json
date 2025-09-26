@@ -1,5 +1,6 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.2.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+	"root": true,
 	"formatter": {
 		"enabled": true,
 		"formatWithErrors": true,
@@ -45,6 +46,12 @@
 		"enabled": true
 	},
 	"files": {
-		"includes": ["src/**", "!src/routeTree.gen.ts", "!src/components/ui"]
+		"includes": [
+			"./src/**",
+			"./vite.config.ts",
+			"./index.html",
+			"!src/routeTree.gen.ts",
+			"!src/components/ui"
+		]
 	}
 }

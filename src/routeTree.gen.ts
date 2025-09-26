@@ -16,8 +16,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedChannelAtmeRouteImport } from './routes/_authenticated/channel/@me'
 import { Route as AuthenticatedChannelChannelIdRouteImport } from './routes/_authenticated/channel/$channelId'
-import { Route as AuthenticatedSettingsThemeIndexRouteImport } from './routes/_authenticated/settings/theme/index'
 import { Route as AuthenticatedSettingsVoiceDevicesRouteImport } from './routes/_authenticated/settings/voice/devices'
+import { Route as AuthenticatedSettingsAppThemeRouteImport } from './routes/_authenticated/settings/app/theme'
+import { Route as AuthenticatedSettingsAppNotificationsRouteImport } from './routes/_authenticated/settings/app/notifications'
 import { Route as AuthenticatedSettingsAccountSecurityRouteImport } from './routes/_authenticated/settings/account/security'
 import { Route as AuthenticatedSettingsAccountProfileRouteImport } from './routes/_authenticated/settings/account/profile'
 import { Route as AuthenticatedChannelGuildIdChar123ChannelIdChar125RouteImport } from './routes/_authenticated/channel/$guildId/{-$channelId}'
@@ -58,16 +59,22 @@ const AuthenticatedChannelChannelIdRoute =
     path: '/channel/$channelId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedSettingsThemeIndexRoute =
-  AuthenticatedSettingsThemeIndexRouteImport.update({
-    id: '/theme/',
-    path: '/theme/',
-    getParentRoute: () => AuthenticatedSettingsRoute,
-  } as any)
 const AuthenticatedSettingsVoiceDevicesRoute =
   AuthenticatedSettingsVoiceDevicesRouteImport.update({
     id: '/voice/devices',
     path: '/voice/devices',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsAppThemeRoute =
+  AuthenticatedSettingsAppThemeRouteImport.update({
+    id: '/app/theme',
+    path: '/app/theme',
+    getParentRoute: () => AuthenticatedSettingsRoute,
+  } as any)
+const AuthenticatedSettingsAppNotificationsRoute =
+  AuthenticatedSettingsAppNotificationsRouteImport.update({
+    id: '/app/notifications',
+    path: '/app/notifications',
     getParentRoute: () => AuthenticatedSettingsRoute,
   } as any)
 const AuthenticatedSettingsAccountSecurityRoute =
@@ -99,8 +106,9 @@ export interface FileRoutesByFullPath {
   '/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
   '/settings/account/profile': typeof AuthenticatedSettingsAccountProfileRoute
   '/settings/account/security': typeof AuthenticatedSettingsAccountSecurityRoute
+  '/settings/app/notifications': typeof AuthenticatedSettingsAppNotificationsRoute
+  '/settings/app/theme': typeof AuthenticatedSettingsAppThemeRoute
   '/settings/voice/devices': typeof AuthenticatedSettingsVoiceDevicesRoute
-  '/settings/theme': typeof AuthenticatedSettingsThemeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -112,8 +120,9 @@ export interface FileRoutesByTo {
   '/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
   '/settings/account/profile': typeof AuthenticatedSettingsAccountProfileRoute
   '/settings/account/security': typeof AuthenticatedSettingsAccountSecurityRoute
+  '/settings/app/notifications': typeof AuthenticatedSettingsAppNotificationsRoute
+  '/settings/app/theme': typeof AuthenticatedSettingsAppThemeRoute
   '/settings/voice/devices': typeof AuthenticatedSettingsVoiceDevicesRoute
-  '/settings/theme': typeof AuthenticatedSettingsThemeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -127,8 +136,9 @@ export interface FileRoutesById {
   '/_authenticated/channel/$guildId/{-$channelId}': typeof AuthenticatedChannelGuildIdChar123ChannelIdChar125Route
   '/_authenticated/settings/account/profile': typeof AuthenticatedSettingsAccountProfileRoute
   '/_authenticated/settings/account/security': typeof AuthenticatedSettingsAccountSecurityRoute
+  '/_authenticated/settings/app/notifications': typeof AuthenticatedSettingsAppNotificationsRoute
+  '/_authenticated/settings/app/theme': typeof AuthenticatedSettingsAppThemeRoute
   '/_authenticated/settings/voice/devices': typeof AuthenticatedSettingsVoiceDevicesRoute
-  '/_authenticated/settings/theme/': typeof AuthenticatedSettingsThemeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -142,8 +152,9 @@ export interface FileRouteTypes {
     | '/channel/$guildId/{-$channelId}'
     | '/settings/account/profile'
     | '/settings/account/security'
+    | '/settings/app/notifications'
+    | '/settings/app/theme'
     | '/settings/voice/devices'
-    | '/settings/theme'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,8 +166,9 @@ export interface FileRouteTypes {
     | '/channel/$guildId/{-$channelId}'
     | '/settings/account/profile'
     | '/settings/account/security'
+    | '/settings/app/notifications'
+    | '/settings/app/theme'
     | '/settings/voice/devices'
-    | '/settings/theme'
   id:
     | '__root__'
     | '/'
@@ -169,8 +181,9 @@ export interface FileRouteTypes {
     | '/_authenticated/channel/$guildId/{-$channelId}'
     | '/_authenticated/settings/account/profile'
     | '/_authenticated/settings/account/security'
+    | '/_authenticated/settings/app/notifications'
+    | '/_authenticated/settings/app/theme'
     | '/_authenticated/settings/voice/devices'
-    | '/_authenticated/settings/theme/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -231,18 +244,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedChannelChannelIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/settings/theme/': {
-      id: '/_authenticated/settings/theme/'
-      path: '/theme'
-      fullPath: '/settings/theme'
-      preLoaderRoute: typeof AuthenticatedSettingsThemeIndexRouteImport
-      parentRoute: typeof AuthenticatedSettingsRoute
-    }
     '/_authenticated/settings/voice/devices': {
       id: '/_authenticated/settings/voice/devices'
       path: '/voice/devices'
       fullPath: '/settings/voice/devices'
       preLoaderRoute: typeof AuthenticatedSettingsVoiceDevicesRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/app/theme': {
+      id: '/_authenticated/settings/app/theme'
+      path: '/app/theme'
+      fullPath: '/settings/app/theme'
+      preLoaderRoute: typeof AuthenticatedSettingsAppThemeRouteImport
+      parentRoute: typeof AuthenticatedSettingsRoute
+    }
+    '/_authenticated/settings/app/notifications': {
+      id: '/_authenticated/settings/app/notifications'
+      path: '/app/notifications'
+      fullPath: '/settings/app/notifications'
+      preLoaderRoute: typeof AuthenticatedSettingsAppNotificationsRouteImport
       parentRoute: typeof AuthenticatedSettingsRoute
     }
     '/_authenticated/settings/account/security': {
@@ -272,8 +292,9 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedSettingsRouteChildren {
   AuthenticatedSettingsAccountProfileRoute: typeof AuthenticatedSettingsAccountProfileRoute
   AuthenticatedSettingsAccountSecurityRoute: typeof AuthenticatedSettingsAccountSecurityRoute
+  AuthenticatedSettingsAppNotificationsRoute: typeof AuthenticatedSettingsAppNotificationsRoute
+  AuthenticatedSettingsAppThemeRoute: typeof AuthenticatedSettingsAppThemeRoute
   AuthenticatedSettingsVoiceDevicesRoute: typeof AuthenticatedSettingsVoiceDevicesRoute
-  AuthenticatedSettingsThemeIndexRoute: typeof AuthenticatedSettingsThemeIndexRoute
 }
 
 const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
@@ -281,9 +302,11 @@ const AuthenticatedSettingsRouteChildren: AuthenticatedSettingsRouteChildren = {
     AuthenticatedSettingsAccountProfileRoute,
   AuthenticatedSettingsAccountSecurityRoute:
     AuthenticatedSettingsAccountSecurityRoute,
+  AuthenticatedSettingsAppNotificationsRoute:
+    AuthenticatedSettingsAppNotificationsRoute,
+  AuthenticatedSettingsAppThemeRoute: AuthenticatedSettingsAppThemeRoute,
   AuthenticatedSettingsVoiceDevicesRoute:
     AuthenticatedSettingsVoiceDevicesRoute,
-  AuthenticatedSettingsThemeIndexRoute: AuthenticatedSettingsThemeIndexRoute,
 }
 
 const AuthenticatedSettingsRouteWithChildren =

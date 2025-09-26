@@ -26,8 +26,6 @@ export const ReadyLoaderComponent = observer(({ children }: React.PropsWithChild
 
 	const ref = useRef(null);
 
-	console.log(isReady);
-
 	return (
 		<>
 			{isReady ? children : null}
