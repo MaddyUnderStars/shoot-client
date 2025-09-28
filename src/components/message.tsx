@@ -74,7 +74,7 @@ export const MessageComponent = ({
 							<FilePreview file={file} channel={message.channel} key={file.hash} />
 						))}
 
-						{!message.embeds ? null : (
+						{!message.embeds?.length ? null : (
 							<div className="mt-2 flex gap-2 flex-wrap">
 								{message.embeds?.map((embed) => (
 									<EmbedComponent embed={embed} key={embed.target} />
@@ -86,22 +86,27 @@ export const MessageComponent = ({
 			</div>
 
 			{showControls ? (
-				<DropdownMenu onOpenChange={(open) => setOpen(open)}>
-					<DropdownMenuTrigger
-						className={cn([
-							"bg-accent rounded group-hover:block mt-2 p-0.5",
-							open ? "" : "hidden",
-						])}
-					>
-						<ChevronDown size={16} />
-					</DropdownMenuTrigger>
+				<div className="relative">
+					<DropdownMenu onOpenChange={(open) => setOpen(open)}>
+						<DropdownMenuTrigger
+							className={cn([
+								"bg-accent rounded group-hover:block absolute right-1 p-1",
+								open ? "" : "hidden",
+							])}
+						>
+							<ChevronDown size={16} />
+						</DropdownMenuTrigger>
 
-					<DropdownMenuContent>
-						<DropdownMenuItem variant="destructive" onClick={() => message.delete()}>
-							Delete
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+						<DropdownMenuContent>
+							<DropdownMenuItem
+								variant="destructive"
+								onClick={() => message.delete()}
+							>
+								Delete
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
 			) : null}
 		</div>
 	);
