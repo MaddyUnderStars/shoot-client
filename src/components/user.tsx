@@ -1,10 +1,13 @@
-import React from "react";
-import type { PrivateUser } from "@/lib/client/entity/private-user";
-import type { PublicUser } from "@/lib/client/entity/public-user";
+import { useUser } from "@/hooks/use-user";
+import type { ActorMention } from "@/lib/client/common/actor";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Skeleton } from "./ui/skeleton";
 
-export const UserComponent = React.memo(({ user }: { user: PublicUser | PrivateUser }) => {
+export const UserComponent = ({ user_id }: { user_id: ActorMention }) => {
+	const { user } = useUser(user_id);
+
+	if (!user) return null; // todo: skeleton
+
 	return (
 		<>
 			<Avatar className="h-8 w-8 rounded-lg">
@@ -23,4 +26,4 @@ export const UserComponent = React.memo(({ user }: { user: PublicUser | PrivateU
 			</div>
 		</>
 	);
-});
+};

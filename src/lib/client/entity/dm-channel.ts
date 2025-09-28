@@ -5,8 +5,7 @@ import { Channel } from "./channel";
 
 export class DmChannel extends Channel implements ApiPublicDmChannel {
 	@observable owner: ActorMention;
-	@observable
-	recipients: ActorMention[];
+	@observable recipients: ActorMention[];
 
 	constructor(opts: ApiPublicDmChannel) {
 		super(opts);

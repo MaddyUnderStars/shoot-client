@@ -6,6 +6,7 @@ import type { PrivateUser } from "../client/entity/private-user";
 import type { Relationship } from "../client/entity/relationship";
 import { ShootWebrtcClient } from "../client/webrtc";
 import { SettingsStore } from "./settings-store";
+import { UserStore } from "./user-store";
 
 export class AppStore {
 	@observable
@@ -24,6 +25,8 @@ export class AppStore {
 
 	@observable
 	settings: SettingsStore = new SettingsStore();
+
+	@observable users = new UserStore();
 
 	@action
 	public startWebrtc = (channel: ActorMention, endpoint: URL, token: string) => {

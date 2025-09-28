@@ -3,11 +3,9 @@ import type { MEMBERS_CHUNK } from "@/lib/client/common/receive";
 import type { Channel } from "@/lib/client/entity/channel";
 import type { Guild } from "@/lib/client/entity/guild";
 import { gatewayClient } from "@/lib/client/gateway";
-import { splitQualifiedMention } from "@/lib/utils";
 import { UserPopover } from "./popover/user-popover";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Popover, PopoverTrigger } from "./ui/popover";
-import { Skeleton } from "./ui/skeleton";
+import { UserComponent } from "./user";
 
 export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild }) => {
 	const [members, setMembers] = useState<MEMBERS_CHUNK["d"]["items"]>([]);
@@ -51,25 +49,8 @@ export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild
 					return (
 						<Popover key={x.user_id}>
 							<PopoverTrigger>
-								<div className="flex gap-2 p-1 hover:bg-black/20">
-									<Avatar className="h-8 w-8 rounded-lg">
-										<AvatarImage
-											src={
-												"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-											}
-											alt="Username"
-										/>
-										<AvatarFallback>
-											<Skeleton className="h-8 w-8 rounded-full" />
-										</AvatarFallback>
-									</Avatar>
-
-									<div className="grid flex-1 text-left text-sm leading-right">
-										<span className="truncate font-medium">{x.name}</span>
-										<span className="truncate font-xs">
-											@{splitQualifiedMention(x.user_id).domain}
-										</span>
-									</div>
+								<div className="text-white flex items-center gap-2">
+									<UserComponent user_id={x.user_id} />
 								</div>
 							</PopoverTrigger>
 							<UserPopover user={x.user_id} />

@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { useUser } from "@/hooks/use-user";
 import type { Message } from "@/lib/client/entity/message";
 import { cn } from "@/lib/utils";
 import { EmbedComponent } from "./embed";
@@ -27,6 +28,8 @@ export const MessageComponent = ({
 	showControls?: boolean;
 }) => {
 	const [open, setOpen] = useState<boolean>();
+
+	const { user } = useUser(message.author_id);
 
 	return (
 		<div className="flex justify-between items-start pe-5 group hover:bg-secondary">
@@ -58,7 +61,7 @@ export const MessageComponent = ({
 						<Popover>
 							<div className="flex gap-2">
 								<PopoverTrigger className="cursor-pointer inline">
-									<span>{message.author_id}</span>
+									<span>{user?.display_name ?? message.author_id}</span>
 								</PopoverTrigger>
 
 								<Timestamp date={new Date(message.published)} />

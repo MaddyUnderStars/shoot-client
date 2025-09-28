@@ -8,7 +8,7 @@ export enum RelationshipType {
 	blocked = 2,
 }
 
-export class Relationship implements Omit<ApiPrivateRelationship, "user"> {
+export class Relationship implements ApiPrivateRelationship {
 	@observable created: string;
 	@observable user: PublicUser;
 	@observable type: RelationshipType;
