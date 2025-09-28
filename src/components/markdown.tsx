@@ -7,6 +7,7 @@ import { Marked } from "marked";
 import MarkedComponent, { type ReactRenderer } from "marked-react";
 import React from "react";
 import reactStringReplace from "react-string-replace";
+import type { ActorMention } from "@/lib/client/common/actor";
 import { Mention } from "./mention";
 
 const USER_MENTION_REGEX =
@@ -51,14 +52,14 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 		);
 	},
 	listItem: (children) => <li className="list-disc">{children}</li>,
-	heading: (children, level) => <h1 className="text-2xl">{children}</h1>,
-	code: (code, lang) => <pre className="bg-secondary w-full">{code}</pre>,
-	codespan: (code, lang) => <pre className="inline p-0.5 bg-secondary">{code}</pre>,
+	heading: (children) => <h1 className="text-2xl">{children}</h1>,
+	code: (code) => <pre className="bg-secondary w-full">{code}</pre>,
+	codespan: (code) => <pre className="inline p-0.5 bg-secondary">{code}</pre>,
 	paragraph: (children) => <>{children}</>,
 	text: (text: string) => {
 		let ret: string | React.ReactNode[] = text;
 
-		ret = reactStringReplace(ret, URL_REGEX, (match, i) => (
+		ret = reactStringReplace(ret, URL_REGEX, (match) => (
 			<a
 				className="text-link underline"
 				href={match}
@@ -70,7 +71,7 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 		));
 
 		ret = reactStringReplace(ret, USER_MENTION_REGEX, (match, i) => {
-			return <Mention key={`user-${i}`} user={match} />;
+			return <Mention key={`user-${i}`} user={match as ActorMention} />;
 		});
 
 		return ret;

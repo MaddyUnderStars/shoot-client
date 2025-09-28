@@ -33,7 +33,7 @@ export const NavUser = observer(() => {
 					<div>
 						<Popover>
 							<PopoverTrigger className="flex flex-1 gap-2 items-center ">
-								<UserComponent user={user} />
+								<UserComponent user_id={user.mention} />
 							</PopoverTrigger>
 							<UserPopover user={user.mention} />
 						</Popover>
