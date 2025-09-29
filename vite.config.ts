@@ -4,6 +4,7 @@ import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react-swc";
+import { buildSync } from "esbuild";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -44,6 +45,21 @@ export default defineConfig({
 				prefer_related_applications: false,
 			},
 		}),
+		{
+			name: "compile-workers",
+			apply: "build",
+			enforce: "post",
+			transformIndexHtml: {
+				handler: () => {
+					buildSync({
+						minify: true,
+						bundle: true,
+						entryPoints: [path.join(process.cwd(), "src/workers/serviceWorker.js")],
+						outfile: path.join(process.cwd(), "dist", "serviceWorker.js"),
+					});
+				},
+			},
+		},
 	],
 	resolve: {
 		alias: {

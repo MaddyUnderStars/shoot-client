@@ -6,12 +6,17 @@
 		},
 		{
 			"path": "./tsconfig.node.json"
+		},
+		{
+			"path": "./tsconfig.worker.json"
 		}
 	],
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": [
+				"./src/*"
+			]
 		}
 	}
 }
