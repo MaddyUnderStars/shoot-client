@@ -41,7 +41,9 @@ self.addEventListener("push", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
 	const notif = event.notification;
-	const messageUrl = `/${notif.data.channel}/${notif.data.message}`;
+	const messageUrl = notif.data.guild
+		? `/${notif.data.guild}/${notif.data.channel}/${notif.data.message}`
+		: `/channels/@me`; // TODO
 
 	event.waitUntil(
 		self.clients
