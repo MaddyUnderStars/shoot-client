@@ -1,12 +1,7 @@
 import { makeObservable, observable } from "mobx";
+import type { RelationshipType } from "@/lib/http/generated/v1";
 import type { ApiPrivateRelationship } from "@/lib/http/types";
 import { PublicUser } from "./public-user";
-
-export enum RelationshipType {
-	pending = 0,
-	accepted = 1,
-	blocked = 2,
-}
 
 export class Relationship implements ApiPrivateRelationship {
 	@observable created: string;

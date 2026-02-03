@@ -461,7 +461,7 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": "No Content";
+						"application/json": PathsUsersMePushPostResponses204ContentApplicationJson;
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -510,7 +510,7 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": "Accepted";
+						"application/json": PathsUsersMePushNameDeleteResponses202ContentApplicationJson;
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -655,7 +655,7 @@ export interface paths {
 			requestBody?: {
 				content: {
 					"application/json": {
-						type?: "blocked" | "pending";
+						type?: components["schemas"]["RelationshipType"];
 					};
 				};
 			};
@@ -894,6 +894,103 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/role/{role_id}/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					role_id: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": components["schemas"]["PublicRole"];
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		put?: never;
+		post?: never;
+		delete: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					role_id: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		options?: never;
+		head?: never;
+		patch: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					role_id: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: {
+				content: {
+					"application/json": {
+						name?: string;
+						allow?: components["schemas"]["Permission"][];
+						deny?: components["schemas"]["Permission"][];
+						position?: number;
+					};
+				};
+			};
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": components["schemas"]["PublicRole"];
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		trace?: never;
+	};
 	"/guild/{guild_id}/channel/": {
 		parameters: {
 			query?: never;
@@ -938,6 +1035,109 @@ export interface paths {
 		options?: never;
 		head?: never;
 		patch?: never;
+		trace?: never;
+	};
+	"/guild/{guild_id}/roles/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					guild_id: components["schemas"]["ActorMention"];
+				};
+				cookie?: never;
+			};
+			requestBody?: {
+				content: {
+					"application/json": {
+						name: string;
+						/** @default [
+						 *       0
+						 *     ] */
+						allow?: components["schemas"]["Permission"][];
+						/** @default [
+						 *       0
+						 *     ] */
+						deny?: components["schemas"]["Permission"][];
+						position?: number;
+					};
+				};
+			};
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": components["schemas"]["PublicRole"];
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/guild/{guild_id}/members/{user_id}/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					guild_id: components["schemas"]["ActorMention"];
+					user_id: components["schemas"]["ActorMention"];
+				};
+				cookie?: never;
+			};
+			requestBody?: {
+				content: {
+					"application/json": {
+						nickname?: string | null;
+						roles?: string[];
+					};
+				};
+			};
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
 		trace?: never;
 	};
 	"/channel/{channel_id}/": {
@@ -1047,7 +1247,9 @@ export interface paths {
 			parameters: {
 				query?: {
 					limit?: number;
-					order?: "ASC" | "DESC";
+					order?:
+						| PathsChannelChannel_idMessagesGetParametersQueryOrder
+						| PathsChannelChannel_idMessagesGetParametersQueryOrder;
 					after?: string;
 					before?: string;
 					around?: string;
@@ -1147,7 +1349,7 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": "Accepted";
+						"application/json": PathsUsersMePushNameDeleteResponses202ContentApplicationJson;
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -1370,12 +1572,14 @@ export interface components {
 		PublicGuildTextChannel: components["schemas"]["PublicChannel"] & {
 			guild?: components["schemas"]["ActorMention"];
 		};
+		/** @enum {integer} */
+		Permission: Permission;
 		PublicRole: {
 			/** Format: uuid */
 			id: string;
 			name: string;
-			allow: number[];
-			deny: number[];
+			allow: components["schemas"]["Permission"][];
+			deny: components["schemas"]["Permission"][];
 			guild: components["schemas"]["ActorMention"];
 		};
 		PublicGuild: {
@@ -1384,11 +1588,12 @@ export interface components {
 			channels?: components["schemas"]["PublicGuildTextChannel"][];
 			roles?: components["schemas"]["PublicRole"][];
 		};
+		/** @enum {integer} */
+		RelationshipType: RelationshipType;
 		PrivateRelationship: {
 			created: string;
 			user: components["schemas"]["PublicUser"];
-			/** @enum {integer} */
-			type: 0 | 1 | 2;
+			type: components["schemas"]["RelationshipType"];
 		};
 		PublicDmChannel: components["schemas"]["PublicChannel"] & {
 			owner: components["schemas"]["ActorMention"];
@@ -1407,7 +1612,7 @@ export interface components {
 			target: string;
 			created_at: string;
 			/** @enum {integer} */
-			type: 0 | 1 | 2 | 3;
+			type: PublicEmbedType;
 			title?: string;
 			description?: string;
 			images: {
@@ -1500,4 +1705,42 @@ export interface components {
 	pathItems: never;
 }
 export type $defs = Record<string, never>;
+export enum PathsUsersMePushPostResponses204ContentApplicationJson {
+	No_Content = "No Content",
+}
+export enum PathsUsersMePushNameDeleteResponses202ContentApplicationJson {
+	Accepted = "Accepted",
+}
+export enum PathsChannelChannel_idMessagesGetParametersQueryOrder {
+	ASC = "ASC",
+}
+export enum PathsChannelChannel_idMessagesGetParametersQueryOrder {
+	DESC = "DESC",
+}
+export enum Permission {
+	NONE = 0,
+	OWNER = 1,
+	ADMIN = 2,
+	SEND_MESSAGES = 3,
+	MANAGE_CHANNELS = 4,
+	VIEW_CHANNEL = 5,
+	CALL_CHANNEL = 6,
+	MANAGE_GUILD = 7,
+	MANAGE_INVITES = 8,
+	CREATE_INVITE = 9,
+	UPLOAD = 10,
+	MANAGE_MESSAGES = 11,
+	MANAGE_MEMBERS = 12,
+}
+export enum RelationshipType {
+	pending = 0,
+	accepted = 1,
+	blocked = 2,
+}
+export enum PublicEmbedType {
+	link = 0,
+	photo = 1,
+	video = 2,
+	rich = 3,
+}
 export type operations = Record<string, never>;

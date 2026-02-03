@@ -6,6 +6,7 @@ import z from "zod";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ActorMention } from "@/lib/client/common/actor";
 import { getHttpClient } from "@/lib/http/client";
+import { RelationshipType } from "@/lib/http/generated/v1";
 import { getAppStore } from "@/lib/store/app-store";
 import { RelationshipComponent } from "./relationship";
 import { Button } from "./ui/button";
@@ -44,7 +45,7 @@ export const FriendsPane = observer(() => {
 				},
 			},
 			body: {
-				type: "pending",
+				type: RelationshipType.pending,
 			},
 		});
 

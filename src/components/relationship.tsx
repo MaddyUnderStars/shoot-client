@@ -1,8 +1,9 @@
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { type Relationship, RelationshipType } from "@/lib/client/entity/relationship";
+import type { Relationship } from "@/lib/client/entity/relationship";
 import { getHttpClient } from "@/lib/http/client";
+import { RelationshipType } from "@/lib/http/generated/v1";
 import { getAppStore } from "@/lib/store/app-store";
 import { cn } from "@/lib/utils";
 import { UserPopover } from "./popover/user-popover";
