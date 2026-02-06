@@ -40,23 +40,25 @@ export const ChannelHeader = () => {
 	if (!channel) return undefined;
 
 	return (
-		<div className="p-2 h-14 bg-sidebar w-full border-b flex justify-between items-center">
-			<h1 className="flex items-center">
-				{!isMobile ? null : (
-					<SidebarTrigger variant="ghost">
-						<PanelLeftDashed />
-					</SidebarTrigger>
-				)}
+		<div className="bg-sidebar pt-[env(safe-area-inset-top)] w-full">
+			<div className="p-2 h-14 bg-sidebar w-full border-b flex justify-between items-center">
+				<h1 className="flex items-center">
+					{!isMobile ? null : (
+						<SidebarTrigger variant="ghost">
+							<PanelLeftDashed />
+						</SidebarTrigger>
+					)}
 
-				<span>
-					<Hash size={16} className="inline" /> {channel.name}
-				</span>
-			</h1>
+					<span>
+						<Hash size={16} className="inline" /> {channel.name}
+					</span>
+				</h1>
 
-			<div className="flex gap-4">
-				<Button size="icon" variant="ghost" onClick={() => startCall()}>
-					<PhoneCall />
-				</Button>
+				<div className="flex gap-4">
+					<Button size="icon" variant="ghost" onClick={() => startCall()}>
+						<PhoneCall />
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

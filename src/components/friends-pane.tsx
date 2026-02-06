@@ -55,7 +55,7 @@ export const FriendsPane = observer(() => {
 	};
 
 	return (
-		<div>
+		<div className="bg-sidebar pt-[env(safe-area-inset-top)] w-full h-full">
 			<div className="p-4 bg-sidebar w-full border-b h-14">
 				<h1>
 					{!isMobile ? null : (
