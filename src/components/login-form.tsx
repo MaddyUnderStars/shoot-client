@@ -114,7 +114,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 								)}
 							/>
 
-							<Button type="submit">Login</Button>
+							<Button type="submit" className="cursor-pointer">
+								Login
+							</Button>
 						</form>
 					</Form>
 				</CardContent>
