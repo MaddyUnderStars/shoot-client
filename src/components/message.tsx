@@ -53,10 +53,10 @@ export const MessageComponent = ({
 						<UserPopover user={message.author_id} />
 					</Popover>
 				) : (
-					<span className="w-8"></span>
+					<span className="min-w-8"></span>
 				)}
 
-				<div>
+				<div className="wrap-anywhere">
 					{showAuthor ? (
 						<Popover>
 							<div className="flex gap-2">
@@ -70,21 +70,20 @@ export const MessageComponent = ({
 							<UserPopover user={message.author_id} />
 						</Popover>
 					) : null}
-					<div>
-						<MarkdownRenderer content={message.content} />
 
-						{message.files?.map((file) => (
-							<FilePreview file={file} channel={message.channel} key={file.hash} />
-						))}
+					<MarkdownRenderer content={message.content} />
 
-						{!message.embeds?.length ? null : (
-							<div className="mt-2 flex gap-2 flex-wrap">
-								{message.embeds?.map((embed) => (
-									<EmbedComponent embed={embed} key={embed.target} />
-								))}
-							</div>
-						)}
-					</div>
+					{message.files?.map((file) => (
+						<FilePreview file={file} channel={message.channel} key={file.hash} />
+					))}
+
+					{!message.embeds?.length ? null : (
+						<div className="mt-2 flex gap-2 flex-wrap">
+							{message.embeds?.map((embed) => (
+								<EmbedComponent embed={embed} key={embed.target} />
+							))}
+						</div>
+					)}
 				</div>
 			</div>
 
