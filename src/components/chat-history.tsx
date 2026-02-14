@@ -24,26 +24,18 @@ export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) 
 				inverse={true}
 				scrollableTarget="chat-history"
 			>
-				{data?.pages.map((page, i, pages) =>
-					page.map((msg, j, arr) => {
-						let lastMessage = arr[j + 1];
-						if (!lastMessage) {
-							const lastPage = pages[i + 1];
-							if (lastPage) lastMessage = lastPage[0];
-						}
+				{data?.pages.flat().map((msg, i, arr) => {
+					const lastMessage = arr[i + 1];
 
-						const showAuthor =
-							lastMessage &&
-							(lastMessage.author_id !== msg.author_id ||
-								new Date(msg.published).valueOf() -
-									new Date(lastMessage.published).valueOf() >
-									MSG_GROUP_LIMIT_DT);
+					const showAuthor =
+						lastMessage &&
+						(lastMessage.author_id !== msg.author_id ||
+							new Date(msg.published).valueOf() -
+								new Date(lastMessage.published).valueOf() >
+								MSG_GROUP_LIMIT_DT);
 
-						return (
-							<MessageComponent message={msg} key={msg.id} showAuthor={showAuthor} />
-						);
-					}),
-				)}
+					return <MessageComponent message={msg} key={msg.id} showAuthor={showAuthor} />;
+				})}
 			</InfiniteScroll>
 		</div>
 	);
