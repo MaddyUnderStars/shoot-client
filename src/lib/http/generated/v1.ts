@@ -418,6 +418,7 @@ export interface paths {
 					content: {
 						"application/json": {
 							name: string;
+							/** Format: date-time */
 							created: string;
 						}[];
 					};
@@ -878,6 +879,7 @@ export interface paths {
 						"application/json": {
 							code: string;
 							guild: components["schemas"]["ActorMention"];
+							/** Format: date-time */
 							expires: string;
 						};
 					};
@@ -1555,32 +1557,15 @@ export interface components {
 				}[];
 			};
 		};
-		ActorMention: ActorMention;
 		PublicUser: {
 			mention: components["schemas"]["ActorMention"];
 			name: string;
 			summary: string;
 			display_name: string;
 		};
+		ActorMention: ActorMention;
 		PrivateUser: components["schemas"]["PublicUser"] & {
 			email: string;
-		};
-		PublicChannel: {
-			mention: components["schemas"]["ActorMention"];
-			name: string;
-		};
-		PublicGuildTextChannel: components["schemas"]["PublicChannel"] & {
-			guild?: components["schemas"]["ActorMention"];
-		};
-		/** @enum {integer} */
-		Permission: Permission;
-		PublicRole: {
-			/** Format: uuid */
-			id: string;
-			name: string;
-			allow: components["schemas"]["Permission"][];
-			deny: components["schemas"]["Permission"][];
-			guild: components["schemas"]["ActorMention"];
 		};
 		PublicGuild: {
 			mention: components["schemas"]["ActorMention"];
@@ -1588,16 +1573,48 @@ export interface components {
 			channels?: components["schemas"]["PublicGuildTextChannel"][];
 			roles?: components["schemas"]["PublicRole"][];
 		};
+		PublicGuildTextChannel: components["schemas"]["PublicChannel"] & {
+			guild?: components["schemas"]["ActorMention"];
+		};
+		PublicChannel: {
+			mention: components["schemas"]["ActorMention"];
+			name: string;
+		};
+		PublicRole: {
+			/** Format: uuid */
+			id: string;
+			name: string;
+			allow: components["schemas"]["Permission"][];
+			deny: components["schemas"]["Permission"][];
+			guild: components["schemas"]["ActorMention"];
+			position: number;
+		};
 		/** @enum {integer} */
-		RelationshipType: RelationshipType;
+		Permission: Permission;
 		PrivateRelationship: {
+			/** Format: date-time */
 			created: string;
 			user: components["schemas"]["PublicUser"];
 			type: components["schemas"]["RelationshipType"];
 		};
+		/** @enum {integer} */
+		RelationshipType: RelationshipType;
 		PublicDmChannel: components["schemas"]["PublicChannel"] & {
 			owner: components["schemas"]["ActorMention"];
 			recipients: components["schemas"]["ActorMention"][];
+		};
+		PublicMessage: {
+			/** Format: uuid */
+			id: string;
+			content: string;
+			/** Format: date-time */
+			published: string;
+			/** Format: date-time */
+			updated: string;
+			author_id: components["schemas"]["ActorMention"];
+			channel_id: components["schemas"]["ActorMention"];
+			files: components["schemas"]["PublicAttachment"][];
+			embeds: components["schemas"]["PublicEmbed"][];
 		};
 		PublicAttachment: {
 			name: string;
@@ -1610,6 +1627,7 @@ export interface components {
 		PublicEmbed: {
 			/** Format: uri */
 			target: string;
+			/** Format: date-time */
 			created_at: string;
 			/** @enum {integer} */
 			type: PublicEmbedType;
@@ -1642,23 +1660,14 @@ export interface components {
 				url?: string;
 			};
 		};
-		PublicMessage: {
-			/** Format: uuid */
-			id: string;
-			content: string;
-			published: string;
-			updated: string;
-			author_id: components["schemas"]["ActorMention"];
-			channel_id: components["schemas"]["ActorMention"];
-			files: components["schemas"]["PublicAttachment"][];
-			embeds: components["schemas"]["PublicEmbed"][];
-		};
 		MessageCreateRequest: {
 			content?: string;
 			files?: {
 				name: string;
 				hash: string;
 			}[];
+			/** Format: uuid */
+			nonce?: string;
 		};
 	};
 	responses: {

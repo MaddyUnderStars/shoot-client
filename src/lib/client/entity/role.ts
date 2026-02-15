@@ -8,6 +8,7 @@ export class Role implements ApiPublicRole {
 	@observable deny: number[];
 	@observable
 	guild: `${string}@${string}`;
+	position: number;
 
 	constructor(opts: ApiPublicRole) {
 		this.id = opts.id;
@@ -15,6 +16,7 @@ export class Role implements ApiPublicRole {
 		this.allow = opts.allow;
 		this.deny = opts.deny;
 		this.guild = opts.guild;
+		this.position = opts.position;
 
 		makeObservable(this);
 	}

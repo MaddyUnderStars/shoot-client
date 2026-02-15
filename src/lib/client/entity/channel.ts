@@ -1,3 +1,4 @@
+import { v7 as uuidv7 } from "uuid";
 import { getFileDimensions, getFileMd5 } from "@/lib/file";
 import { getHttpClient } from "@/lib/http/client";
 import type { paths } from "@/lib/http/generated/v1";
@@ -20,7 +21,11 @@ export class Channel extends Actor implements ApiPublicChannel {
 	public sendMessage = async (opts: MessageSendOptions) => {
 		const { $fetch } = getHttpClient();
 
+		const nonce = uuidv7();
+
 		const normalised = {
+			nonce,
+
 			content: typeof opts === "string" ? opts : opts.content,
 			files:
 				typeof opts === "string"
