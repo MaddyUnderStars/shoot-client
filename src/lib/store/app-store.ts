@@ -57,7 +57,7 @@ export class AppStore {
 		return this.dmChannels.find((x) => {
 			const arr = [x.owner, ...x.recipients];
 
-			return arr.length === users.length && arr.every((u) => users.includes(u));
+			return arr.length === users.length && users.every((u) => arr.includes(u));
 		});
 	};
 
