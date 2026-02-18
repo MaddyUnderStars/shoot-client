@@ -22,7 +22,9 @@ export const UserComponent = ({ user_id }: { user_id: ActorMention }) => {
 
 			<div className="grid flex-1 text-left text-sm leading-right">
 				<span className="truncate font-medium">{user.display_name}</span>
-				<span className="truncate font-xs">@{user.domain}</span>
+				<span className="truncate font-xs">
+					{user.display_name !== user.name ? user.name : ""}@{user.domain}
+				</span>
 			</div>
 		</>
 	);
