@@ -20,12 +20,12 @@ export const ChatInput = () => {
 		const content = formData.get("content")?.toString();
 		const files = [...attached];
 
+		form.reset();
+
 		await channel.sendMessage({
 			content,
 			files,
 		});
-
-		form.reset();
 	};
 
 	return (
