@@ -38,6 +38,15 @@ const sanitise = (content: string) =>
 	// https://github.com/revoltchat/revite/issues/733
 	content.replaceAll(/^(<\/?[a-zA-Z0-9]+>)(.*$)/gm, (match) => `\u200E${match}`);
 
+const HEADING_LEVELS = {
+	1: "text-5xl",
+	2: "text-4xl",
+	3: "text-3xl",
+	4: "text-2xl",
+	5: "text-lg",
+	6: "text",
+};
+
 const MarkedRenderer: Partial<ReactRenderer> = {
 	link: (href, text) => {
 		return (
@@ -52,9 +61,12 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 		);
 	},
 	listItem: (children) => <li className="list-disc">{children}</li>,
-	heading: (children) => <h1 className="text-2xl">{children}</h1>,
+	heading: (children, level) => <h1 className={HEADING_LEVELS[level]}>{children}</h1>,
 	code: (code) => <pre className="bg-secondary w-full">{code}</pre>,
 	codespan: (code) => <pre className="inline p-0.5 bg-secondary">{code}</pre>,
+	blockquote: (children) => (
+		<blockquote className="bg-secondary border-l-2 ps-2 w-full">{children}</blockquote>
+	),
 	paragraph: (children) => <>{children}</>,
 	text: (text: string) => {
 		let ret: string | React.ReactNode[] = text;
