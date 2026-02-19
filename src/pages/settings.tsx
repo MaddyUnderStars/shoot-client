@@ -24,7 +24,7 @@ export const SettingsSidebar = () => {
 
 	return (
 		<Sidebar>
-			<SidebarContent>
+			<SidebarContent className="mt-[env(safe-area-inset-top)] mb-[env(safe-area-inset-bottom)]">
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
@@ -114,7 +114,7 @@ export const SettingsSidebar = () => {
 				</SidebarGroup>
 			</SidebarContent>
 
-			<SidebarFooter>
+			<SidebarFooter className="mt-[env(safe-area-inset-top)]">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton asChild>

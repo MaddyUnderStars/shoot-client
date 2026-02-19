@@ -6,8 +6,8 @@ export const SettingsHeader = ({ children }: React.PropsWithChildren) => {
 	const isMobile = useIsMobile();
 
 	return (
-		<div className="w-full">
-			<div className="p-4 bg-sidebar w-full border-b h-min">
+		<div className="w-full bg-sidebar pt-[env(safe-area-inset-top)]">
+			<div className="p-4 w-full border-b h-min">
 				{!isMobile ? null : (
 					<SidebarTrigger variant="ghost">
 						<PanelLeftDashed />
