@@ -15,7 +15,7 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
-import { SwipeBarLeft, SwipeBarProvider, SwipeBarRight, useSwipeBarContext } from "@luciodale/swipe-bar";
+import { SwipeBarLeft, SwipeBarRight, useSwipeBarContext } from "@luciodale/swipe-bar";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -170,7 +170,7 @@ function Sidebar({
 	variant?: "sidebar" | "floating" | "inset";
 	collapsible?: "offcanvas" | "icon" | "none";
 }) {
-	const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+	const { isMobile, state } = useSidebar();
 
 	if (collapsible === "none") {
 		return (
