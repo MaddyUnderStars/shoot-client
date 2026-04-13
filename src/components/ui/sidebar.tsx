@@ -5,13 +5,6 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetHeader,
-	SheetTitle,
-} from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
 	Tooltip,
@@ -22,10 +15,11 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
+import { SwipeBarLeft, SwipeBarProvider, SwipeBarRight, useSwipeBarContext } from "@luciodale/swipe-bar";
+
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
-const SIDEBAR_WIDTH_MOBILE = "100%";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
@@ -64,7 +58,10 @@ function SidebarProvider({
 	onOpenChange?: (open: boolean) => void;
 }) {
 	const isMobile = useIsMobile();
-	const [openMobile, setOpenMobile] = React.useState(false);
+
+	const swipebar = useSwipeBarContext();
+
+	const setOpenMobile = (open: boolean) => open ? swipebar.openSidebar("left") : swipebar.closeSidebar("left");
 
 	// This is the internal state of the sidebar.
 	// We use openProp and setOpenProp for control from outside the component.
@@ -90,9 +87,9 @@ function SidebarProvider({
 	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	const toggleSidebar = React.useCallback(() => {
 		return isMobile
-			? setOpenMobile((open) => !open)
+			? setOpenMobile(!swipebar.isLeftOpen)
 			: setOpen((open) => !open);
-	}, [isMobile, setOpen, setOpenMobile]);
+	}, [isMobile, setOpen, swipebar.isLeftOpen]);
 
 	// Adds a keyboard shortcut to toggle the sidebar.
 	React.useEffect(() => {
@@ -121,7 +118,7 @@ function SidebarProvider({
 			open,
 			setOpen,
 			isMobile,
-			openMobile,
+			openMobile: swipebar.isLeftOpen,
 			setOpenMobile,
 			toggleSidebar,
 		}),
@@ -130,7 +127,7 @@ function SidebarProvider({
 			open,
 			setOpen,
 			isMobile,
-			openMobile,
+			swipebar.isLeftOpen,
 			setOpenMobile,
 			toggleSidebar,
 		],
@@ -191,29 +188,12 @@ function Sidebar({
 	}
 
 	if (isMobile) {
+		const Comp = side == "left" ? SwipeBarLeft : SwipeBarRight;
+
 		return (
-			<Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-				<SheetContent
-					data-sidebar="sidebar"
-					data-slot="sidebar"
-					data-mobile="true"
-					className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-					style={
-						{
-							"--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-						} as React.CSSProperties
-					}
-					side={side}
-				>
-					<SheetHeader className="sr-only">
-						<SheetTitle>Sidebar</SheetTitle>
-						<SheetDescription>
-							Displays the mobile sidebar.
-						</SheetDescription>
-					</SheetHeader>
-					<div className="flex h-full w-full">{children}</div>
-				</SheetContent>
-			</Sheet>
+			<Comp {...props} ToggleComponent={<></>}>
+				<div className="flex h-full w-full">{children}</div>
+			</Comp>
 		);
 	}
 
@@ -588,7 +568,7 @@ function SidebarMenuAction({
 				"peer-data-[size=lg]/menu-button:top-2.5",
 				"group-data-[collapsible=icon]:hidden",
 				showOnHover &&
-					"peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
+				"peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
 				className,
 			)}
 			{...props}

@@ -1,11 +1,10 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { ChevronDown, PanelLeftClose } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { Guild } from "@/lib/client/entity/guild";
 import { CreateChannelModal } from "./modal/create-channel-modal";
 import { DeleteGuildModal } from "./modal/delete-guild-modal";
 import { CreateInviteModal } from "./modal/invite-modal";
-import { Button } from "./ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -14,7 +13,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useSidebar } from "./ui/sidebar";
+import { SidebarTrigger, useSidebar } from "./ui/sidebar";
 
 export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 	const isMobile = useIsMobile();
@@ -24,16 +23,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 	return (
 		<div className="flex p-2 h-full w-full items-center justify-between">
 			<div className="text-foreground text-base font-medium flex-1 flex items-center">
-				{isMobile ? (
-					<Button
-						className="me-2"
-						variant="ghost"
-						size="sm"
-						onClick={() => sidebar.setOpenMobile(false)}
-					>
-						<PanelLeftClose className="p-0" />
-					</Button>
-				) : null}
+				{isMobile ? <SidebarTrigger /> : null}
 
 				{!guild ? (
 					"Private Channels"
