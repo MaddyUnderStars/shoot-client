@@ -1,8 +1,8 @@
-import { getHttpClient } from "./http/client";
-import { getLogin } from "./storage";
-import { getAppStore } from "./store/app-store";
+import { getHttpClient } from "../http/client";
+import { getLogin } from "../storage";
+import { getAppStore } from "../store/app-store";
 
-export const subscribeNotifications = async () => {
+export const subscribeWebPush = async () => {
 	const { $fetch } = getHttpClient();
 
 	const settings = getAppStore().settings;

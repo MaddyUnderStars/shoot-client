@@ -6,7 +6,9 @@ import { gatewayClient } from "./lib/client/gateway";
 import { getLogin } from "./lib/storage";
 
 import "./index.css";
-import { subscribeNotifications } from "./lib/notifications";
+import { getSupportedPush } from "./lib/notifications";
+import { getDistributors, subscribeUnifiedPush } from "./lib/notifications/unifiedpush";
+import { subscribeWebPush } from "./lib/notifications/webpush";
 import { getAppStore } from "./lib/store/app-store";
 
 // If we're logged in, connect to gateway
@@ -16,7 +18,13 @@ if (login) {
 
 	if (getAppStore().settings.notifications.enabled) {
 		// Resubscribe to notifications if there's enabled
-		subscribeNotifications();
+		const supported = getSupportedPush();
+
+		if (supported === "web") subscribeWebPush();
+		else if (supported === "unifiedpush")
+			getDistributors().then((res) => {
+				if (res.distributors[0]) subscribeUnifiedPush(res.distributors[0]);
+			});
 	}
 }
 
