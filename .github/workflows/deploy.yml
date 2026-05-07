@@ -23,12 +23,16 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                 node-version: 23
+
+            # tauri-notifications-plugin requires pnpm for its build step currently
+            # remove this eventually
+            - uses: pnpm/action-setup@v6
+              with:
+                version: 10
                 
             - name: build
               id: build
               run: |
-                shopt -s expand_aliases
-                alias pnpm=npm
                 npm ci
                 BASE_PATH="/shoot-client" VITE_USE_HASH_ROUTER=1 npm run build
                 
