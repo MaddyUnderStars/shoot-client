@@ -7,7 +7,7 @@ import { getLogin } from "./lib/storage";
 
 import "./index.css";
 import { getSupportedPush } from "./lib/notifications";
-import { getDistributors, subscribeUnifiedPush } from "./lib/notifications/unifiedpush";
+import { subscribeUnifiedPush } from "./lib/notifications/unifiedpush";
 import { subscribeWebPush } from "./lib/notifications/webpush";
 import { getAppStore } from "./lib/store/app-store";
 
@@ -22,9 +22,7 @@ if (login) {
 
 		if (supported === "web") subscribeWebPush();
 		else if (supported === "unifiedpush")
-			getDistributors().then((res) => {
-				if (res.distributors[0]) subscribeUnifiedPush(res.distributors[0]);
-			});
+			subscribeUnifiedPush();
 	}
 }
 
