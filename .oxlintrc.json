@@ -1,0 +1,18 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "oxc"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn"
+	},
+	"rules": {
+		"eslint/eqeqeq": "warn",
+		"eslint/no-shadow": "off"
+	},
+	"env": {
+		"builtin": true
+	},
+	"options": {
+		"typeAware": true
+	}
+}
