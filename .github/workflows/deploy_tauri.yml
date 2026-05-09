@@ -8,6 +8,8 @@ on:
 
 jobs:
   v2:
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
