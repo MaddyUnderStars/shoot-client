@@ -56,8 +56,6 @@ jobs:
       - name: install frontend dependencies
         run: |
           npm install
-          cd shoot-client
-          npm install
 
       # rust
       - name: install Rust stable (desktop)
@@ -106,7 +104,6 @@ jobs:
       - name: set env vars
         if: matrix.mobile != ''
         run: |
-          cd shoot-client
           touch .env
           echo VITE_IS_MOBILE_TAURI=1 >> .env
           cat .env
