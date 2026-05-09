@@ -10,7 +10,7 @@ export const tryParseUrl = (input: string | URL) => {
 
 	try {
 		return new URL(input);
-	} catch (_) {
+	} catch {
 		return null;
 	}
 };
@@ -41,7 +41,7 @@ export const splitQualifiedMention = (lookup: string | URL) => {
 		}
 
 		domain = url.hostname;
-		user = url.pathname.split("/").reverse()[0]; // not great
+		user = url.pathname.split("/").toReversed()[0]; // not great
 	}
 
 	return {
@@ -73,3 +73,5 @@ export enum CLOSE_CODES {
 	/** The token provided in IDENTIFY was invalid */
 	BAD_TOKEN = 4100,
 }
+
+export const jitter = (amount: number) => Math.round(Math.random() * amount);

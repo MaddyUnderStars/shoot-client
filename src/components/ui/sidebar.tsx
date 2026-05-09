@@ -171,7 +171,7 @@ function Sidebar({
 	}
 
 	if (isMobile) {
-		const Comp = side == "left" ? SwipeBarLeft : SwipeBarRight;
+		const Comp = side === "left" ? SwipeBarLeft : SwipeBarRight;
 
 		return (
 			<Comp {...props} ToggleComponent={<></>}>
@@ -584,6 +584,7 @@ function SidebarMenuSkeleton({
 				className="h-4 max-w-(--skeleton-width) flex-1"
 				data-sidebar="menu-skeleton-text"
 				style={
+					// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 					{
 						"--skeleton-width": width,
 					} as React.CSSProperties

@@ -83,6 +83,7 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 		));
 
 		ret = reactStringReplace(ret, USER_MENTION_REGEX, (match, i) => {
+			// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 			return <Mention key={`user-${i}`} user={match as ActorMention} />;
 		});
 

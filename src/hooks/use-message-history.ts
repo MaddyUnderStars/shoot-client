@@ -78,6 +78,7 @@ export const useMessageHistory = (channel: ActorMention) => {
 			client.setQueryData(queryKey, (data: InfiniteData<Message[]>) => {
 				return {
 					pages: data.pages.map((page) =>
+						// oxlint-disable-next-line typescript/no-misused-spread
 						page.map((msg) => (msg.id === id ? { ...msg, ...event.d.message } : msg)),
 					),
 					pageParams: data.pageParams,

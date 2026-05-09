@@ -29,12 +29,13 @@ export const ChannelHeader = () => {
 		if (error || !data || response.status !== 200)
 			throw new Error(error?.message ?? "unknown error with webrtc");
 
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 		const { token, ip } = data as {
 			token: string;
 			ip: string;
 		};
 
-		app.startWebrtc(channel.mention, new URL(ip), token);
+		await app.startWebrtc(channel.mention, new URL(ip), token);
 	};
 
 	if (!channel) return undefined;

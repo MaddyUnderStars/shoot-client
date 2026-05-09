@@ -10,6 +10,7 @@ import {
 	FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import type { UseFormReturn } from "react-hook-form";
 
 const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
 
@@ -19,9 +20,9 @@ export const InstanceValidatorField = ({
 	showInviteField,
 	form,
 }: {
-	showInviteField: boolean;
-	// biome-ignore lint/suspicious/noExplicitAny: TODO
-} & any) => {
+	showInviteField?: boolean;
+	form: UseFormReturn<any>;
+}) => {
 	const [isValidatingInstance, setValidatingInstance] = useState(false);
 	const [nodeinfo, setNodeinfo] = useState<
 		| {
@@ -30,7 +31,7 @@ export const InstanceValidatorField = ({
 		| undefined
 	>();
 
-	const debounced = pDebounce(async (instance: string) => {
+	const debounced = pDebounce(async (instance: string): Promise<void> => {
 		form.clearErrors("instance");
 		setValidatingInstance(true);
 		const nodeInfo = await validateInstance(instance);
@@ -47,7 +48,7 @@ export const InstanceValidatorField = ({
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	useEffect(() => {
-		debounced(DEFAULT_INSTANCE);
+		void debounced(DEFAULT_INSTANCE);
 	}, []);
 
 	return (

@@ -37,7 +37,7 @@ export class AppStore {
 		const webrtc = new ShootWebrtcClient(channel, endpoint, token);
 		this.webrtc = webrtc;
 
-		webrtc.login();
+		return webrtc.login();
 	};
 
 	@action public stopWebrtc = () => {

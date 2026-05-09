@@ -11,7 +11,7 @@ export class UserStore {
 
 	@computed
 	public resolve = async (id: ActorMention) => {
-		if (this.users.has(id)) return this.users.get(id) as PublicUser;
+		if (this.users.has(id)) return this.users.get(id)!;
 
 		if (this.promises.has(id)) return this.promises.get(id);
 
@@ -50,7 +50,9 @@ export class UserStore {
 
 	@action
 	public setUser = <T extends PublicUser | null>(id: ActorMention, user: T) => {
-		user ? this.users.set(id, user) : this.users.delete(id);
+		if (user) this.users.set(id, user);
+		else this.users.delete(id);
+
 		return user;
 	};
 }

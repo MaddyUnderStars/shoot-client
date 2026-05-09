@@ -21,7 +21,7 @@ export class SettingsStore {
 	constructor() {
 		makeAutoObservable(this);
 
-		makePersistable(this, {
+		void makePersistable(this, {
 			name: "settings-store",
 			properties: ["voice", "ui_density", "notifications"],
 			storage: window.localStorage,

@@ -67,7 +67,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
 
 		gatewayClient.login(login);
 
-		navigation({
+		await navigation({
 			to: "/channel/@me",
 		});
 	};

@@ -17,7 +17,7 @@ export const getFileMd5 = (file: File) => {
 	};
 
 	return new Promise<string>((resolve, reject) => {
-		reader.onload = (e) => {
+		reader.addEventListener("load", (e) => {
 			if (!e.target?.result || typeof e.target.result === "string")
 				return reject(new Error("md5 result missing or wrong type?"));
 
@@ -27,11 +27,9 @@ export const getFileMd5 = (file: File) => {
 			if (currentChunk < chunks) return loadNext();
 
 			resolve(btoa(spark.end(true)));
-		};
+		});
 
-		reader.onerror = (e) => reject(e);
-
-		loadNext();
+		reader.addEventListener("error", (e) => reject(e));
 	});
 };
 
@@ -44,14 +42,14 @@ export const getFileDimensions = (
 	new Promise((resolve) => {
 		if (file.type.startsWith("image")) {
 			const img = new Image();
-			img.onload = () => {
+			img.addEventListener("load", () => {
 				const ret = {
 					width: img.width,
 					height: img.height,
 				};
 				URL.revokeObjectURL(img.src);
 				resolve(ret);
-			};
+			});
 			img.src = URL.createObjectURL(file);
 		} else if (file.type.startsWith("video")) {
 			const video = document.createElement("video");

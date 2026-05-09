@@ -20,8 +20,8 @@ if (login) {
 		// Resubscribe to notifications if there's enabled
 		const supported = getSupportedPush();
 
-		if (supported === "web") subscribeWebPush();
-		else if (supported === "unifiedpush") subscribeUnifiedPush();
+		if (supported === "web") void subscribeWebPush();
+		else if (supported === "unifiedpush") void subscribeUnifiedPush();
 	}
 }
 

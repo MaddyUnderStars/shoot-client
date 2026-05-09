@@ -5,6 +5,7 @@ import { getAppStore } from "../store/app-store";
 import type { ActorMention } from "./common/actor";
 import type { WEBRTC_GATEWAY_EVENT } from "./common/receive";
 import type { WEBRTC_SEND_PAYLOAD } from "./common/send";
+import { jitter } from "../utils";
 
 const Log = createLogger("webrtc");
 
@@ -16,9 +17,9 @@ export class ShootWebrtcClient extends EventEmitter {
 	private sequence: number = 0;
 	private heartbeatTimeout?: Timeout = undefined;
 
-	private _channel: ActorMention;
-	private _endpoint: URL;
-	private _token: string;
+	private targetChannel: ActorMention;
+	private endpoint: URL;
+	private token: string;
 
 	private userMedia?: MediaStream;
 	private remoteMedia?: MediaStream;
@@ -26,6 +27,7 @@ export class ShootWebrtcClient extends EventEmitter {
 
 	private localOffer?: RTCSessionDescriptionInit;
 
+	// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 	private audioElement = document.getElementById("voice-call-element") as HTMLAudioElement;
 
 	private app = getAppStore();
@@ -34,7 +36,7 @@ export class ShootWebrtcClient extends EventEmitter {
 
 	@computed
 	public get channel() {
-		const ch = this.app.getChannel(this._channel);
+		const ch = this.app.getChannel(this.targetChannel);
 		if (!ch) throw new Error("webrtc channel does not exist?");
 
 		return ch;
@@ -44,9 +46,9 @@ export class ShootWebrtcClient extends EventEmitter {
 		super();
 
 		this.error = undefined;
-		this._channel = channel;
-		this._endpoint = endpoint;
-		this._token = token;
+		this.targetChannel = channel;
+		this.endpoint = endpoint;
+		this.token = token;
 
 		autorun(() => {
 			this.audioElement.volume = this.app.settings.voice.output_volume;
@@ -76,12 +78,12 @@ export class ShootWebrtcClient extends EventEmitter {
 
 		this.userMedia = await this.addGainControl(media);
 
-		this.socket = new WebSocket(this._endpoint);
+		this.socket = new WebSocket(this.endpoint);
 
-		this.socket.onopen = this.onOpen;
-		this.socket.onmessage = this.onMessage;
-		this.socket.onerror = this.onError;
-		this.socket.onclose = this.onClose;
+		this.socket.addEventListener("open", this.onOpen);
+		this.socket.addEventListener("message", this.onMessage);
+		this.socket.addEventListener("error", this.onError);
+		this.socket.addEventListener("close", this.onClose);
 	};
 
 	private addGainControl = async (media: MediaStream) => {
@@ -161,7 +163,7 @@ export class ShootWebrtcClient extends EventEmitter {
 
 		this.send({
 			t: "identify",
-			token: this._token,
+			token: this.token,
 			offer: {
 				sdp: this.localOffer.sdp,
 				type: this.localOffer.type,
@@ -183,13 +185,14 @@ export class ShootWebrtcClient extends EventEmitter {
 		this.leave();
 	};
 
-	private onMessage = ({ data }: MessageEvent) => {
+	private onMessage = async ({ data }: MessageEvent) => {
 		this.sequence++;
 
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 		const json = JSON.parse(data) as WEBRTC_GATEWAY_EVENT;
 
 		if (json.t === "READY") {
-			this.peerConnection?.setRemoteDescription(json.d.answer.jsep);
+			await this.peerConnection?.setRemoteDescription(json.d.answer.jsep);
 			this.startHeartbeat();
 		}
 	};
@@ -202,17 +205,15 @@ export class ShootWebrtcClient extends EventEmitter {
 	private startHeartbeat = () => {
 		Log.verbose("Starting heartbeat");
 
-		const jitter = () => Math.round(Math.random() * 1900);
-
 		const heartbeat = () => {
 			this.send({
 				t: "heartbeat",
 				s: this.sequence,
 			});
 
-			this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter());
+			this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter(2000));
 		};
 
-		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter());
+		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter(2000));
 	};
 }

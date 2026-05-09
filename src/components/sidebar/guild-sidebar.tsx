@@ -98,7 +98,7 @@ export const GuildSidebar = observer(() => {
 								type="button"
 								onClick={() => {
 									sidebar.setOpenMobile(false);
-									NiceModal.show(CreateGuildModal);
+									void NiceModal.show(CreateGuildModal);
 								}}
 								className="h-8 text-sm p-0 hover:rounded-sm rounded-lg transition-[border-radius] flex items-center justify-center bg-sidebar-primary text-sidebar-primary-foreground aspect-square size-full"
 							>

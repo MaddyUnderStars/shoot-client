@@ -17,6 +17,7 @@ export const ChatInput = () => {
 		const form = event.currentTarget;
 		const formData = new FormData(form);
 
+		// oxlint-disable-next-line typescript/no-base-to-string
 		const content = formData.get("content")?.toString();
 		const files = [...attached];
 

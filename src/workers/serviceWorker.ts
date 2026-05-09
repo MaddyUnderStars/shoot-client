@@ -20,6 +20,7 @@ type PushNotificationData = {
 self.addEventListener("push", (event) => {
 	if (!event.data) return;
 
+	// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 	const data = event.data.json() as PushNotificationData;
 
 	const promise = self.registration.showNotification(data.title, {

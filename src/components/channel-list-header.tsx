@@ -40,7 +40,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 								<DropdownMenuItem
 									onClick={() => {
 										sidebar.setOpenMobile(false);
-										NiceModal.show(CreateInviteModal, {
+										void NiceModal.show(CreateInviteModal, {
 											guild,
 										});
 									}}
@@ -51,7 +51,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 								<DropdownMenuItem
 									onClick={() => {
 										sidebar.setOpenMobile(false);
-										NiceModal.show(CreateChannelModal, {
+										void NiceModal.show(CreateChannelModal, {
 											guild,
 										});
 									}}
@@ -62,7 +62,7 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 									variant="destructive"
 									onClick={() => {
 										sidebar.setOpenMobile(false);
-										NiceModal.show(DeleteGuildModal, {
+										void NiceModal.show(DeleteGuildModal, {
 											guild,
 										});
 									}}

@@ -38,7 +38,7 @@ export const subscribeWebPush = async () => {
 	settings.notifications.enabled = true;
 };
 
-const getPublicKey = async () => {
+const getPublicKey = async (): Promise<string> => {
 	const login = getLogin();
 	if (!login) throw new Error("missing login");
 
@@ -50,7 +50,7 @@ const getPublicKey = async () => {
 	const res = await fetch(nodeInfo);
 	const json = await res.json();
 
-	return json.metadata.webPushPublicKey as string;
+	return json.metadata.webPushPublicKey;
 };
 
 const requestPermission = () =>

@@ -54,7 +54,7 @@ export const CreateInviteModal = NiceModal.create(
 		// biome-ignore lint/correctness/useExhaustiveDependencies: .
 		useEffect(() => {
 			form.clearErrors();
-			createInvite({});
+			void createInvite({});
 		}, [guild]);
 
 		return (

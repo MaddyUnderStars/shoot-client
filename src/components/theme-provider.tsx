@@ -27,6 +27,7 @@ export function ThemeProvider({
 	...props
 }: ThemeProviderProps) {
 	const [theme, setTheme] = useState<Theme>(
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 		() => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
 	);
 

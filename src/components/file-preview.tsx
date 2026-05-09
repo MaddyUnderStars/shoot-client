@@ -23,7 +23,7 @@ export const FilePreview = ({
 				: channel?.mention && instance
 					? makeUrl(
 							`/channel/${channel.mention}/attachments/${object.hash}`,
-							new URL(instance.toString()),
+							new URL(typeof instance === "string" ? instance : instance.http),
 						).href
 					: "";
 
@@ -35,7 +35,7 @@ export const FilePreview = ({
 	}, [object, channel, instance]);
 
 	if (!instance) return null;
-	if (!url) return;
+	if (!url) return null;
 
 	if (file.type?.startsWith("image")) {
 		return <img src={url} alt={file.name} className="h-52" />;

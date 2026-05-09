@@ -35,7 +35,7 @@ export const validateInstance = async (instance: string) => {
 		}).then((x) => x.json());
 
 		return data;
-	} catch (_) {
+	} catch {
 		return false;
 	}
 };

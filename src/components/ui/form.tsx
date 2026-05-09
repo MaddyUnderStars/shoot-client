@@ -22,6 +22,7 @@ type FormFieldContextValue<
 	name: TName;
 };
 
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue);
 
 const FormField = <
@@ -64,6 +65,7 @@ type FormItemContextValue = {
 	id: string;
 };
 
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
 
 function FormItem({ className, ...props }: React.ComponentProps<"div">) {
@@ -97,9 +99,7 @@ function FormControl({ ...props }: React.ComponentProps<typeof SlotPrimitive.Slo
 		<SlotPrimitive.Slot
 			data-slot="form-control"
 			id={formItemId}
-			aria-describedby={
-				!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`
-			}
+			aria-describedby={!error ? formDescriptionId : `${formDescriptionId} ${formMessageId}`}
 			aria-invalid={!!error}
 			{...props}
 		/>
@@ -121,7 +121,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 	const { error, formMessageId } = useFormField();
-	const body = error ? String(error?.message ?? "") : props.children;
+	const body = error ? (error?.message ?? "") : props.children;
 
 	if (!body) {
 		return null;

@@ -30,6 +30,7 @@ export const App = observer(() => {
 	const density = getAppStore().settings.ui_density;
 
 	return (
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 		<div style={{ "--spacing": `${density}rem` } as React.CSSProperties}>
 			<RouterProvider router={router} />
 		</div>

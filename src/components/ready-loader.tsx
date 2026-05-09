@@ -49,7 +49,7 @@ export const ReadyLoaderComponent = observer(({ children }: React.PropsWithChild
 							variant="destructive"
 							onClick={() => {
 								gatewayClient.logout();
-								navigate({
+								void navigate({
 									to: "/login",
 								});
 							}}

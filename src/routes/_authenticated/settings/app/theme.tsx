@@ -50,9 +50,10 @@ function RouteComponent() {
 				<MessageComponent
 					showControls={false}
 					message={
+						// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 						{
 							content: "Hey, this is how chat history will look!",
-							author_id: getAppStore()!.user!.mention,
+							author_id: getAppStore().user!.mention,
 						} as Message
 					}
 				/>
@@ -60,9 +61,10 @@ function RouteComponent() {
 					showControls={false}
 					showAuthor={false}
 					message={
+						// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 						{
 							content: "Here's a second message",
-							author_id: getAppStore()!.user!.mention,
+							author_id: getAppStore().user!.mention,
 						} as Message
 					}
 				/>
@@ -70,9 +72,10 @@ function RouteComponent() {
 					showControls={false}
 					showAuthor={true}
 					message={
+						// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 						{
 							content: "And a third :)",
-							author_id: getAppStore()!.user!.mention,
+							author_id: getAppStore().user!.mention,
 						} as Message
 					}
 				/>
@@ -80,9 +83,10 @@ function RouteComponent() {
 					showControls={false}
 					showAuthor={false}
 					message={
+						// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 						{
 							content: "https://understars.dev",
-							author_id: getAppStore()!.user!.mention,
+							author_id: getAppStore().user!.mention,
 							embeds: [
 								{
 									target: "https://understars.dev",

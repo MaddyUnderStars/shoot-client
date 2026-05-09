@@ -55,7 +55,7 @@ const UnifiedPushSettings = observer(() => {
 	const [defaultDistributor, setDefaultDistributors] = useState<string>();
 
 	useEffect(() => {
-		(async () => {
+		void (async () => {
 			setDistributors((await getDistributors()).distributors);
 			setDefaultDistributors((await getUnifiedPushDistributor()).distributor);
 		})();

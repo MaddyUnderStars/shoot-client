@@ -65,7 +65,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
 		gatewayClient.login(login);
 
-		navigation({
+		await navigation({
 			to: "/channel/@me",
 		});
 	};

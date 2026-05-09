@@ -2,7 +2,7 @@ import EventEmitter from "eventemitter3";
 import { createLogger } from "../log";
 import { setLogin } from "../storage";
 import { getAppStore } from "../store/app-store";
-import { CLOSE_CODES } from "../utils";
+import { CLOSE_CODES, jitter } from "../utils";
 import type { GATEWAY_EVENT } from "./common/receive";
 import type { GATEWAY_SEND_PAYLOAD } from "./common/send";
 import { DmChannel } from "./entity/dm-channel";
@@ -19,7 +19,7 @@ type Timeout = ReturnType<typeof setTimeout>;
 export class ShootGatewayClient extends EventEmitter {
 	private socket: WebSocket | null = null;
 	private token!: string;
-	private _instance!: InstanceOptions;
+	private gwInstance!: InstanceOptions;
 
 	private sequence: number = 0;
 	private heartbeatTimeout?: Timeout = undefined;
@@ -34,7 +34,7 @@ export class ShootGatewayClient extends EventEmitter {
 	}
 
 	public get instance() {
-		return this._instance;
+		return this.gwInstance;
 	}
 
 	public login = (opts: ClientOptions) => {
@@ -48,20 +48,20 @@ export class ShootGatewayClient extends EventEmitter {
 		);
 		gw.protocol = http.protocol === "http:" ? "ws" : "wss";
 
-		this._instance = {
+		this.gwInstance = {
 			http,
 			gateway: gw,
 		};
 
 		this.token = opts.token;
 
-		this.socket = new WebSocket(this.instance.gateway);
+		this.socket = new WebSocket(this.gwInstance.gateway);
 
 		this.isReady = false;
-		this.socket.onopen = this.onOpen;
-		this.socket.onmessage = this.onMessage;
-		this.socket.onerror = this.onError;
-		this.socket.onclose = this.onClose;
+		this.socket.addEventListener("open", this.onOpen);
+		this.socket.addEventListener("message", this.onMessage);
+		this.socket.addEventListener("error", this.onError);
+		this.socket.addEventListener("close", this.onClose);
 	};
 
 	public logout = () => {
@@ -81,8 +81,6 @@ export class ShootGatewayClient extends EventEmitter {
 		this.socket.send(JSON.stringify(data));
 	};
 
-	private jitter = (n = 1900) => Math.round(Math.random() * n);
-
 	// TODO: should wait for ack before sending next heartbeat
 	private startHeartbeat = () => {
 		Log.verbose("Starting heartbeat");
@@ -93,15 +91,15 @@ export class ShootGatewayClient extends EventEmitter {
 				s: this.sequence,
 			});
 
-			const t = 8000 + this.jitter();
+			const t = 8000 + jitter(2000);
 			this.heartbeatTimeout = setTimeout(heartbeat, t);
 		};
 
-		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + this.jitter());
+		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter(2000));
 	};
 
 	private onOpen = () => {
-		Log.verbose(`Connected to gateway on ${this.instance.gateway.href}`);
+		Log.verbose(`Connected to gateway on ${this.gwInstance.gateway.href}`);
 		this.reconnectAttempts = 0;
 		clearTimeout(this.reconnectTimeout);
 		this.reconnectTimeout = undefined;
@@ -115,6 +113,7 @@ export class ShootGatewayClient extends EventEmitter {
 	};
 
 	private onMessage = ({ data }: MessageEvent) => {
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 		const parsed = JSON.parse(data) as GATEWAY_EVENT;
 
 		this.sequence++;
@@ -196,6 +195,7 @@ export class ShootGatewayClient extends EventEmitter {
 
 		this.emit("SOCKET_CLOSE", code);
 
+		// oxlint-disable-next-line typescript/no-unsafe-enum-comparison
 		if (code === CLOSE_CODES.BAD_TOKEN) {
 			// don't reconnect if our token is wrong
 			this.logout();
@@ -209,11 +209,11 @@ export class ShootGatewayClient extends EventEmitter {
 					this.reconnectAttempts++;
 					this.reconnectTimeout = undefined;
 
-					if (!this.instance || !this.token) return;
+					if (!this.gwInstance || !this.token) return;
 
-					this.login({ instance: this._instance, token: this.token });
+					this.login({ instance: this.gwInstance, token: this.token });
 				},
-				1000 * this.reconnectAttempts + this.jitter(this.reconnectAttempts * 1000),
+				1000 * this.reconnectAttempts + jitter(this.reconnectAttempts * 1000),
 			);
 		}
 	};

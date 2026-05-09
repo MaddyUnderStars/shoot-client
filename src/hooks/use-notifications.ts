@@ -14,15 +14,15 @@ export const usePermission = (name: PermissionName) => {
 				const perm = await navigator.permissions.query({ name });
 				setGranted(perm.state === "granted");
 
-				perm.onchange = () => {
+				perm.addEventListener("change", () => {
 					setGranted(perm.state === "granted");
-				};
-			} catch (_) {
+				});
+			} catch {
 				setGranted(false);
 			}
 		};
 
-		query();
+		void query();
 	}, [name]);
 
 	return granted;

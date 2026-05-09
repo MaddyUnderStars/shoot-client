@@ -15,6 +15,7 @@ export const ChannelsPageComponent = () => {
 		>
 			<SidebarProvider
 				style={
+					// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 					{
 						"--sidebar-width": "300px",
 					} as React.CSSProperties

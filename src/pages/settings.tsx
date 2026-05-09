@@ -122,7 +122,7 @@ export const SettingsSidebar = () => {
 								variant="destructive"
 								onClick={() => {
 									gatewayClient.logout();
-									navigate({
+									void navigate({
 										to: "/login",
 									});
 								}}

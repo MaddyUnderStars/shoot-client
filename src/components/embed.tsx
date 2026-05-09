@@ -1,9 +1,10 @@
 import type { ApiPublicEmbed } from "@/lib/http/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { PublicEmbedType } from "@/lib/http/generated/v1";
 
 export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 	if (embed.provider?.url === "https://www.youtube.com") return <YoutubeEmbed embed={embed} />;
-	if (embed.type === 1) return <SimpleEmbedComponent embed={embed} />;
+	if (embed.type === PublicEmbedType.photo) return <SimpleEmbedComponent embed={embed} />;
 
 	return (
 		<Card className="max-w-100 w-full gap-1 rounded-sm p-3">

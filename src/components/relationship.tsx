@@ -99,7 +99,7 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 		// TODO: better error handling. maybe a toast?
 		if (error) throw new Error(error.message);
 
-		navigate({
+		await navigate({
 			to: "/channel/$channelId",
 			params: {
 				channelId: data.mention,

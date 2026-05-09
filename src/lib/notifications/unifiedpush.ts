@@ -26,6 +26,8 @@ export const subscribeUnifiedPush = async () => {
 	});
 
 	settings.notifications.enabled = true;
+
+	return true;
 };
 
 export const getDistributors = async () => {
