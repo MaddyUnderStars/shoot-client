@@ -26,3 +26,6 @@ dist-ssr
 .tanstack/tmp
 
 .env
+
+src-tauri/keys
+keystore.properties

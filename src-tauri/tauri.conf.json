@@ -1,0 +1,41 @@
+{
+	"$schema": "https://schema.tauri.app/config/2",
+	"productName": "Shoot",
+	"version": "1.0.5",
+	"identifier": "dev.understars.shoot",
+	"build": {
+		"beforeDevCommand": "npm run dev -- --host",
+		"devUrl": "http://localhost:5173",
+		"beforeBuildCommand": "npm run build",
+		"frontendDist": "../dist"
+	},
+	"app": {
+		"windows": [
+			{
+				"title": "Shoot",
+				"width": 800,
+				"height": 600
+			}
+		],
+		"security": {
+			"csp": null
+		}
+	},
+	"bundle": {
+		"android": {
+			"autoIncrementVersionCode": false,
+			"minSdkVersion": 24
+		},
+		"category": "SocialNetworking",
+		"shortDescription": "Activitypub federated instant messenger",
+		"active": true,
+		"targets": "all",
+		"icon": [
+			"icons/32x32.png",
+			"icons/128x128.png",
+			"icons/128x128@2x.png",
+			"icons/icon.icns",
+			"icons/icon.ico"
+		]
+	}
+}
