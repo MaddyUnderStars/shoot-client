@@ -3,10 +3,7 @@
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.worker.tsbuildinfo",
 		"target": "ES2022",
 		"useDefineForClassFields": true,
-		"lib": [
-			"WebWorker",
-			"ES2022",
-		],
+		"lib": ["WebWorker", "ES2022"],
 		"module": "ESNext",
 		"skipLibCheck": true,
 		/* Bundler mode */
@@ -25,13 +22,9 @@
 		"noUncheckedIndexedAccess": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": [
-				"./src/*"
-			]
+			"@/*": ["./src/*"]
 		},
 		"experimentalDecorators": true
 	},
-	"include": [
-		"src/workers"
-	],
+	"include": ["src/workers"]
 }

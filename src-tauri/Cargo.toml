@@ -19,7 +19,10 @@ tauri-build = { version = "2", features = [] }
 tauri = { version = "2", features = [] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tauri-plugin-notifications = { git = "https://github.com/SableClient/tauri-plugin-notifications.git", rev = "9d15b2b2c8798dc29ce723d743f0f3b4921d6a54", features = ["push-notifications", "unified-push"] }
+tauri-plugin-notifications = { git = "https://github.com/SableClient/tauri-plugin-notifications.git", rev = "9d15b2b2c8798dc29ce723d743f0f3b4921d6a54", features = [
+	"push-notifications",
+	"unified-push",
+] }
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = "2"

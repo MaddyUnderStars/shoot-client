@@ -1,139 +1,139 @@
 name: Build app and release
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+    workflow_dispatch:
+    push:
+        branches:
+            - main
 
 jobs:
-  v2:
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          #- platform: 'macos-latest'
-          #  args: '--verbose --target universal-apple-darwin --debug'
-          #- platform: 'macos-latest'
-          #  args: '--verbose --target aarch64-apple-darwin --debug'
-          #- platform: 'macos-latest'
-          #  args: '--verbose --target x86_64-apple-darwin --debug'
-          - platform: 'ubuntu-22.04'
-            args: ''
-          #- platform: 'windows-latest'
-          #  args: '--verbose --debug'
-          #- platform: 'ubuntu-24.04-arm'
-          #  args: '--verbose --debug'
-          #- platform: 'windows-11-arm'
-          #  args: '--verbose --debug'
-          - platform: 'ubuntu-latest'
-            args: ''
-            mobile: 'android'
-          # can't test without an apple account
-          #- platform: 'macos-26'
-          #  args: '--verbose --debug'
-          #  mobile: 'ios'
+    v2:
+        permissions:
+            contents: write
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    #- platform: 'macos-latest'
+                    #  args: '--verbose --target universal-apple-darwin --debug'
+                    #- platform: 'macos-latest'
+                    #  args: '--verbose --target aarch64-apple-darwin --debug'
+                    #- platform: 'macos-latest'
+                    #  args: '--verbose --target x86_64-apple-darwin --debug'
+                    - platform: "ubuntu-22.04"
+                      args: ""
+                    #- platform: 'windows-latest'
+                    #  args: '--verbose --debug'
+                    #- platform: 'ubuntu-24.04-arm'
+                    #  args: '--verbose --debug'
+                    #- platform: 'windows-11-arm'
+                    #  args: '--verbose --debug'
+                    - platform: "ubuntu-latest"
+                      args: ""
+                      mobile: "android"
+                    # can't test without an apple account
+                    #- platform: 'macos-26'
+                    #  args: '--verbose --debug'
+                    #  mobile: 'ios'
 
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          submodules: 'true'
+        runs-on: ${{ matrix.platform }}
+        steps:
+            - uses: actions/checkout@v6
+              with:
+                  submodules: "true"
 
-      # node
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: 'npm'
+            # node
+            - name: setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  cache: "npm"
 
-      # tauri-notifications-plugin requires pnpm for its build step currently
-      # remove this eventually
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 10
+            # tauri-notifications-plugin requires pnpm for its build step currently
+            # remove this eventually
+            - uses: pnpm/action-setup@v6
+              with:
+                  version: 10
 
-      - name: install frontend dependencies
-        run: |
-          npm install
+            - name: install frontend dependencies
+              run: |
+                  npm install
 
-      # rust
-      - name: install Rust stable (desktop)
-        if: matrix.mobile == ''
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-apple-darwin,x86_64-apple-darwin
+            # rust
+            - name: install Rust stable (desktop)
+              if: matrix.mobile == ''
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: aarch64-apple-darwin,x86_64-apple-darwin
 
-      - name: install Rust stable (android)
-        if: matrix.mobile == 'android'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+            - name: install Rust stable (android)
+              if: matrix.mobile == 'android'
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
 
-      - name: Set up JDK
-        if: matrix.mobile == 'android'
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21' # Maybe 17
-          distribution: 'temurin'
+            - name: Set up JDK
+              if: matrix.mobile == 'android'
+              uses: actions/setup-java@v5
+              with:
+                  java-version: "21" # Maybe 17
+                  distribution: "temurin"
 
-      - name: Setup Android SDK
-        if: matrix.mobile == 'android'
-        uses: android-actions/setup-android@v3
+            - name: Setup Android SDK
+              if: matrix.mobile == 'android'
+              uses: android-actions/setup-android@v3
 
-      - name: Setup Android NDK
-        if: matrix.mobile == 'android'
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
-        with:
-          ndk-version: r29
-          link-to-sdk: true
+            - name: Setup Android NDK
+              if: matrix.mobile == 'android'
+              uses: nttld/setup-ndk@v1
+              id: setup-ndk
+              with:
+                  ndk-version: r29
+                  link-to-sdk: true
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          cache-on-failure: true
-          workspaces: './src-tauri -> target'
+            - uses: Swatinem/rust-cache@v2
+              with:
+                  cache-on-failure: true
+                  workspaces: "./src-tauri -> target"
 
-      # system
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' || matrix.platform == 'ubuntu-24.04-arm'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
+            # system
+            - name: install dependencies (ubuntu only)
+              if: matrix.platform == 'ubuntu-22.04' || matrix.platform == 'ubuntu-24.04-arm'
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
 
-      - name: set env vars
-        if: matrix.mobile != ''
-        run: |
-          touch .env
-          echo VITE_IS_MOBILE_TAURI=1 >> .env
-          cat .env
+            - name: set env vars
+              if: matrix.mobile != ''
+              run: |
+                  touch .env
+                  echo VITE_IS_MOBILE_TAURI=1 >> .env
+                  cat .env
 
-      - name: setup Android signing
-        if: matrix.mobile == 'android'
-        run: |
-          cd src-tauri/gen/android
-          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
-          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
-          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
-          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
+            - name: setup Android signing
+              if: matrix.mobile == 'android'
+              run: |
+                  cd src-tauri/gen/android
+                  echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+                  echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+                  base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+                  echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
 
-      - name: Preconfigured Tauri Project
-        uses: tauri-apps/tauri-action@8236c82510173ef930d644f38790c4cf3fd43cf2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-        with:
-          tagName: v__VERSION__
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          args: ${{ matrix.args }}
-          retryAttempts: 1
-          uploadPlainBinary: true
-          uploadWorkflowArtifacts: true
-          #uploadUpdaterSignatures: true
-          mobile: ${{ matrix.mobile }}
-      # workflowArtifactNamePattern: '[name]_${{ github.sha }}_[platform]_[arch]_[bundle]'
-      # releaseAssetNamePattern: '[name]x[version]x[platform]x[arch]x[mode]x[setup]x[ext]'
+            - name: Preconfigured Tauri Project
+              uses: tauri-apps/tauri-action@8236c82510173ef930d644f38790c4cf3fd43cf2
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+              with:
+                  tagName: v__VERSION__
+                  releaseName: "v__VERSION__"
+                  releaseBody: "See the assets to download this version and install."
+                  releaseDraft: true
+                  args: ${{ matrix.args }}
+                  retryAttempts: 1
+                  uploadPlainBinary: true
+                  uploadWorkflowArtifacts: true
+                  #uploadUpdaterSignatures: true
+                  mobile: ${{ matrix.mobile }}
+            # workflowArtifactNamePattern: '[name]_${{ github.sha }}_[platform]_[arch]_[bundle]'
+            # releaseAssetNamePattern: '[name]x[version]x[platform]x[arch]x[mode]x[setup]x[ext]'

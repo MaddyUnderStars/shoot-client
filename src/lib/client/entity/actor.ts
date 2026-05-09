@@ -11,10 +11,7 @@ export class Actor {
 		return mention.domain;
 	}
 
-	constructor(opts: {
-		mention: ActorMention;
-		name: string;
-	}) {
+	constructor(opts: { mention: ActorMention; name: string }) {
 		this.mention = opts.mention;
 		this.name = opts.name;
 
