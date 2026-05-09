@@ -3,7 +3,11 @@
 This is the work in progress [Shoot](https://github.com/MaddyUnderStars/shoot) web app.
 Please see the readme of Shoot for further details regarding the project.
 
-For a desktop client, check out https://github.com/TheEntropyShard/Sheet
+## Installation
+
+To use the app in your browser, go to https://understars.dev/shoot-client
+
+Otherwise, you can [download the app here](http://github.com/MaddyUnderStars/shoot-client/releases/latest) for Linux and Android.
 
 ## Getting started
 
@@ -22,6 +26,7 @@ npm run dev
 - `BASE_PATH` - sets the base URL of the SPA
 - `VITE_LOCK_INSTANCE` - prevents users from setting their own instance in login/registration
 - `VITE_USE_HASH_ROUTER` - use a hash-based router instead of path-based for environments like github pages
+- `VITE_IS_MOBILE_TAURI` - whether to enable specific Tauri mobile features
 
 ## Screenshots
 
