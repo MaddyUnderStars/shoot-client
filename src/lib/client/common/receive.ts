@@ -10,7 +10,9 @@ import type {
 	ApiPublicMember,
 	ApiPublicMessage,
 	ApiPublicRole,
+	ApiPublicUser,
 } from "@/lib/http/types";
+import type { PublicUser } from "../entity/public-user";
 import type { ActorMention } from "./actor";
 
 export type MESSAGE_CREATE = {
@@ -163,6 +165,29 @@ export type MEMBERS_CHUNK = {
 	};
 };
 
+export type VOICE_STATE = {
+	t: "VOICE_STATE";
+	d: {
+		states: Record<ActorMention, Array<ApiPublicUser>>;
+	};
+};
+
+export type VOICE_JOIN = {
+	t: "VOICE_JOIN";
+	d: {
+		channel: ActorMention;
+		user: PublicUser;
+	};
+};
+
+export type VOICE_LEAVE = {
+	t: "VOICE_LEAVE";
+	d: {
+		channel: ActorMention;
+		user: ActorMention;
+	};
+};
+
 /** Sent by gateway after a user has been authenticated with IDENTIFY */
 export type READY = {
 	t: "READY";
@@ -201,6 +226,9 @@ export type GATEWAY_EVENT =
 	| RELATIONSHIP_DELETE
 	| INVITE_CREATE
 	| MEMBERS_CHUNK
+	| VOICE_STATE
+	| VOICE_JOIN
+	| VOICE_LEAVE
 	| READY
 	| HEARTBEAT_ACK;
 

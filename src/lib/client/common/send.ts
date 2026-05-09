@@ -17,7 +17,12 @@ export type SUBSCRIBE_MEMBERS = {
 	online?: boolean | null;
 };
 
-export type GATEWAY_SEND_PAYLOAD = IDENTIFY | HEARTBEAT | SUBSCRIBE_MEMBERS;
+export type VOICE_QUERY = {
+	t: "voices";
+	guild: ActorMention;
+};
+
+export type GATEWAY_SEND_PAYLOAD = IDENTIFY | HEARTBEAT | SUBSCRIBE_MEMBERS | VOICE_QUERY;
 
 // webrtc types below
 

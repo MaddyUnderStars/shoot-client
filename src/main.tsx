@@ -21,8 +21,7 @@ if (login) {
 		const supported = getSupportedPush();
 
 		if (supported === "web") subscribeWebPush();
-		else if (supported === "unifiedpush")
-			subscribeUnifiedPush();
+		else if (supported === "unifiedpush") subscribeUnifiedPush();
 	}
 }
 
