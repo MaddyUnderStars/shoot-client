@@ -188,6 +188,15 @@ export type VOICE_LEAVE = {
 	};
 };
 
+export type TYPING = {
+	t: "TYPING";
+	d: {
+		channel: ActorMention;
+		user: ActorMention;
+		timestamp: number;
+	};
+};
+
 /** Sent by gateway after a user has been authenticated with IDENTIFY */
 export type READY = {
 	t: "READY";
@@ -229,6 +238,7 @@ export type GATEWAY_EVENT =
 	| VOICE_STATE
 	| VOICE_JOIN
 	| VOICE_LEAVE
+	| TYPING
 	| READY
 	| HEARTBEAT_ACK;
 

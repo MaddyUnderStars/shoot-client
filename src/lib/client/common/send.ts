@@ -22,7 +22,12 @@ export type VOICE_QUERY = {
 	guild: ActorMention;
 };
 
-export type GATEWAY_SEND_PAYLOAD = IDENTIFY | HEARTBEAT | SUBSCRIBE_MEMBERS | VOICE_QUERY;
+export type TYPING = {
+	t: "typing";
+	channel: ActorMention;
+};
+
+export type GATEWAY_SEND_PAYLOAD = IDENTIFY | HEARTBEAT | SUBSCRIBE_MEMBERS | VOICE_QUERY | TYPING;
 
 // webrtc types below
 
