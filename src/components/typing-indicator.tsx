@@ -6,7 +6,9 @@ import { getAppStore } from "@/lib/store/app-store";
 import { useEffect, useState } from "react";
 
 export const TypingIndicator = () => {
-	const [typingUsers, setTypingUsers] = useState<Map<ActorMention, string>>(new Map());
+	const [typingUsers, setTypingUsers] = useState<
+		Map<ActorMention, { name: string; timeout: number }>
+	>(new Map());
 
 	const channel = useChannel();
 	const app = getAppStore();
@@ -23,12 +25,7 @@ export const TypingIndicator = () => {
 
 			if (!user) return;
 
-			setTypingUsers((old) => {
-				old.set(user.mention, user.display_name ?? user.name);
-				return new Map(old);
-			});
-
-			setTimeout(() => {
+			const timeout = setTimeout(() => {
 				setTypingUsers((old) => {
 					old.delete(user.mention);
 					return new Map(old);
@@ -37,6 +34,11 @@ export const TypingIndicator = () => {
 				// indicators can be resent every 5 seconds
 				// so an extra 100ms buffer is fine
 			}, 5100);
+
+			setTypingUsers((old) => {
+				old.set(user.mention, { name: user.display_name ?? user.name, timeout });
+				return new Map(old);
+			});
 		};
 
 		// if a message is sent, remove that user from the typing list
@@ -46,10 +48,12 @@ export const TypingIndicator = () => {
 
 			if (msg.channel_id !== channel?.mention) return;
 
-			console.log(msg);
-
 			setTypingUsers((old) => {
-				old.delete(msg.author_id);
+				const del = old.get(msg.author_id);
+				if (del) {
+					clearTimeout(del.timeout);
+					old.delete(msg.author_id);
+				}
 				return new Map(old);
 			});
 		};
@@ -71,7 +75,8 @@ export const TypingIndicator = () => {
 	return (
 		<div className="pb-1 text-sm">
 			<p className="text-muted-foreground">
-				{[...typingUsers.values()].join(", ")} {typingUsers.size > 1 ? "are" : "is"} typing
+				{[...typingUsers.values()].map((x) => x.name).join(", ")}{" "}
+				{typingUsers.size > 1 ? "are" : "is"} typing
 			</p>
 		</div>
 	);
