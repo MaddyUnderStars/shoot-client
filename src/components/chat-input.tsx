@@ -27,6 +27,8 @@ export const ChatInput = () => {
 
 		form.reset();
 
+		lastTyped.current = 0;
+
 		await channel.sendMessage({
 			content,
 			files,
