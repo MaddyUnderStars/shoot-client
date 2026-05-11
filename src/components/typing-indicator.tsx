@@ -1,11 +1,12 @@
 import { useChannel } from "@/hooks/use-channel";
-import type { TYPING } from "@/lib/client/common/receive";
+import type { ActorMention } from "@/lib/client/common/actor";
+import type { MESSAGE_CREATE, TYPING } from "@/lib/client/common/receive";
 import { gatewayClient } from "@/lib/client/gateway";
 import { getAppStore } from "@/lib/store/app-store";
 import { useEffect, useState } from "react";
 
 export const TypingIndicator = () => {
-	const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
+	const [typingUsers, setTypingUsers] = useState<Map<ActorMention, string>>(new Map());
 
 	const channel = useChannel();
 	const app = getAppStore();
@@ -22,12 +23,15 @@ export const TypingIndicator = () => {
 
 			if (!user) return;
 
-			setTypingUsers((old) => new Set([...old.values(), user.display_name ?? user.name]));
+			setTypingUsers((old) => {
+				old.set(user.mention, user.display_name ?? user.name);
+				return new Map(old);
+			});
 
 			setTimeout(() => {
 				setTypingUsers((old) => {
-					old.delete(user.display_name ?? user.name);
-					return new Set(old);
+					old.delete(user.mention);
+					return new Map(old);
 				});
 
 				// indicators can be resent every 5 seconds
@@ -35,10 +39,28 @@ export const TypingIndicator = () => {
 			}, 5100);
 		};
 
+		// if a message is sent, remove that user from the typing list
+		// as they have sent their message
+		const createCb = (data: MESSAGE_CREATE) => {
+			const msg = data.d.message;
+
+			if (msg.channel_id !== channel?.mention) return;
+
+			console.log(msg);
+
+			setTypingUsers((old) => {
+				old.delete(msg.author_id);
+				return new Map(old);
+			});
+		};
+
 		gatewayClient.addListener("TYPING", cb);
+
+		gatewayClient.addListener("MESSAGE_CREATE", createCb);
 
 		return () => {
 			gatewayClient.removeListener("TYPING", cb);
+			gatewayClient.removeListener("MESSAGE_CREATE", createCb);
 		};
 	}, [channel]);
 
