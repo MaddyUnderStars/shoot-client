@@ -49,7 +49,7 @@ export const ChatInput = () => {
 	};
 
 	return (
-		<div className="p-3 mb-[env(safe-area-inset-bottom)]">
+		<div className="p-3 pt-0 mb-[env(safe-area-inset-bottom)]">
 			<TypingIndicator />
 
 			<form onSubmit={sendMessage} onReset={() => setAttached([])}>

@@ -69,11 +69,11 @@ export const TypingIndicator = () => {
 	}, [channel]);
 
 	if (!typingUsers.size) {
-		return <div className="pb-[23px]" />;
+		return <div className="h-6" />;
 	}
 
 	return (
-		<div className="pb-1 text-sm">
+		<div className="h-6 text-sm">
 			<p className="text-muted-foreground">
 				{[...typingUsers.values()].map((x) => x.name).join(", ")}{" "}
 				{typingUsers.size > 1 ? "are" : "is"} typing
