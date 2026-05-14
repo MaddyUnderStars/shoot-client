@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export const TypingIndicator = () => {
 	const [typingUsers, setTypingUsers] = useState<
-		Map<ActorMention, { name: string; timeout: number }>
+		Map<ActorMention, { name: string; timeout: ReturnType<typeof setTimeout> }>
 	>(new Map());
 
 	const channel = useChannel();
