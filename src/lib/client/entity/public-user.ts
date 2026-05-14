@@ -5,12 +5,16 @@ import { Actor } from "./actor";
 export class PublicUser extends Actor implements ApiPublicUser {
 	@observable summary: string;
 	@observable display_name: string;
+	@observable banner?: string;
+	@observable avatar?: string;
 
 	constructor(opts: ApiPublicUser) {
 		super(opts);
 
 		this.summary = opts.summary;
 		this.display_name = opts.display_name;
+		this.avatar = opts.avatar;
+		this.banner = opts.banner;
 
 		makeObservable(this);
 	}

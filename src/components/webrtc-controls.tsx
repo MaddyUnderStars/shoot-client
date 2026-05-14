@@ -27,7 +27,7 @@ export const WebrtcControls = observer(() => {
 			<SidebarMenuItem className="flex items-center">
 				<SidebarMenuButton size="lg">
 					<div className="flex flex-1 gap-2 items-center">
-						<PhoneMissed size={14} className="text-red-700 w-8" />
+						<PhoneMissed size={14} className="text-red-700 w-9" />
 						<div className="flex flex-col">
 							<span className="text-sm">{FRIENDLY_NAME[webrtc.error.name]}</span>
 						</div>
@@ -49,7 +49,7 @@ export const WebrtcControls = observer(() => {
 		<SidebarMenuItem className="flex items-center">
 			<SidebarMenuButton size="lg">
 				<div className="flex flex-1 gap-2 items-center">
-					<Signal size={14} className="text-green-700 w-8" />
+					<Signal size={14} className="text-green-700 w-9" />
 					<div className="flex flex-col">
 						<span className="text-sm">{webrtc.channel.name}</span>
 						<span>

@@ -45,18 +45,19 @@ export const MessageComponent = ({
 							<Avatar className="cursor-pointer">
 								<AvatarImage
 									src={
+										user?.avatar ||
 										"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
 									}
 								/>
 								<AvatarFallback>
-									<Skeleton className="h-8 w-8 rounded-full" />
+									<Skeleton className="h-9 w-9 rounded-full" />
 								</AvatarFallback>
 							</Avatar>
 						</PopoverTrigger>
 						<UserPopover user={message.author_id} />
 					</Popover>
 				) : (
-					<span className="min-w-8"></span>
+					<span className="min-w-9"></span>
 				)}
 
 				<div className="wrap-anywhere w-full">

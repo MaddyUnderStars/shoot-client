@@ -50,11 +50,13 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 		});
 	};
 
-	if (error || !user) return user_id;
+	if (error || !user) return <PopoverContent>{user_id}</PopoverContent>;
 
 	return (
 		<PopoverContent className="p-0">
-			<div className="p-4 text-white bg-purple-900 flex items-center gap-2">
+			{!user.banner ? null : <img src={user.banner} width={1100} height={440} />}
+
+			<div className="flex items-center gap-2 p-4 bg-black/20">
 				<UserComponent user_id={user_id} />
 			</div>
 

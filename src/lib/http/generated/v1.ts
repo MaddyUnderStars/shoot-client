@@ -1165,9 +1165,7 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json":
-							| components["schemas"]["PublicGuildTextChannel"]
-							| components["schemas"]["PublicDmChannel"];
+						"application/json": components["schemas"]["PublicGuildTextChannel"] | components["schemas"]["PublicDmChannel"];
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -1249,9 +1247,7 @@ export interface paths {
 			parameters: {
 				query?: {
 					limit?: number;
-					order?:
-						| PathsChannelChannel_idMessagesGetParametersQueryOrder
-						| PathsChannelChannel_idMessagesGetParametersQueryOrder;
+					order?: PathsChannelChannel_idMessagesGetParametersQueryOrder | PathsChannelChannel_idMessagesGetParametersQueryOrder;
 					after?: string;
 					before?: string;
 					around?: string;
@@ -1562,6 +1558,10 @@ export interface components {
 			name: string;
 			summary: string;
 			display_name: string;
+			/** Format: uri */
+			avatar?: string;
+			/** Format: uri */
+			banner?: string;
 		};
 		ActorMention: ActorMention;
 		PrivateUser: components["schemas"]["PublicUser"] & {
@@ -1715,16 +1715,16 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export enum PathsUsersMePushPostResponses204ContentApplicationJson {
-	No_Content = "No Content",
+	No_Content = "No Content"
 }
 export enum PathsUsersMePushNameDeleteResponses202ContentApplicationJson {
-	Accepted = "Accepted",
+	Accepted = "Accepted"
 }
 export enum PathsChannelChannel_idMessagesGetParametersQueryOrder {
-	ASC = "ASC",
+	ASC = "ASC"
 }
 export enum PathsChannelChannel_idMessagesGetParametersQueryOrder {
-	DESC = "DESC",
+	DESC = "DESC"
 }
 export enum Permission {
 	NONE = 0,
@@ -1739,17 +1739,17 @@ export enum Permission {
 	CREATE_INVITE = 9,
 	UPLOAD = 10,
 	MANAGE_MESSAGES = 11,
-	MANAGE_MEMBERS = 12,
+	MANAGE_MEMBERS = 12
 }
 export enum RelationshipType {
 	pending = 0,
 	accepted = 1,
-	blocked = 2,
+	blocked = 2
 }
 export enum PublicEmbedType {
 	link = 0,
 	photo = 1,
 	video = 2,
-	rich = 3,
+	rich = 3
 }
 export type operations = Record<string, never>;

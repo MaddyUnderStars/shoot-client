@@ -16,7 +16,7 @@ export const getFileMd5 = (file: File) => {
 		reader.readAsArrayBuffer(file.slice(start, end));
 	};
 
-	return new Promise<string>((resolve, reject) => {
+	const promise = new Promise<string>((resolve, reject) => {
 		reader.addEventListener("load", (e) => {
 			if (!e.target?.result || typeof e.target.result === "string")
 				return reject(new Error("md5 result missing or wrong type?"));
@@ -31,6 +31,10 @@ export const getFileMd5 = (file: File) => {
 
 		reader.addEventListener("error", (e) => reject(e));
 	});
+
+	loadNext();
+
+	return promise;
 };
 
 export const getFileDimensions = (
