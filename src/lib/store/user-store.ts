@@ -28,8 +28,6 @@ export class UserStore {
 	private getUser = async (user_id: ActorMention): Promise<PublicUser> => {
 		if (!user_id) throw new Error("did not specify user_id");
 
-		console.log(user_id);
-
 		const { $fetch } = getHttpClient();
 
 		const { data, error } = await $fetch.GET("/users/{user_id}/", {

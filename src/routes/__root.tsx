@@ -18,7 +18,6 @@ export const Route = createRootRoute({
 			if (!location.pathname.startsWith("/channel")) return;
 
 			window.localStorage.setItem("SAVED_LOCATION_HREF", location.href);
-			console.log(location.href);
 		}, [location]);
 
 		return (

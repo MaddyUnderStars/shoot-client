@@ -16,11 +16,7 @@ const USER_MENTION_REGEX =
 const URL_REGEX =
 	/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gim;
 
-const marked = new Marked({
-	walkTokens(token) {
-		console.log(token);
-	},
-});
+const marked = new Marked();
 
 export const MarkdownRenderer = React.memo(({ content }: { content: string }) => {
 	const sanitisedContent = React.useMemo(() => sanitise(content), [content]);
