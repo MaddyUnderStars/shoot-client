@@ -11,6 +11,7 @@ import { GuildChannel } from "./entity/guild-channel";
 import { PrivateUser } from "./entity/private-user";
 import { Relationship } from "./entity/relationship";
 import type { ClientOptions, InstanceOptions } from "./types";
+import { PublicUser } from "./entity/public-user";
 
 const Log = createLogger("gateway");
 
@@ -133,6 +134,10 @@ export class ShootGatewayClient extends EventEmitter {
 				app.setGuilds(parsed.d.guilds.map((x) => new Guild(x)));
 
 				app.setRelationships(parsed.d.relationships.map((x) => new Relationship(x)));
+
+				for (const rel of parsed.d.relationships) {
+					app.users.setUser(rel.user.mention, new PublicUser(rel.user));
+				}
 
 				this.isReady = true;
 				break;
