@@ -48,35 +48,67 @@ const HEADING_LEVELS = {
 };
 
 const MarkedRenderer: Partial<ReactRenderer> = {
-	link: (href, text) => {
+	link(href, text) {
 		return (
 			<a
 				className="text-link underline"
 				href={href}
 				target="_blank"
 				referrerPolicy="no-referrer"
+				key={this.elementId}
 			>
 				{text}
 			</a>
 		);
 	},
-	listItem: (children) => <li className="list-disc">{children}</li>,
-	heading: (children, level) => <h1 className={HEADING_LEVELS[level]}>{children}</h1>,
-	code: (code) => <pre className="bg-secondary w-full">{code}</pre>,
-	codespan: (code) => <pre className="inline p-0.5 bg-secondary">{code}</pre>,
-	blockquote: (children) => (
-		<blockquote className="bg-secondary border-l-2 ps-2 w-full">{children}</blockquote>
-	),
-	paragraph: (children) => <>{children}</>,
-	text: (text: string) => {
+	listItem(children) {
+		return (
+			<li key={this.elementId} className="list-disc">
+				{children}
+			</li>
+		);
+	},
+	heading(children, level) {
+		return (
+			<h1 key={this.elementId} className={HEADING_LEVELS[level]}>
+				{children}
+			</h1>
+		);
+	},
+	code(code) {
+		return (
+			<pre key={this.elementId} className="bg-secondary w-full">
+				{code}
+			</pre>
+		);
+	},
+	codespan(code) {
+		return (
+			<pre key={this.elementId} className="inline p-0.5 bg-secondary">
+				{code}
+			</pre>
+		);
+	},
+	blockquote(children) {
+		return (
+			<blockquote key={this.elementId} className="bg-secondary border-l-2 ps-2 w-full">
+				{children}
+			</blockquote>
+		);
+	},
+	paragraph(children) {
+		return <React.Fragment key={this.elementId}>{children}</React.Fragment>;
+	},
+	text(text: string) {
 		let ret: string | React.ReactNode[] = text;
 
-		ret = reactStringReplace(ret, URL_REGEX, (match) => (
+		ret = reactStringReplace(ret, URL_REGEX, (match, i) => (
 			<a
 				className="text-link underline"
 				href={match}
 				target="_blank"
 				referrerPolicy="no-referrer"
+				key={`${this.elementId}-${i}`}
 			>
 				{match}
 			</a>
@@ -84,7 +116,7 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 
 		ret = reactStringReplace(ret, USER_MENTION_REGEX, (match, i) => {
 			// oxlint-disable-next-line typescript/no-unsafe-type-assertion
-			return <Mention key={`user-${i}`} user={match as ActorMention} />;
+			return <Mention key={`user-${i}-${this.elementId}`} user={match as ActorMention} />;
 		});
 
 		return ret;
