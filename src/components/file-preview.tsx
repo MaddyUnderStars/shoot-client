@@ -7,10 +7,14 @@ import { makeUrl } from "@/lib/utils";
 export const FilePreview = ({
 	file,
 	channel,
+	className,
 }: {
 	file: File | ApiPublicAttachment;
 	channel?: Channel;
+	className?: string;
 }) => {
+	if (!className) className = "h-52";
+
 	const [url, setUrl] = useState<string | null>(null);
 	const [object] = useState(file);
 
@@ -38,17 +42,17 @@ export const FilePreview = ({
 	if (!url) return null;
 
 	if (file.type?.startsWith("image")) {
-		return <img src={url} alt={file.name} className="h-52" />;
+		return <img src={url} alt={file.name} className={className} />;
 	}
 
 	if (file.type?.startsWith("video")) {
 		// biome-ignore lint/a11y/useMediaCaption: impossible
-		return <video controls src={url} title={file.name} className="h-52" />;
+		return <video controls src={url} title={file.name} className={className} />;
 	}
 
 	if (file.type.startsWith("audio")) {
 		// biome-ignore lint/a11y/useMediaCaption: impossible
-		return <video controls src={url} title={file.name} className="h-52" />;
+		return <video controls src={url} title={file.name} className={className} />;
 	}
 
 	return (

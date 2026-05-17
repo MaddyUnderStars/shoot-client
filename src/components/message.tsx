@@ -78,7 +78,12 @@ export const MessageComponent = ({
 					<MarkdownRenderer content={message.content} />
 
 					{message.files?.map((file) => (
-						<FilePreview file={file} channel={message.channel} key={file.hash} />
+						<FilePreview
+							file={file}
+							channel={message.channel}
+							key={file.hash}
+							className="max-h-100"
+						/>
 					))}
 
 					{!message.embeds?.length ? null : (
