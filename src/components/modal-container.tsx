@@ -6,7 +6,6 @@ export const ModalContainer = ({ children, ...props }: React.ComponentProps<type
 	const modal = useModal();
 
 	return (
-		// biome-ignore lint/a11y/useKeyWithClickEvents: TODO
 		<div
 			role="dialog"
 			onClick={modal.remove}

@@ -46,12 +46,10 @@ export const FilePreview = ({
 	}
 
 	if (file.type?.startsWith("video")) {
-		// biome-ignore lint/a11y/useMediaCaption: impossible
 		return <video controls src={url} title={file.name} className={className} />;
 	}
 
 	if (file.type.startsWith("audio")) {
-		// biome-ignore lint/a11y/useMediaCaption: impossible
 		return <video controls src={url} title={file.name} className={className} />;
 	}
 

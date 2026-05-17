@@ -51,7 +51,6 @@ export const CreateInviteModal = NiceModal.create(
 			setInviteCode(data.code);
 		};
 
-		// biome-ignore lint/correctness/useExhaustiveDependencies: .
 		useEffect(() => {
 			form.clearErrors();
 			void createInvite({});

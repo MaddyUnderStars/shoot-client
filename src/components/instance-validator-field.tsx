@@ -46,7 +46,6 @@ export const InstanceValidatorField = ({
 		setNodeinfo(nodeInfo);
 	}, 500);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: .
 	useEffect(() => {
 		void debounced(DEFAULT_INSTANCE);
 	}, []);

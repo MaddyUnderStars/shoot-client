@@ -31,7 +31,6 @@ export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 				))}
 
 				{embed.videos.map((video) => (
-					// biome-ignore lint/a11y/useMediaCaption: not possible
 					<video
 						src={video.url}
 						width={video.width ?? 400}

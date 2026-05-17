@@ -26,7 +26,6 @@ if (login) {
 }
 
 // Render the app
-// biome-ignore lint/style/noNonNullAssertion: .
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement);
