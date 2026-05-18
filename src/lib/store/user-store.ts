@@ -25,6 +25,11 @@ export class UserStore {
 		return ret;
 	};
 
+	@computed
+	public has = (id: ActorMention) => {
+		return this.users.has(id);
+	};
+
 	private getUser = async (user_id: ActorMention): Promise<PublicUser> => {
 		if (!user_id) throw new Error("did not specify user_id");
 

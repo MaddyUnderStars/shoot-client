@@ -1266,7 +1266,7 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": components["schemas"]["PublicMessage"][];
+						"application/json": components["schemas"]["MessagesResponse"];
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -1668,6 +1668,12 @@ export interface components {
 			}[];
 			/** Format: uuid */
 			nonce?: string;
+		};
+		MessagesResponse: {
+			messages: components["schemas"]["PublicMessage"][];
+			authors: {
+				[key: string]: components["schemas"]["PublicUser"];
+			};
 		};
 	};
 	responses: {

@@ -5,14 +5,20 @@ import type { MESSAGE_CREATE, MESSAGE_DELETE, MESSAGE_UPDATE } from "@/lib/clien
 import { Message } from "@/lib/client/entity/message";
 import { gatewayClient } from "@/lib/client/gateway";
 import { getHttpClient } from "@/lib/http/client";
-import type { ApiPublicMessage } from "@/lib/http/types";
+import type { components } from "../lib/http/generated/v1";
+import { getAppStore } from "@/lib/store/app-store";
+import { PublicUser } from "@/lib/client/entity/public-user";
 
 export const MESSAGE_API_PAGE_LIMIT = 50;
+
+type MessagesResponse = components["schemas"]["MessagesResponse"];
 
 export const useMessageHistory = (channel: ActorMention) => {
 	const client = useQueryClient();
 
 	const { $api } = getHttpClient();
+
+	const { users } = getAppStore();
 
 	const fetchOptions = {
 		params: {
@@ -32,12 +38,22 @@ export const useMessageHistory = (channel: ActorMention) => {
 		"/channel/{channel_id}/messages/",
 		fetchOptions,
 		{
-			getNextPageParam: (lastPage: ApiPublicMessage[]) => lastPage[lastPage.length - 1]?.id,
+			getNextPageParam: (lastPage: MessagesResponse) => lastPage.messages.slice(-1)[0]?.id,
 			initialPageParam: "",
 			pageParamName: "before",
-			select: (data: InfiniteData<ApiPublicMessage[]>) => ({
-				pages: [...data.pages].map((page) => page.map((msg) => new Message(msg))),
-				pageParams: [...data.pageParams],
+			select: (data: InfiniteData<MessagesResponse>) => ({
+				pageParams: data.pageParams,
+				pages: data.pages.map((page) =>
+					page.messages.map((msg) => {
+						const author = page.authors[msg.author_id];
+
+						if (author) {
+							users.setUser(author.mention, new PublicUser(author));
+						}
+
+						return new Message(msg);
+					}),
+				),
 			}),
 		},
 		client,
@@ -49,19 +65,23 @@ export const useMessageHistory = (channel: ActorMention) => {
 
 			const msg = new Message(event.d.message);
 
-			client.setQueryData(queryKey, (data: InfiniteData<Message[]>) => {
+			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse[]>) => {
 				return {
-					pages: [[msg], ...data.pages],
+					pages: [
+						{ messages: [msg], authors: {} },
+						...data.pages.flat(),
+					] satisfies MessagesResponse[],
 					pageParams: data.pageParams,
 				};
 			});
 		};
 
 		const deleteListener = (event: MESSAGE_DELETE) => {
-			client.setQueryData(queryKey, (data: InfiniteData<Message[]>) => {
-				const ret = data.pages.map((page) =>
-					page.filter((msg) => msg.id !== event.d.message_id),
-				);
+			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse>) => {
+				const ret = data.pages.map((page) => ({
+					messages: page.messages.filter((msg) => msg.id !== event.d.message_id),
+					authors: page.authors,
+				}));
 
 				return {
 					pages: ret,
@@ -75,12 +95,14 @@ export const useMessageHistory = (channel: ActorMention) => {
 
 			const id = event.d.message.id;
 
-			client.setQueryData(queryKey, (data: InfiniteData<Message[]>) => {
+			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse>) => {
 				return {
-					pages: data.pages.map((page) =>
-						// oxlint-disable-next-line typescript/no-misused-spread
-						page.map((msg) => (msg.id === id ? { ...msg, ...event.d.message } : msg)),
-					),
+					pages: data.pages.map((page) => ({
+						messages: page.messages.map((msg) =>
+							msg.id === id ? { ...msg, ...event.d.message } : msg,
+						),
+						authors: page.authors,
+					})),
 					pageParams: data.pageParams,
 				};
 			});
