@@ -7,12 +7,22 @@ import { UserPopover } from "./popover/user-popover";
 import { Popover, PopoverTrigger } from "./ui/popover";
 import { Sidebar } from "./ui/sidebar";
 import { UserComponent } from "./user";
+import { getAppStore } from "@/lib/store/app-store";
+import { PublicUser } from "@/lib/client/entity/public-user";
 
 export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild }) => {
 	const [members, setMembers] = useState<MEMBERS_CHUNK["d"]["items"]>([]);
 
+	const { users } = getAppStore();
+
 	useEffect(() => {
 		const cb = (data: MEMBERS_CHUNK) => {
+			for (const row of data.d.items) {
+				if (typeof row === "string") continue;
+
+				users.setUser(row.user.mention, new PublicUser(row.user));
+			}
+
 			setMembers(data.d.items);
 		};
 
@@ -45,17 +55,14 @@ export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild
 							return <div key={x}>{role.name}</div>;
 						}
 
-						// TODO: cannot use existing UserComponent as gateway does not
-						// send full user objects for MEMBERS_CHUNK
-						// see: shoot#82
 						return (
-							<Popover key={x.user_id}>
+							<Popover key={x.user.mention}>
 								<PopoverTrigger>
 									<div className="text-white flex items-center gap-2">
-										<UserComponent user_id={x.user_id} />
+										<UserComponent user_id={x.user.mention} />
 									</div>
 								</PopoverTrigger>
-								<UserPopover user={x.user_id} />
+								<UserPopover user={x.user.mention} />
 							</Popover>
 						);
 					})}

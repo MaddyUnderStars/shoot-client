@@ -1,4 +1,3 @@
-import type { ActorMention } from "../client/common/actor";
 import type { components } from "./generated/v1";
 
 export type ApiPublicUser = components["schemas"]["PublicUser"];
@@ -47,5 +46,5 @@ export type ApiPrivateSession = {
 export type ApiMembersChunkItem = {
 	name: string;
 	member_id?: string;
-	user_id: ActorMention;
+	user: ApiPublicUser;
 };
