@@ -9,6 +9,7 @@ import React from "react";
 import reactStringReplace from "react-string-replace";
 import type { ActorMention } from "@/lib/client/common/actor";
 import { Mention } from "./mention";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 const USER_MENTION_REGEX =
 	/@(\w+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)/i;
@@ -45,6 +46,20 @@ const HEADING_LEVELS = {
 
 const MarkedRenderer: Partial<ReactRenderer> = {
 	link(href, text) {
+		if (import.meta.env.VITE_IS_MOBILE_TAURI) {
+			// we're tauri, use the opener plugin instead
+
+			const open = async () => {
+				await openUrl(href);
+			};
+
+			return (
+				<button key={this.elementId} className="text-link underline" onClick={open}>
+					{text}
+				</button>
+			);
+		}
+
 		return (
 			<a
 				className="text-link underline"

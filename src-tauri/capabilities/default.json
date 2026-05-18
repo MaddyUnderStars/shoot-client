@@ -11,6 +11,8 @@
 		"notifications:allow-unregister-from-unified-push",
 		"notifications:allow-get-unified-push-distributors",
 		"notifications:allow-save-unified-push-distributor",
-		"notifications:allow-get-unified-push-distributor"
+		"notifications:allow-get-unified-push-distributor",
+		"opener:allow-open-url",
+		"opener:allow-default-urls"
 	]
 }
