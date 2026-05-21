@@ -5,6 +5,7 @@ import { getHttpClient } from "@/lib/http/client";
 import { getAppStore } from "@/lib/store/app-store";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
+import { SearchPane } from "./search-pane";
 
 export const ChannelHeader = () => {
 	const channel = useChannel();
@@ -59,6 +60,8 @@ export const ChannelHeader = () => {
 					<Button size="icon" variant="ghost" onClick={() => startCall()}>
 						<PhoneCall />
 					</Button>
+
+					<SearchPane channel={channel} />
 				</div>
 			</div>
 		</div>
