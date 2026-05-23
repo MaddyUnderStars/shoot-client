@@ -28,6 +28,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "../ui/sidebar";
+import { useChannel } from "@/hooks/use-channel";
 
 const ChannelSidebarListItem = React.memo(
 	({
@@ -40,10 +41,15 @@ const ChannelSidebarListItem = React.memo(
 		voice?: PublicUser[];
 	}) => {
 		const sidebar = useSidebar();
+		const selectedChannel = useChannel();
+
+		const isSelected = selectedChannel?.mention === channel.mention;
 
 		return (
 			<SidebarMenuItem key={channel.mention}>
-				<SidebarMenuButton>
+				<SidebarMenuButton
+					className={cn("hover:bg-sidebar-ring", isSelected ? "bg-accent" : "")}
+				>
 					<Link
 						to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
 						params={(prev) => ({
