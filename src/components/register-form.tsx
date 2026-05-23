@@ -116,9 +116,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
 								)}
 							/>
 
-							<Button type="submit" className="cursor-pointer">
-								Register
-							</Button>
+							<Button type="submit">Register</Button>
 						</form>
 					</Form>
 				</CardContent>

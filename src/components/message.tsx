@@ -43,7 +43,7 @@ export const MessageComponent = React.memo(
 					{showAuthor ? (
 						<Popover>
 							<PopoverTrigger className="flex items-start mt-2">
-								<Avatar className="cursor-pointer">
+								<Avatar>
 									<AvatarImage src={user?.avatar} />
 									<AvatarFallback>
 										<Skeleton className="h-9 w-9 rounded-full" />
@@ -60,7 +60,7 @@ export const MessageComponent = React.memo(
 						{showAuthor ? (
 							<Popover>
 								<div className="flex gap-2">
-									<PopoverTrigger className="cursor-pointer inline">
+									<PopoverTrigger className="inline">
 										<span>{user?.display_name ?? message.author_id}</span>
 									</PopoverTrigger>
 

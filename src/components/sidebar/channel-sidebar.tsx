@@ -80,9 +80,7 @@ const ChannelSidebarListItem = React.memo(
 								)}
 							>
 								<Popover>
-									<PopoverTrigger className="cursor-pointer">
-										{user.display_name}
-									</PopoverTrigger>
+									<PopoverTrigger>{user.display_name}</PopoverTrigger>
 									<UserPopover user={user.mention} />
 								</Popover>
 							</li>
