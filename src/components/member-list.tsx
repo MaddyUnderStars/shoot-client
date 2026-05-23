@@ -43,7 +43,7 @@ export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild
 
 	return (
 		<Sidebar side={"right"}>
-			<div className="bg-sidebar flex-1 border-l">
+			<div className="bg-sidebar flex-1 border-l pt-[env(safe-area-inset-top)]">
 				<div className="flex flex-col gap-3.5 border-b p-4 h-14">Members</div>
 
 				<div className="flex-1 flex flex-col gap-2 w-full m-2">
