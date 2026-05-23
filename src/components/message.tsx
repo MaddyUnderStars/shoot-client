@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useUser } from "@/hooks/use-user";
 import type { Message } from "@/lib/client/entity/message";
 import { cn } from "@/lib/utils";
@@ -18,107 +18,103 @@ import {
 import { Popover, PopoverTrigger } from "./ui/popover";
 import { Skeleton } from "./ui/skeleton";
 
-export const MessageComponent = ({
-	message,
-	showAuthor = true,
-	showControls = true,
-}: {
-	message: Message;
-	showAuthor?: boolean;
-	showControls?: boolean;
-}) => {
-	const [open, setOpen] = useState<boolean>();
+export const MessageComponent = React.memo(
+	({
+		message,
+		showAuthor = true,
+		showControls = true,
+	}: {
+		message: Message;
+		showAuthor?: boolean;
+		showControls?: boolean;
+	}) => {
+		const [open, setOpen] = useState<boolean>();
 
-	const { user } = useUser(message.author_id);
+		const { user } = useUser(message.author_id);
 
-	return (
-		<div className="flex justify-between items-start pe-5 group hover:bg-secondary w-full">
-			<div
-				className={cn(
-					"flex gap-3 content-visibility-auto ps-2 w-full",
-					showAuthor ? "pt-2" : "",
-				)}
-			>
-				{showAuthor ? (
-					<Popover>
-						<PopoverTrigger className="flex items-start mt-2">
-							<Avatar className="cursor-pointer">
-								<AvatarImage
-									src={
-										user?.avatar ||
-										"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-									}
-								/>
-								<AvatarFallback>
-									<Skeleton className="h-9 w-9 rounded-full" />
-								</AvatarFallback>
-							</Avatar>
-						</PopoverTrigger>
-						<UserPopover user={message.author_id} />
-					</Popover>
-				) : (
-					<span className="min-w-9"></span>
-				)}
-
-				<div className="wrap-anywhere w-full">
+		return (
+			<div className="flex justify-between items-start pe-5 group hover:bg-secondary w-full">
+				<div
+					className={cn(
+						"flex gap-3 content-visibility-auto ps-2 w-full",
+						showAuthor ? "pt-2" : "",
+					)}
+				>
 					{showAuthor ? (
 						<Popover>
-							<div className="flex gap-2">
-								<PopoverTrigger className="cursor-pointer inline">
-									<span>{user?.display_name ?? message.author_id}</span>
-								</PopoverTrigger>
-
-								<Timestamp date={new Date(message.published)} />
-							</div>
-
+							<PopoverTrigger className="flex items-start mt-2">
+								<Avatar className="cursor-pointer">
+									<AvatarImage src={user?.avatar} />
+									<AvatarFallback>
+										<Skeleton className="h-9 w-9 rounded-full" />
+									</AvatarFallback>
+								</Avatar>
+							</PopoverTrigger>
 							<UserPopover user={message.author_id} />
 						</Popover>
-					) : null}
-
-					<MarkdownRenderer content={message.content} />
-
-					{message.files?.map((file) => (
-						<FilePreview
-							file={file}
-							channel={message.channel}
-							key={file.hash}
-							className="max-h-100"
-						/>
-					))}
-
-					{!message.embeds?.length ? null : (
-						<div className="mt-2 flex gap-2 flex-wrap">
-							{message.embeds?.map((embed) => (
-								<EmbedComponent embed={embed} key={embed.target} />
-							))}
-						</div>
+					) : (
+						<span className="min-w-9"></span>
 					)}
+
+					<div className="wrap-anywhere w-full">
+						{showAuthor ? (
+							<Popover>
+								<div className="flex gap-2">
+									<PopoverTrigger className="cursor-pointer inline">
+										<span>{user?.display_name ?? message.author_id}</span>
+									</PopoverTrigger>
+
+									<Timestamp date={message.published} />
+								</div>
+
+								<UserPopover user={message.author_id} />
+							</Popover>
+						) : null}
+
+						<MarkdownRenderer content={message.content} />
+
+						{message.files?.map((file) => (
+							<FilePreview
+								file={file}
+								channel={message.channel}
+								key={file.hash}
+								className="max-h-100"
+							/>
+						))}
+
+						{!message.embeds?.length ? null : (
+							<div className="mt-2 flex gap-2 flex-wrap">
+								{message.embeds?.map((embed) => (
+									<EmbedComponent embed={embed} key={embed.target} />
+								))}
+							</div>
+						)}
+					</div>
 				</div>
-			</div>
-
-			{showControls ? (
-				<div className="relative">
-					<DropdownMenu onOpenChange={(open) => setOpen(open)}>
-						<DropdownMenuTrigger
-							className={cn([
-								"bg-accent rounded group-hover:block absolute right-1 p-1",
-								open ? "" : "hidden",
-							])}
-						>
-							<ChevronDown size={16} />
-						</DropdownMenuTrigger>
-
-						<DropdownMenuContent>
-							<DropdownMenuItem
-								variant="destructive"
-								onClick={() => message.delete()}
+				{showControls ? (
+					<div className="relative">
+						<DropdownMenu onOpenChange={(open) => setOpen(open)}>
+							<DropdownMenuTrigger
+								className={cn([
+									"bg-accent rounded group-hover:block absolute right-1 p-1",
+									open ? "" : "hidden",
+								])}
 							>
-								Delete
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
-			) : null}
-		</div>
-	);
-};
+								<ChevronDown size={16} />
+							</DropdownMenuTrigger>
+
+							<DropdownMenuContent>
+								<DropdownMenuItem
+									variant="destructive"
+									onClick={() => message.delete()}
+								>
+									Delete
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					</div>
+				) : null}
+			</div>
+		);
+	},
+);

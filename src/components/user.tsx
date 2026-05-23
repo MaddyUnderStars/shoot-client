@@ -11,13 +11,7 @@ export const UserComponent = ({ user_id }: { user_id: ActorMention }) => {
 	return (
 		<>
 			<Avatar className="h-9 w-9 rounded-lg">
-				<AvatarImage
-					src={
-						user.avatar ||
-						"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-					}
-					alt="Username"
-				/>
+				<AvatarImage src={user.avatar} />
 				<AvatarFallback>
 					<Skeleton className="h-9 w-9 rounded-full" />
 				</AvatarFallback>

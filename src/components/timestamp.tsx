@@ -1,7 +1,8 @@
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent } from "./ui/tooltip";
+import React from "react";
 
-export const Timestamp = ({ date }: { date: Date }) => {
+export const Timestamp = React.memo(({ date }: { date: Date }) => {
 	if (Number.isNaN(date.getTime())) return null;
 
 	return (
@@ -15,4 +16,4 @@ export const Timestamp = ({ date }: { date: Date }) => {
 			</Tooltip>
 		</span>
 	);
-};
+});
