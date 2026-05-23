@@ -62,9 +62,9 @@ export const GuildSidebar = observer(() => {
 	return (
 		<Sidebar
 			collapsible="none"
-			className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r flex items-center"
+			className="w-[calc(var(--sidebar-width-icon)+1px)]! flex items-center"
 		>
-			<SidebarHeader>
+			<SidebarHeader className="border-r">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton
@@ -82,7 +82,7 @@ export const GuildSidebar = observer(() => {
 				</SidebarMenu>
 			</SidebarHeader>
 
-			<SidebarContent>
+			<SidebarContent className="border-r">
 				<SidebarGroup className="pb-0 pt-0">
 					<GuildsSidebarList />
 				</SidebarGroup>
