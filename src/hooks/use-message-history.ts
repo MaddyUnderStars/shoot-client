@@ -64,12 +64,13 @@ export const useMessageHistory = (channel: ActorMention) => {
 			if (!event) return;
 			if (event.d.message.channel_id !== channel) return;
 
-			const msg = new Message(event.d.message);
-
 			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse[]>) => {
 				return {
 					pages: [
-						{ messages: [msg], authors: {} },
+						{
+							messages: [event.d.message],
+							authors: {},
+						},
 						...data.pages.flat(),
 					] satisfies MessagesResponse[],
 					pageParams: data.pageParams,
