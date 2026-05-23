@@ -29,7 +29,7 @@ export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) 
 				scrollableTarget="chat-history"
 			>
 				{data?.pages.flat().map((msg, i, arr) => (
-					<PaginatedMessage last={arr[i - 1]} curr={msg} key={msg.id} />
+					<PaginatedMessage last={arr[i + 1]} curr={msg} key={msg.id} />
 				))}
 			</InfiniteScroll>
 		</div>
