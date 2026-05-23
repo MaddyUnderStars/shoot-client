@@ -62,6 +62,7 @@ export const useMessageHistory = (channel: ActorMention) => {
 	useEffect(() => {
 		const createListener = (event: MESSAGE_CREATE) => {
 			if (!event) return;
+			if (event.d.message.channel_id !== channel) return;
 
 			const msg = new Message(event.d.message);
 
@@ -77,6 +78,9 @@ export const useMessageHistory = (channel: ActorMention) => {
 		};
 
 		const deleteListener = (event: MESSAGE_DELETE) => {
+			if (!event) return;
+			if (event.d.channel !== channel) return;
+
 			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse>) => {
 				const ret = data.pages.map((page) => ({
 					messages: page.messages.filter((msg) => msg.id !== event.d.message_id),
