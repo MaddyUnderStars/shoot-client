@@ -74,7 +74,7 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 	},
 	listItem(children) {
 		return (
-			<li key={this.elementId} className="list-disc">
+			<li key={this.elementId} className="list-disc ms-4">
 				{children}
 			</li>
 		);
