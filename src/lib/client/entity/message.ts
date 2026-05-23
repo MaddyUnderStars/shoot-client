@@ -4,11 +4,11 @@ import type { ApiPublicAttachment, ApiPublicEmbed, ApiPublicMessage } from "@/li
 import { type AppStore, getAppStore } from "@/lib/store/app-store";
 import type { ActorMention } from "../common/actor";
 
-export class Message implements ApiPublicMessage {
+export class Message implements Omit<ApiPublicMessage, "published" | "updated"> {
 	@observable id: string;
 	@observable content: string;
-	@observable published: string;
-	@observable updated: string;
+	@observable published: Date;
+	@observable updated: Date;
 	@observable author_id: ActorMention;
 	@observable
 	channel_id: ActorMention;
@@ -28,8 +28,8 @@ export class Message implements ApiPublicMessage {
 
 		this.id = opts.id;
 		this.content = opts.content;
-		this.published = opts.published;
-		this.updated = opts.updated;
+		this.published = new Date(opts.published);
+		this.updated = new Date(opts.updated);
 		this.author_id = opts.author_id;
 		this.channel_id = opts.channel_id;
 		this.files = opts.files;
