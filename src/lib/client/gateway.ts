@@ -208,6 +208,28 @@ export class ShootGatewayClient extends EventEmitter {
 		}
 
 		if (!this.reconnectTimeout) {
+			// if we're in the background, don't reconnect immediately
+			// as it'll just keep disconnecting
+
+			if (document.hidden) {
+				Log.verbose("We're in the background, discontinuing reconnect attempts");
+
+				document.addEventListener(
+					"visibilitychange",
+					() => {
+						if (document.hidden) return; // hmm
+						if (!this.gwInstance || !this.token) return;
+
+						Log.verbose("We're in foreground again. Reconnecting...");
+
+						this.login({ instance: this.gwInstance, token: this.token });
+					},
+					{ once: true },
+				);
+
+				return;
+			}
+
 			this.reconnectTimeout = setTimeout(
 				() => {
 					Log.verbose(`Trying reconnect attempt ${this.reconnectAttempts}`);
