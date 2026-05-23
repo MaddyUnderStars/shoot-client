@@ -119,7 +119,7 @@ const YoutubeEmbed = ({ embed }: { embed: ApiPublicEmbed }) => {
 
 	if (!open) {
 		return (
-			<Card className="rounded-sm p-3" style={{ width: "560px", height: "320px" }}>
+			<Card className="rounded-sm p-3 h-80 sm:w-md w-full">
 				<CardContent className="p-0 w-full h-full relative">
 					{embed.thumbnail ? (
 						<img
@@ -144,7 +144,7 @@ const YoutubeEmbed = ({ embed }: { embed: ApiPublicEmbed }) => {
 	}
 
 	return (
-		<Card className="w-100 gap-1 rounded-sm p-3" style={{ width: "560px", height: "320px" }}>
+		<Card className="gap-1 rounded-sm p-3 h-80 sm:w-md w-full">
 			<CardContent className="p-0 w-full h-full">
 				<iframe
 					src={`https://youtube.com/embed/${videoId}`}
