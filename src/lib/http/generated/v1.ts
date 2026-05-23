@@ -1647,6 +1647,13 @@ export interface components {
 				height?: number;
 				alt?: string;
 			}[];
+			thumbnail?: {
+				/** Format: uri */
+				url: string;
+				width?: number;
+				height?: number;
+				alt?: string;
+			};
 			author?: {
 				name?: string;
 				url?: string;
