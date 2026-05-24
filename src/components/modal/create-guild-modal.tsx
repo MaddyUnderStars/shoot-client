@@ -53,9 +53,10 @@ export const CreateGuildModal = NiceModal.create(() => {
 
 		modal.remove();
 		await navigate({
-			to: "/channel/$guildId/{-$channelId}",
+			to: "/channel/$guildId/$channelId",
 			params: {
 				guildId: data.mention,
+				channelId: data.channels![0]!.mention, // TODO
 			},
 		});
 	};

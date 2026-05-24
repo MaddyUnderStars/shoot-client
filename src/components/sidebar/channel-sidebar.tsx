@@ -51,7 +51,7 @@ const ChannelSidebarListItem = React.memo(
 					className={cn("hover:bg-sidebar-ring", isSelected ? "bg-accent" : "")}
 				>
 					<Link
-						to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
+						to={guild ? "/channel/$guildId/$channelId" : "/channel/$channelId"}
 						params={(prev) => ({
 							...prev,
 							channelId: channel.mention,

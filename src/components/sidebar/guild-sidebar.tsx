@@ -27,10 +27,10 @@ const GuildSidebarListItem = React.memo(({ guild }: { guild: Guild }) => (
 			className="p-0 size-8 hover:rounded-sm rounded-lg transition-colors border flex justify-center items-center hover:bg-accent"
 		>
 			<Link
-				to="/channel/$guildId/{-$channelId}"
+				to="/channel/$guildId/$channelId"
 				params={{
 					guildId: guild.mention,
-					channelId: guild.channels?.[0]?.mention,
+					channelId: guild.channels[0]!.mention, // TODO
 				}}
 			>
 				<Avatar className="rounded-none">
