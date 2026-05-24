@@ -1,0 +1,42 @@
+name: Test
+on:
+    push:
+        branches:
+            - main
+            - develop
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+env:
+    PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/ms-playwright
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 23
+
+            - uses: pnpm/action-setup@v6
+              with:
+                  version: 10
+
+            - name: install deps
+              run: npm ci
+
+            - name: Install Playwright Dependencies
+              run: pnpm exec playwright install chromium --with-deps
+
+            - name: build
+              run: npm run build
+
+            - name: test
+              id: test
+              run: npm run test
