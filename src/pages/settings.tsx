@@ -22,6 +22,8 @@ export const SettingsSidebar = () => {
 
 	const navigate = useNavigate();
 
+	const previousNav = localStorage.getItem("SAVED_LOCATION_HREF");
+
 	return (
 		<Sidebar>
 			<SidebarContent className="pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
@@ -30,7 +32,7 @@ export const SettingsSidebar = () => {
 						<SidebarMenu>
 							<SidebarMenuButton asChild>
 								<Link
-									to="/channel/@me"
+									to={previousNav ?? "/channel/@me"}
 									onClick={() => sidebar.setOpenMobile(false)}
 								>
 									<XIcon />

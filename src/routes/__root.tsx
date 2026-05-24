@@ -14,7 +14,6 @@ export const Route = createRootRoute({
 		// if that location is a channel
 		// save that to local storage to restore the next time we load
 		useEffect(() => {
-			if (!import.meta.env.VITE_IS_MOBILE_TAURI) return;
 			if (!location.pathname.startsWith("/channel")) return;
 
 			window.localStorage.setItem("SAVED_LOCATION_HREF", location.href);
