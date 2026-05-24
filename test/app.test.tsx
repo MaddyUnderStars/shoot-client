@@ -1,8 +1,9 @@
-import { test } from "vitest";
-import { render } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { test, expect } from "vitest";
+import { render } from "vitest-browser-react";
 import { App } from "../src/app";
 
-test("renders", () => {
-	render(<App />);
+test("renders", async () => {
+	const screen = await render(<App />);
+
+	await expect.element(screen.baseElement).toBeVisible();
 });

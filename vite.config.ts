@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
@@ -8,6 +8,7 @@ import babel from "@rolldown/plugin-babel";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { build } from "rolldown";
+import { playwright } from "@vitest/browser-playwright";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -65,6 +66,14 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
+		},
+	},
+	test: {
+		browser: {
+			enabled: true,
+			provider: playwright(),
+			headless: true,
+			instances: [{ browser: "chromium" }, { browser: "firefox" }],
 		},
 	},
 });

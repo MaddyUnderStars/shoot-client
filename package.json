@@ -1,6 +1,6 @@
 {
 	"name": "shoot-client",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -57,18 +57,16 @@
 		"@tanstack/router-plugin": "^1.128.6",
 		"@tauri-apps/cli": "^2.11.1",
 		"@testing-library/dom": "^10.4.0",
-		"@testing-library/jest-dom": "^6.6.3",
-		"@testing-library/react": "^16.3.0",
 		"@types/node": "^24.0.15",
 		"@types/react": "^19.1.8",
 		"@types/react-dom": "^19.1.6",
 		"@types/react-transition-group": "^4.4.12",
 		"@types/spark-md5": "^3.0.5",
 		"@vitejs/plugin-react": "^6.0.2",
+		"@vitest/browser-playwright": "^4.1.7",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"globals": "^16.3.0",
 		"husky": "^9.1.7",
-		"jsdom": "^26.1.0",
 		"lint-staged": "^16.1.2",
 		"openapi-typescript": "^7.8.0",
 		"oxfmt": "^0.48.0",
@@ -79,7 +77,8 @@
 		"typescript-eslint": "^8.35.1",
 		"vite": "^8.0.14",
 		"vite-plugin-pwa": "^1.0.3",
-		"vitest": "^4.1.7"
+		"vitest": "^4.1.7",
+		"vitest-browser-react": "^2.2.0"
 	},
 	"lint-staged": {
 		"*.{ts,js,md,tsx,jsx,css}": "oxlint",
