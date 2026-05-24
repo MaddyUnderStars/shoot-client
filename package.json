@@ -51,6 +51,8 @@
 		"zod": "^4.0.5"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.29.0",
+		"@rolldown/plugin-babel": "^0.2.3",
 		"@tailwindcss/vite": "^4.1.11",
 		"@tanstack/router-plugin": "^1.128.6",
 		"@tauri-apps/cli": "^2.11.1",
@@ -63,6 +65,7 @@
 		"@types/react-transition-group": "^4.4.12",
 		"@types/spark-md5": "^3.0.5",
 		"@vitejs/plugin-react": "^6.0.2",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"globals": "^16.3.0",
 		"husky": "^9.1.7",
 		"jsdom": "^26.1.0",
