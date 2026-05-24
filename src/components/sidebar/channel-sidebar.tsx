@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Hash, PhoneCall } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGuild } from "@/hooks/use-guild";
 import type { ActorMention } from "@/lib/client/common/actor";
 import type { VOICE_JOIN, VOICE_LEAVE, VOICE_STATE } from "@/lib/client/common/receive";

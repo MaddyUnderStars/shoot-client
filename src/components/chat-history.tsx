@@ -4,7 +4,6 @@ import type { DmChannel } from "@/lib/client/entity/dm-channel";
 import type { GuildChannel } from "@/lib/client/entity/guild-channel";
 import { MessageComponent } from "./message";
 import type { Message } from "@/lib/client/entity/message";
-import React from "react";
 
 const MSG_GROUP_LIMIT_DT = 1000 * 60 * 5; // 5 minutes
 
