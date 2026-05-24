@@ -19,7 +19,7 @@ import {
 	useSidebar,
 } from "../ui/sidebar";
 
-const GuildSidebarListItem = React.memo(({ guild }: { guild: Guild }) => (
+const GuildSidebarListItem = ({ guild }: { guild: Guild }) => (
 	<SidebarMenuItem>
 		<SidebarMenuButton
 			size="lg"
@@ -40,7 +40,7 @@ const GuildSidebarListItem = React.memo(({ guild }: { guild: Guild }) => (
 			</Link>
 		</SidebarMenuButton>
 	</SidebarMenuItem>
-));
+);
 
 const GuildsSidebarList = observer(() => {
 	const guilds = getAppStore().guilds;
