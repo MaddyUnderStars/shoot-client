@@ -1,9 +1,9 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import type { DeepPartial } from "react-hook-form";
 
 export class SettingsStore {
-	@observable voice = {
+	voice = {
 		input_volume: 1,
 		output_volume: 1,
 		agc: true,
@@ -11,9 +11,9 @@ export class SettingsStore {
 		noise: true,
 	};
 
-	@observable ui_density: number = 0.22;
+	ui_density: number = 0.22;
 
-	@observable notifications = {
+	notifications = {
 		enabled: false,
 		device_name: navigator.userAgent,
 	};
@@ -28,7 +28,6 @@ export class SettingsStore {
 		});
 	}
 
-	@action
 	public setSettings = (opts: DeepPartial<SettingsStore>) => {
 		if (opts.voice?.input_volume !== undefined)
 			this.voice.input_volume = opts.voice.input_volume;

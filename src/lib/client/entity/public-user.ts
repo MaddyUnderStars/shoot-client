@@ -3,10 +3,10 @@ import type { ApiPublicUser } from "@/lib/http/types";
 import { Actor } from "./actor";
 
 export class PublicUser extends Actor implements ApiPublicUser {
-	@observable summary: string;
-	@observable display_name: string;
-	@observable banner?: string;
-	@observable avatar: string;
+	summary: string;
+	display_name: string;
+	banner?: string;
+	avatar: string;
 
 	constructor(opts: ApiPublicUser) {
 		super(opts);
@@ -18,6 +18,11 @@ export class PublicUser extends Actor implements ApiPublicUser {
 			"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png";
 		this.banner = opts.banner;
 
-		makeObservable(this);
+		makeObservable(this, {
+			summary: observable,
+			display_name: observable,
+			banner: observable,
+			avatar: observable,
+		});
 	}
 }
