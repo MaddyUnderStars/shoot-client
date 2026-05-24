@@ -3,10 +3,10 @@
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import react from "@vitejs/plugin-react-swc";
-import { buildSync } from "esbuild";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { build } from "rolldown";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,9 +16,7 @@ export default defineConfig({
 			target: "react",
 			autoCodeSplitting: true,
 		}),
-		react({
-			tsDecorators: true,
-		}),
+		react(),
 		tailwindcss(),
 		VitePWA({
 			workbox: {
@@ -50,12 +48,13 @@ export default defineConfig({
 			apply: "build",
 			enforce: "post",
 			transformIndexHtml: {
-				handler: () => {
-					buildSync({
-						minify: true,
-						bundle: true,
-						entryPoints: [path.join(process.cwd(), "src/workers/serviceWorker.js")],
-						outfile: path.join(process.cwd(), "dist", "serviceWorker.js"),
+				handler: async () => {
+					await build({
+						input: [path.join(process.cwd(), "src/workers/serviceWorker.js")],
+						output: {
+							file: path.join(process.cwd(), "dist", "serviceWorker.js"),
+							minify: true,
+						},
 					});
 				},
 			},
@@ -65,9 +64,5 @@ export default defineConfig({
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
 		},
-	},
-	test: {
-		globals: true,
-		environment: "jsdom",
 	},
 });
