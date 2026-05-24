@@ -57,7 +57,7 @@ function SidebarProvider({
 	const swipebar = useSwipeBarContext();
 
 	const setOpenMobile = (open: boolean) =>
-		open ? swipebar.openSidebar("left") : swipebar.closeSidebar("left");
+		open ? swipebar.openSidebar("left", {}) : swipebar.closeSidebar("left", {});
 
 	// This is the internal state of the sidebar.
 	// We use openProp and setOpenProp for control from outside the component.
