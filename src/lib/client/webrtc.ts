@@ -32,9 +32,8 @@ export class ShootWebrtcClient extends EventEmitter {
 
 	private app = getAppStore();
 
-	@observable public error?: Error;
+	public error?: Error;
 
-	@computed
 	public get channel() {
 		const ch = this.app.getChannel(this.targetChannel);
 		if (!ch) throw new Error("webrtc channel does not exist?");
@@ -54,10 +53,14 @@ export class ShootWebrtcClient extends EventEmitter {
 			this.audioElement.volume = this.app.settings.voice.output_volume;
 		});
 
-		makeObservable(this);
+		makeObservable(this, {
+			error: observable,
+			channel: computed,
+			login: action,
+			leave: action,
+		});
 	}
 
-	@action
 	public login = async () => {
 		this.error = undefined;
 

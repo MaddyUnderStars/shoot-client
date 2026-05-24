@@ -4,8 +4,8 @@ import type { ActorMention } from "../common/actor";
 import { Channel } from "./channel";
 
 export class DmChannel extends Channel implements ApiPublicDmChannel {
-	@observable owner: ActorMention;
-	@observable recipients: ActorMention[];
+	owner: ActorMention;
+	recipients: ActorMention[];
 
 	constructor(opts: ApiPublicDmChannel) {
 		super(opts);
@@ -13,6 +13,9 @@ export class DmChannel extends Channel implements ApiPublicDmChannel {
 		this.owner = opts.owner;
 		this.recipients = opts.recipients;
 
-		makeObservable(this);
+		makeObservable(this, {
+			owner: observable,
+			recipients: observable,
+		});
 	}
 }

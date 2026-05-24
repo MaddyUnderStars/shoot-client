@@ -18,7 +18,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
 		"noUncheckedIndexedAccess": true,
-		"experimentalDecorators": true
+		"useDefineForClassFields": true
 	},
 	"include": ["vite.config.ts"]
 }

@@ -1,15 +1,17 @@
-import { action, computed, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import type { ActorMention } from "../client/common/actor";
 import { PublicUser } from "../client/entity/public-user";
 import { getHttpClient } from "../http/client";
 
 export class UserStore {
-	@observable
 	private users: Map<ActorMention, PublicUser> = new Map();
 
 	private promises: Map<ActorMention, ReturnType<UserStore["getUser"]>> = new Map();
 
-	@computed
+	constructor() {
+		makeAutoObservable(this);
+	}
+
 	public resolve = async (id: ActorMention) => {
 		if (this.users.has(id)) return this.users.get(id)!;
 
@@ -25,7 +27,6 @@ export class UserStore {
 		return ret;
 	};
 
-	@computed
 	public has = (id: ActorMention) => {
 		return this.users.has(id);
 	};
@@ -51,7 +52,6 @@ export class UserStore {
 		return ret;
 	};
 
-	@action
 	public setUser = <T extends PublicUser | null>(id: ActorMention, user: T) => {
 		if (user) this.users.set(id, user);
 		else this.users.delete(id);

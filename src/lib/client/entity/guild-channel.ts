@@ -7,7 +7,6 @@ import { Channel } from "./channel";
 export class GuildChannel extends Channel implements ApiPublicGuildTextChannel {
 	private app = getAppStore();
 
-	@observable
 	public guild: ActorMention;
 
 	public get getGuild() {
@@ -20,6 +19,8 @@ export class GuildChannel extends Channel implements ApiPublicGuildTextChannel {
 		super(opts);
 		this.guild = guild;
 
-		makeObservable(this);
+		makeObservable(this, {
+			guild: observable,
+		});
 	}
 }
