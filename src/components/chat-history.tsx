@@ -36,14 +36,14 @@ export const ChatHistory = ({ channel }: { channel: DmChannel | GuildChannel }) 
 	);
 };
 
-const PaginatedMessage = React.memo(({ last, curr }: { last?: Message; curr: Message }) => {
+const PaginatedMessage = ({ last, curr }: { last?: Message; curr: Message }) => {
 	const showAuthor =
 		last &&
 		(last.author_id !== curr.author_id ||
 			curr.published.valueOf() - last.published.valueOf() > MSG_GROUP_LIMIT_DT);
 
 	return <MessageComponent message={curr} showAuthor={showAuthor} />;
-});
+};
 
 const EndMessage = () => {
 	return (

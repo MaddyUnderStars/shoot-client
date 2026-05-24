@@ -30,67 +30,65 @@ import {
 } from "../ui/sidebar";
 import { useChannel } from "@/hooks/use-channel";
 
-const ChannelSidebarListItem = React.memo(
-	({
-		channel,
-		guild,
-		voice,
-	}: {
-		channel: GuildChannel | DmChannel;
-		guild?: Guild;
-		voice?: PublicUser[];
-	}) => {
-		const sidebar = useSidebar();
-		const selectedChannel = useChannel();
+const ChannelSidebarListItem = ({
+	channel,
+	guild,
+	voice,
+}: {
+	channel: GuildChannel | DmChannel;
+	guild?: Guild;
+	voice?: PublicUser[];
+}) => {
+	const sidebar = useSidebar();
+	const selectedChannel = useChannel();
 
-		const isSelected = selectedChannel?.mention === channel.mention;
+	const isSelected = selectedChannel?.mention === channel.mention;
 
-		return (
-			<SidebarMenuItem key={channel.mention}>
-				<SidebarMenuButton
-					className={cn("hover:bg-sidebar-ring", isSelected ? "bg-accent" : "")}
+	return (
+		<SidebarMenuItem key={channel.mention}>
+			<SidebarMenuButton
+				className={cn("hover:bg-sidebar-ring", isSelected ? "bg-accent" : "")}
+			>
+				<Link
+					to={guild ? "/channel/$guildId/$channelId" : "/channel/$channelId"}
+					params={(prev) => ({
+						...prev,
+						channelId: channel.mention,
+					})}
+					className="flex flex-1 items-center justify-between"
+					onClick={() => sidebar.setOpenMobile(false)}
 				>
-					<Link
-						to={guild ? "/channel/$guildId/$channelId" : "/channel/$channelId"}
-						params={(prev) => ({
-							...prev,
-							channelId: channel.mention,
-						})}
-						className="flex flex-1 items-center justify-between"
-						onClick={() => sidebar.setOpenMobile(false)}
-					>
-						{channel.name}
+					{channel.name}
 
-						{voice?.length ? (
-							<PhoneCall className="text-green-700" size={14} />
-						) : (
-							<Hash size={14} />
-						)}
-					</Link>
-				</SidebarMenuButton>
+					{voice?.length ? (
+						<PhoneCall className="text-green-700" size={14} />
+					) : (
+						<Hash size={14} />
+					)}
+				</Link>
+			</SidebarMenuButton>
 
-				{!voice?.length ? null : (
-					<ul className="p-2 ms-4">
-						{voice?.map((user) => (
-							<li
-								key={user.mention}
-								className={cn(
-									"before:border-1 before:w-0.5 before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-[-0.5rem]",
-									"relative m-0 pb-4 pl-5 last:pb-0 first:pt-0",
-								)}
-							>
-								<Popover>
-									<PopoverTrigger>{user.display_name}</PopoverTrigger>
-									<UserPopover user={user.mention} />
-								</Popover>
-							</li>
-						))}
-					</ul>
-				)}
-			</SidebarMenuItem>
-		);
-	},
-);
+			{!voice?.length ? null : (
+				<ul className="p-2 ms-4">
+					{voice?.map((user) => (
+						<li
+							key={user.mention}
+							className={cn(
+								"before:border-1 before:w-0.5 before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-[-0.5rem]",
+								"relative m-0 pb-4 pl-5 last:pb-0 first:pt-0",
+							)}
+						>
+							<Popover>
+								<PopoverTrigger>{user.display_name}</PopoverTrigger>
+								<UserPopover user={user.mention} />
+							</Popover>
+						</li>
+					))}
+				</ul>
+			)}
+		</SidebarMenuItem>
+	);
+};
 
 const ChannelSidebarList = observer(() => {
 	const guild = useGuild();

@@ -19,7 +19,7 @@ const URL_REGEX =
 
 const marked = new Marked();
 
-export const MarkdownRenderer = React.memo(({ content }: { content: string }) => {
+export const MarkdownRenderer = ({ content }: { content: string }) => {
 	const sanitisedContent = React.useMemo(() => sanitise(content), [content]);
 
 	return (
@@ -27,7 +27,7 @@ export const MarkdownRenderer = React.memo(({ content }: { content: string }) =>
 			{sanitisedContent}
 		</MarkedComponent>
 	);
-});
+};
 
 const sanitise = (content: string) =>
 	// Append empty character if string starts with html tag
