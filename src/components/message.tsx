@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useUser } from "@/hooks/use-user";
 import type { Message } from "@/lib/client/entity/message";
 import { cn } from "@/lib/utils";

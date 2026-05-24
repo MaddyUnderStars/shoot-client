@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Link } from "@tanstack/react-router";
 import { BowArrow, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import type { Guild } from "@/lib/client/entity/guild";
 import { getAppStore } from "@/lib/store/app-store";
 import { CreateGuildModal } from "../modal/create-guild-modal";
