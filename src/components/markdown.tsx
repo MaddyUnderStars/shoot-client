@@ -10,6 +10,7 @@ import reactStringReplace from "react-string-replace";
 import type { ActorMention } from "@/lib/client/common/actor";
 import { Mention } from "./mention";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import { newlineBreaks } from "@/lib/mdNewlineBreaksExt";
 
 const USER_MENTION_REGEX =
 	/@(\w+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)/i;
@@ -17,23 +18,33 @@ const USER_MENTION_REGEX =
 const URL_REGEX =
 	/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gim;
 
-const marked = new Marked();
+const marked = new Marked().use(newlineBreaks);
 
 export const MarkdownRenderer = ({ content }: { content: string }) => {
 	const sanitisedContent = React.useMemo(() => sanitise(content), [content]);
 
 	return (
-		<MarkedComponent gfm={false} openLinksInNewTab renderer={MarkedRenderer} instance={marked}>
-			{sanitisedContent}
-		</MarkedComponent>
+		<div className="whitespace-break-spaces">
+			<MarkedComponent
+				gfm={false}
+				openLinksInNewTab
+				renderer={MarkedRenderer}
+				instance={marked}
+			>
+				{sanitisedContent}
+			</MarkedComponent>
+		</div>
 	);
 };
 
-const sanitise = (content: string) =>
+const sanitise = (content: string) => {
 	// Append empty character if string starts with html tag
 	// This is to avoid inconsistencies in rendering Markdown inside/after HTML tags
 	// https://github.com/revoltchat/revite/issues/733
-	content.replaceAll(/^(<\/?[a-zA-Z0-9]+>)(.*$)/gm, (match) => `\u200E${match}`);
+	content = content.replaceAll(/^(<\/?[a-zA-Z0-9]+>)(.*$)/gm, (match) => `\u200E${match}`);
+
+	return content;
+};
 
 const HEADING_LEVELS = {
 	1: "text-5xl",
@@ -88,7 +99,7 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 	},
 	code(code) {
 		return (
-			<pre key={this.elementId} className="bg-secondary w-full">
+			<pre key={this.elementId} className="bg-secondary w-full p-2 my-1 rounded border">
 				{code}
 			</pre>
 		);
@@ -130,6 +141,6 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 			return <Mention key={`user-${i}-${this.elementId}`} user={match as ActorMention} />;
 		});
 
-		return ret;
+		return <p>{ret}</p>;
 	},
 };
