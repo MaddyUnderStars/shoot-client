@@ -15,6 +15,7 @@ import { Slate, Editable, withReact } from "slate-react";
 export const ChatInput = () => {
 	const channel = useChannel();
 	const [attached, setAttached] = useState<File[]>([]);
+	const formRef = useRef<HTMLFormElement>(null);
 
 	const lastTyped = useRef<number>(0);
 
@@ -24,6 +25,8 @@ export const ChatInput = () => {
 		const textContent = content.map((n) => Node.string(n)).join("\n");
 
 		const files = [...attached];
+
+		formRef.current?.reset();
 
 		lastTyped.current = 0;
 
@@ -50,7 +53,7 @@ export const ChatInput = () => {
 		<div className="p-3 pt-0 mb-[env(safe-area-inset-bottom)]">
 			<TypingIndicator />
 
-			<form onReset={() => setAttached([])}>
+			<form ref={formRef} onReset={() => setAttached([])}>
 				{attached.length ? (
 					<div className="relative p-3 dark:bg-input/30 border flex gap-2 flex-wrap overflow-scroll max-h-65 rounded-t-md border-b-0">
 						<button
