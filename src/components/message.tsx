@@ -32,10 +32,10 @@ export const MessageComponent = ({
 	const { user } = useUser(message.author_id);
 
 	return (
-		<div className="flex justify-between items-start pe-5 group hover:bg-secondary w-full">
+		<div className="flex justify-between items-start pe-5 group hover:bg-secondary flex-1">
 			<div
 				className={cn(
-					"flex gap-3 content-visibility-auto ps-2 w-full",
+					"flex gap-3 content-visibility-auto ps-2 flex-1",
 					showAuthor ? "pt-2" : "",
 				)}
 			>
@@ -55,7 +55,7 @@ export const MessageComponent = ({
 					<span className="min-w-9"></span>
 				)}
 
-				<div className="wrap-anywhere w-full">
+				<div className="flex-1">
 					{showAuthor ? (
 						<Popover>
 							<div className="flex gap-2">

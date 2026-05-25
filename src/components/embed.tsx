@@ -21,7 +21,7 @@ export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 	if (embed.type === PublicEmbedType.photo) return <SimpleEmbedComponent embed={embed} />;
 
 	return (
-		<Card className="max-w-150 w-full gap-1 rounded-sm p-3">
+		<Card className="sm:max-w-md flex-1 gap-1 rounded-sm p-3">
 			<CardHeader className="p-0">
 				<CardTitle>
 					<LinkOr url={embed.target}>
@@ -82,7 +82,7 @@ export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 
 const SimpleEmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 	return (
-		<div className="max-w-100 max-h-100">
+		<div className="sm:max-w-md flex-1 max-h-100">
 			{embed.images.map((img) => (
 				<img
 					src={img.url}
@@ -119,7 +119,7 @@ const YoutubeEmbed = ({ embed }: { embed: ApiPublicEmbed }) => {
 
 	if (!open) {
 		return (
-			<Card className="rounded-sm p-3 h-80 sm:w-md w-full">
+			<Card className="rounded-sm p-3 h-80 sm:max-w-md flex-1">
 				<CardContent className="p-0 w-full h-full relative">
 					{embed.thumbnail ? (
 						<img
