@@ -85,6 +85,7 @@ const SimpleEmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 		<div className="sm:max-w-md flex-1 max-h-100">
 			{embed.images.map((img) => (
 				<img
+					className="max-h-full object-contain"
 					src={img.url}
 					width={img.width ?? 400}
 					height={img.height ?? 400}
