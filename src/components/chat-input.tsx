@@ -1,11 +1,16 @@
 import { Upload, XIcon } from "lucide-react";
-import { type FormEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useChannel } from "@/hooks/use-channel";
 import { cn } from "@/lib/utils";
 import { FilePreview } from "./file-preview";
-import { Input } from "./ui/input";
 import { TypingIndicator } from "./typing-indicator";
 import { gatewayClient } from "@/lib/client/gateway";
+
+// Import the Slate editor factory.
+import { createEditor, Editor, Node, Transforms, type Descendant } from "slate";
+
+// Import the Slate components and React plugin.
+import { Slate, Editable, withReact } from "slate-react";
 
 export const ChatInput = () => {
 	const channel = useChannel();
@@ -15,32 +20,25 @@ export const ChatInput = () => {
 
 	if (!channel) return null;
 
-	const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+	const sendMessage = async (content: Descendant[]) => {
+		const textContent = content.map((n) => Node.string(n)).join("\n");
 
-		const form = event.currentTarget;
-		const formData = new FormData(form);
-
-		// oxlint-disable-next-line typescript/no-base-to-string
-		const content = formData.get("content")?.toString();
 		const files = [...attached];
-
-		form.reset();
 
 		lastTyped.current = 0;
 
 		await channel.sendMessage({
-			content,
+			content: textContent,
 			files,
 		});
 	};
 
-	const startTyping = (event: FormEvent<HTMLInputElement>) => {
+	const startTyping = (event: React.InputEvent<HTMLDivElement>) => {
 		if (lastTyped.current > Date.now()) return;
 
 		lastTyped.current = Date.now() + 5000;
 
-		if (!event.currentTarget.value) return;
+		if (!event.currentTarget.innerText) return;
 
 		gatewayClient.send({
 			t: "typing",
@@ -52,7 +50,7 @@ export const ChatInput = () => {
 		<div className="p-3 pt-0 mb-[env(safe-area-inset-bottom)]">
 			<TypingIndicator />
 
-			<form onSubmit={sendMessage} onReset={() => setAttached([])}>
+			<form onReset={() => setAttached([])}>
 				{attached.length ? (
 					<div className="relative p-3 dark:bg-input/30 border flex gap-2 flex-wrap overflow-scroll max-h-65 rounded-t-md border-b-0">
 						<button
@@ -71,23 +69,17 @@ export const ChatInput = () => {
 				) : null}
 
 				<div className="flex">
-					<Input
-						type="text"
-						name="content"
-						placeholder="Send a message..."
-						className={cn(
-							"rounded-r-none border-r-0",
-							attached.length ? "rounded-t-none" : "",
-						)}
-						autoComplete="off"
+					<ChatSlateEditor
+						hasAttached={attached.length > 0}
 						onInput={startTyping}
+						onSubmit={sendMessage}
 					/>
 
 					<label
 						htmlFor="files"
 						title="Upload files"
 						className={cn(
-							"rounded-md rounded-l-none selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm flex items-center justify-center",
+							"rounded-md rounded-l-none selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm flex items-center justify-center flex-1",
 							attached.length ? "rounded-t-none rounded-bl-none" : "",
 						)}
 					>
@@ -105,5 +97,57 @@ export const ChatInput = () => {
 				</div>
 			</form>
 		</div>
+	);
+};
+
+const initialValue: Descendant[] = [
+	{
+		type: "paragraph",
+		children: [{ text: "" }],
+	},
+];
+
+const ChatSlateEditor = ({
+	hasAttached,
+	onInput,
+	onSubmit,
+}: {
+	hasAttached: boolean;
+	onInput: React.InputEventHandler<HTMLDivElement>;
+	onSubmit: (state: Descendant[]) => void;
+}) => {
+	const [editor] = useState(() => withReact(createEditor()));
+
+	return (
+		<Slate editor={editor} initialValue={initialValue}>
+			<Editable
+				className={cn(
+					"placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input min-h-9 w-full max-w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm",
+					"focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+					"rounded-r-none border-r-0",
+					hasAttached ? "rounded-t-none" : "",
+				)}
+				onInput={onInput}
+				autoFocus
+				placeholder="Send a message..."
+				onKeyDown={(event) => {
+					if (event.key === "Enter") {
+						if (event.shiftKey) {
+							return;
+						}
+
+						event.preventDefault();
+						onSubmit(editor.children);
+
+						Transforms.delete(editor, {
+							at: {
+								anchor: Editor.start(editor, []),
+								focus: Editor.end(editor, []),
+							},
+						});
+					}
+				}}
+			/>
+		</Slate>
 	);
 };
