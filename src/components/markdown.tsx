@@ -24,7 +24,7 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
 	const sanitisedContent = React.useMemo(() => sanitise(content), [content]);
 
 	return (
-		<div className="whitespace-break-spaces">
+		<div className="break-all flex-1">
 			<MarkedComponent
 				gfm={false}
 				openLinksInNewTab
