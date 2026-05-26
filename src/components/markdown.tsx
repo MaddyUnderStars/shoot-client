@@ -24,7 +24,7 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
 	const sanitisedContent = React.useMemo(() => sanitise(content), [content]);
 
 	return (
-		<div className="break-all flex-1">
+		<div className="break-all whitespace-pre-wrap flex-1">
 			<MarkedComponent
 				gfm={false}
 				openLinksInNewTab
@@ -141,6 +141,6 @@ const MarkedRenderer: Partial<ReactRenderer> = {
 			return <Mention key={`user-${i}-${this.elementId}`} user={match as ActorMention} />;
 		});
 
-		return <p>{ret}</p>;
+		return ret;
 	},
 };
