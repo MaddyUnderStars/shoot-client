@@ -14,7 +14,7 @@ import { InstanceValidatorField } from "./instance-validator-field";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { getQualifiedInstanceUrl, resolveHostmetaTemplate } from "@/lib/instance";
 
-const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
+const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://understars.dev";
 
 const RegisterFormSchema = z.object({
 	username: z.string({

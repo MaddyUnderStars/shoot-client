@@ -12,7 +12,7 @@ import {
 import { Input } from "./ui/input";
 import type { UseFormReturn } from "react-hook-form";
 
-const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
+const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://understars.dev";
 
 const LOCK_INSTANCE = !!import.meta.env.VITE_LOCK_INSTANCE;
 
