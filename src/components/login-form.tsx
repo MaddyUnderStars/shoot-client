@@ -12,6 +12,7 @@ import { setLogin } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { InstanceValidatorField } from "./instance-validator-field";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { getQualifiedInstanceUrl, resolveHostmetaTemplate } from "@/lib/instance";
 
 const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
 
@@ -38,8 +39,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 	});
 
 	const onSubmit = async (values: z.infer<typeof LoginFormSchema>) => {
+		const resolved = await resolveHostmetaTemplate(getQualifiedInstanceUrl(values.instance)!);
+
+		if (!resolved) throw new Error("could not find instance");
+
 		const client = createClient<paths>({
-			baseUrl: values.instance,
+			baseUrl: resolved.href,
 		});
 
 		const { data, error } = await client.POST("/auth/login", {
@@ -58,7 +63,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
 		const login = {
 			token: data.token,
-			instance: values.instance,
+			instance: resolved.href,
 		};
 
 		setLogin(login);
