@@ -26,7 +26,7 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
 	return (
 		<div className="break-all whitespace-pre-wrap flex-1">
 			<MarkedComponent
-				gfm={true}
+				gfm={false}
 				openLinksInNewTab
 				renderer={MarkedRenderer}
 				instance={marked}
