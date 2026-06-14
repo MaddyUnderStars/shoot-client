@@ -62,15 +62,17 @@ jobs:
             # rust
             - name: install Rust stable (desktop)
               if: matrix.mobile == ''
-              uses: dtolnay/rust-toolchain@stable
+              uses: dtolnay/rust-toolchain@master
               with:
                   targets: aarch64-apple-darwin,x86_64-apple-darwin
+                  toolchain: 1.95.0
 
             - name: install Rust stable (android)
               if: matrix.mobile == 'android'
-              uses: dtolnay/rust-toolchain@stable
+              uses: dtolnay/rust-toolchain@master
               with:
                   targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+                  toolchain: 1.95.0
 
             - name: Set up JDK
               if: matrix.mobile == 'android'
