@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RegisterForm } from "@/components/register-form";
+import { AboutCard } from "@/components/about-card";
 
 export const Route = createFileRoute("/register")({
 	component: RouteComponent,
@@ -7,10 +8,10 @@ export const Route = createFileRoute("/register")({
 
 function RouteComponent() {
 	return (
-		<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-			<div className="w-full max-w-sm">
-				<RegisterForm />
-			</div>
+		<div className="min-h-svh w-full flex items-center justify-center gap-4 flex-wrap-reverse">
+			<AboutCard />
+
+			<RegisterForm />
 		</div>
 	);
 }
