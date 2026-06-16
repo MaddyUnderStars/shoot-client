@@ -124,6 +124,9 @@ const ChatSlateEditor = ({
 	return (
 		<Slate editor={editor} initialValue={initialValue}>
 			<Editable
+				// do not autofocus on mobile
+				// it conflicts with the sidebar
+				autoFocus={!import.meta.env.VITE_IS_MOBILE_TAURI}
 				className={cn(
 					"placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input w-full max-w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm",
 					"focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
@@ -131,7 +134,6 @@ const ChatSlateEditor = ({
 					hasAttached ? "rounded-t-none" : "",
 				)}
 				onInput={onInput}
-				autoFocus
 				placeholder="Send a message..."
 				onKeyDown={(event) => {
 					if (event.key === "Enter") {
