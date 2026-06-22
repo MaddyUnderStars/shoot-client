@@ -9,6 +9,8 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { build } from "rolldown";
 import { playwright } from "@vitest/browser-playwright";
+import { analyzeHeadWithOrdering, BrowserAdapter } from "@rviscomi/capo.js";
+import { Window } from "happy-dom";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -59,6 +61,32 @@ export default defineConfig({
 							minify: true,
 						},
 					});
+				},
+			},
+		},
+		{
+			name: "capo.js",
+			apply: "build",
+			enforce: "post",
+			transformIndexHtml: {
+				handler: function (html) {
+					const window = new Window();
+					const doc = window.document;
+
+					doc.write(html);
+
+					const head = doc.querySelector("head");
+					if (!head) return html;
+
+					const res = analyzeHeadWithOrdering(head, new BrowserAdapter());
+					const sorted = res.weights.toSorted((a, b) => b.weight - a.weight);
+
+					head.innerHTML = "";
+					for (const { element } of sorted) {
+						head.appendChild(element);
+					}
+
+					return doc.documentElement.outerHTML;
 				},
 			},
 		},
