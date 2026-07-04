@@ -84,10 +84,10 @@ export const InstanceValidatorField = ({
 					name="invite"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Invite Token</FormLabel>
+							<FormLabel>Registration Token</FormLabel>
 							<FormDescription>
-								This instance has closed registration. You may use an invite token
-								to join.
+								This instance has closed registration. You may use a registration
+								token to join.
 							</FormDescription>
 							<FormControl>
 								<Input {...field} />
