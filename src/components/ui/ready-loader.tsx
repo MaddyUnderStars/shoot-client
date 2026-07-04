@@ -4,7 +4,7 @@ import type React from "react";
 import { useRef, useSyncExternalStore } from "react";
 import { CSSTransition } from "react-transition-group";
 import { gatewayClient } from "@/lib/client/gateway";
-import { Button } from "./ui/button";
+import { Button } from "./button";
 
 export const ReadyLoaderComponent = observer(({ children }: React.PropsWithChildren) => {
 	const navigate = useNavigate();

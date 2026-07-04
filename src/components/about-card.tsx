@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { Anchor } from "./anchor";
+import { Anchor } from "./ui/anchor";
 import { BowArrow } from "lucide-react";
 
 export const AboutCard = () => {

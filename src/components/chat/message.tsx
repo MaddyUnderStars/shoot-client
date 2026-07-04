@@ -5,18 +5,18 @@ import type { Message } from "@/lib/client/entity/message";
 import { cn } from "@/lib/utils";
 import { EmbedComponent } from "./embed";
 import { FilePreview } from "./file-preview";
-import { MarkdownRenderer } from "./markdown";
-import { UserPopover } from "./popover/user-popover";
-import { Timestamp } from "./timestamp";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { MarkdownRenderer } from "../ui/markdown";
+import { UserPopover } from "../popover/user-popover";
+import { Timestamp } from "../ui/timestamp";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Popover, PopoverTrigger } from "./ui/popover";
-import { Skeleton } from "./ui/skeleton";
+} from "../ui/dropdown-menu";
+import { Popover, PopoverTrigger } from "../ui/popover";
+import { Skeleton } from "../ui/skeleton";
 
 export const MessageComponent = ({
 	message,

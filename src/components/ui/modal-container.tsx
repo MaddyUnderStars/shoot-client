@@ -1,6 +1,8 @@
 import { useModal } from "@ebay/nice-modal-react";
 import { cn } from "@/lib/utils";
-import { Card } from "./ui/card";
+import { Card } from "./card";
+import { Button } from "./button";
+import { XIcon } from "lucide-react";
 
 export const ModalContainer = ({ children, ...props }: React.ComponentProps<typeof Card>) => {
 	const modal = useModal();
@@ -18,5 +20,22 @@ export const ModalContainer = ({ children, ...props }: React.ComponentProps<type
 				{children}
 			</Card>
 		</div>
+	);
+};
+
+export const ModalCloseButton = () => {
+	const modal = useModal();
+
+	return (
+		<Button
+			className="pointer-events-auto"
+			variant="outline"
+			type="button"
+			title="Close"
+			onClick={modal.remove}
+			onKeyDown={modal.remove}
+		>
+			<XIcon />
+		</Button>
 	);
 };

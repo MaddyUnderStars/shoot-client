@@ -1,5 +1,5 @@
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
-import { ReadyLoaderComponent } from "@/components/ready-loader";
+import { ReadyLoaderComponent } from "@/components/ui/ready-loader";
 import { getLogin } from "@/lib/storage";
 
 export const Route = createFileRoute("/_authenticated")({

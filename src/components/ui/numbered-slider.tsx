@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Label } from "./ui/label";
-import { Slider } from "./ui/slider";
+import { Label } from "./label";
+import { Slider } from "./slider";
 
 export const NumberedSlider = ({
 	label,

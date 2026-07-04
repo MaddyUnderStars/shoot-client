@@ -7,10 +7,10 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import { PublicEmbedType } from "@/lib/http/generated/v1";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 export const EmbedComponent = ({ embed }: { embed: ApiPublicEmbed }) => {
 	if (

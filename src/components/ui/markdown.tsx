@@ -8,7 +8,7 @@ import MarkedComponent, { type ReactRenderer } from "marked-react";
 import React from "react";
 import reactStringReplace from "react-string-replace";
 import type { ActorMention } from "@/lib/client/common/actor";
-import { Mention } from "./mention";
+import { Mention } from "../chat/mention";
 import { newlineBreaks } from "@/lib/mdNewlineBreaksExt";
 import { Anchor } from "./anchor";
 

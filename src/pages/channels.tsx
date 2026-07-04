@@ -1,4 +1,4 @@
-import { ChatPane } from "@/components/chat-pane";
+import { ChatPane } from "@/components/chat/chat-pane";
 import { MemberList } from "@/components/member-list";
 import { useChannel } from "@/hooks/use-channel";
 

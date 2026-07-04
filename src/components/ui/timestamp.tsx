@@ -1,5 +1,5 @@
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
-import { Tooltip, TooltipContent } from "./ui/tooltip";
+import { Tooltip, TooltipContent } from "./tooltip";
 
 export const Timestamp = ({ date }: { date: Date }) => {
 	if (!date) return null;

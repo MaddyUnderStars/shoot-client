@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { getHttpClient } from "@/lib/http/client";
 import { capitalise } from "@/lib/utils";
-import { ModalCloseButton } from "../modal-close-btn";
-import { ModalContainer } from "../modal-container";
+import { ModalCloseButton, ModalContainer } from "../ui/modal-container";
 import { Button } from "../ui/button";
 import {
 	CardAction,

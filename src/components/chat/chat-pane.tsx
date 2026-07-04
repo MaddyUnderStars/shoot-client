@@ -1,8 +1,8 @@
 import { useChannel } from "@/hooks/use-channel";
-import { ChannelHeader } from "./channel-header";
+import { ChannelHeader } from "../channel-header";
 import { ChatHistory } from "./chat-history";
 import { ChatInput } from "./chat-input";
-import { FriendsPane } from "./friends-pane";
+import { FriendsPane } from "../friends-pane";
 
 export const ChatPane = () => {
 	const channel = useChannel();

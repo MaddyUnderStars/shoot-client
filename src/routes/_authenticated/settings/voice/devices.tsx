@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
-import { NumberedSlider } from "@/components/numbered-slider";
+import { NumberedSlider } from "@/components/ui/numbered-slider";
 import { SettingsHeader } from "@/components/settings-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";

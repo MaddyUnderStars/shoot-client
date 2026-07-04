@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MessageComponent } from "@/components/message";
+import { MessageComponent } from "@/components/chat/message";
 import { SettingsHeader } from "@/components/settings-header";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
