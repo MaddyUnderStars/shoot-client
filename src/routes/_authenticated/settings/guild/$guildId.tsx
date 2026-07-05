@@ -7,11 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TriCheckbox, TriCheckboxValue } from "@/components/ui/tricheckbox";
 import { useGuild } from "@/hooks/use-guild";
 import type { Guild } from "@/lib/client/entity/guild";
-import type { Role } from "@/lib/client/entity/role";
+import { Role } from "@/lib/client/entity/role";
 import { getHttpClient } from "@/lib/http/client";
 import { Permission } from "@/lib/http/generated/v1";
 import { createFileRoute } from "@tanstack/react-router";
 import { TriangleAlert } from "lucide-react";
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/settings/guild/$guildId")({
@@ -19,6 +20,10 @@ export const Route = createFileRoute("/_authenticated/settings/guild/$guildId")(
 });
 
 function RouteComponent() {
+	return <RolesPage />;
+}
+
+const RolesPage = observer(() => {
 	const guild = useGuild();
 	const { $fetch } = getHttpClient();
 
@@ -27,7 +32,7 @@ function RouteComponent() {
 	const everyoneRole = guild.mention.split("@")[0];
 
 	const createRole = async () => {
-		await $fetch.POST("/guild/{guild_id}/roles/", {
+		const { data } = await $fetch.POST("/guild/{guild_id}/roles/", {
 			body: {
 				name: "Unnamed role",
 			},
@@ -37,6 +42,8 @@ function RouteComponent() {
 				},
 			},
 		});
+
+		if (!data) return;
 	};
 
 	const sortedRoles = guild.roles.toSorted((a, b) => b.position - a.position);
@@ -70,7 +77,7 @@ function RouteComponent() {
 			</div>
 		</>
 	);
-}
+});
 
 const RoleEditor = ({ role, guild }: { role: Role; guild: Guild }) => {
 	const { $fetch } = getHttpClient();

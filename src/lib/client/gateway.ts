@@ -12,6 +12,7 @@ import { PrivateUser } from "./entity/private-user";
 import { Relationship } from "./entity/relationship";
 import type { ClientOptions, InstanceOptions } from "./types";
 import { PublicUser } from "./entity/public-user";
+import { Role } from "./entity/role";
 
 const Log = createLogger("gateway");
 
@@ -165,6 +166,20 @@ export class ShootGatewayClient extends EventEmitter {
 				const rawGuild = parsed.d.guild;
 
 				app.guilds.push(new Guild(rawGuild));
+				break;
+			}
+			case "ROLE_CREATE": {
+				const guild = app.getGuild(parsed.d.role.guild);
+				if (!guild) break;
+
+				guild.roles.push(new Role(parsed.d.role));
+				break;
+			}
+			case "ROLE_DELETE": {
+				const guild = app.getGuild(parsed.d.guild_id);
+				if (!guild) break;
+
+				guild.roles = guild.roles.filter((x) => x.id !== parsed.d.role_id);
 				break;
 			}
 			case "GUILD_DELETE": {
