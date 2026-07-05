@@ -1,5 +1,4 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Link } from "@tanstack/react-router";
 import { BowArrow, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
@@ -17,6 +16,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "../ui/sidebar";
+import { GuildIcon } from "../ui/guild-icon";
 
 const GuildSidebarListItem = ({ guild }: { guild: Guild }) => (
 	<SidebarMenuItem>
@@ -32,10 +32,7 @@ const GuildSidebarListItem = ({ guild }: { guild: Guild }) => (
 					channelId: guild.channels[0]!.mention, // TODO
 				}}
 			>
-				<Avatar className="rounded-none">
-					<AvatarImage />
-					<AvatarFallback className="rounded-none">{guild.initials}</AvatarFallback>
-				</Avatar>
+				<GuildIcon guild={guild} />
 			</Link>
 		</SidebarMenuButton>
 	</SidebarMenuItem>

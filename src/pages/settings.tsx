@@ -14,13 +14,15 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { gatewayClient } from "@/lib/client/gateway";
-
-// todo: https://web.dev/articles/push-notifications-subscribing-a-user
+import { getAppStore } from "@/lib/store/app-store";
+import { GuildIcon } from "@/components/ui/guild-icon";
 
 export const SettingsSidebar = () => {
 	const sidebar = useSidebar();
 
 	const navigate = useNavigate();
+
+	const guilds = getAppStore().guilds;
 
 	const previousNav = localStorage.getItem("SAVED_LOCATION_HREF");
 
@@ -111,6 +113,26 @@ export const SettingsSidebar = () => {
 									<span>Voice</span>
 								</Link>
 							</SidebarMenuButton>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+
+				<SidebarGroup>
+					<SidebarGroupLabel>Guilds</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							{guilds.map((guild) => (
+								<SidebarMenuButton asChild>
+									<Link
+										onClick={() => sidebar.setOpenMobile(false)}
+										to="/settings/guild/$guildId"
+										params={{ guildId: guild.mention }}
+									>
+										<GuildIcon guild={guild} />
+										{guild.name}
+									</Link>
+								</SidebarMenuButton>
+							))}
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

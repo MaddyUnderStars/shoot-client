@@ -17,7 +17,7 @@ export const resolveHostmetaTemplate = async (url: URL, signal?: AbortSignal) =>
 
 	const ret = new URL(template);
 
-	return getQualifiedInstanceUrl(ret.host);
+	return getQualifiedInstanceUrl(ret.origin);
 };
 
 export const getQualifiedInstanceUrl = (urlOrName: string) => {
