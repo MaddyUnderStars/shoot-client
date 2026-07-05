@@ -95,6 +95,13 @@ export type ROLE_CREATE = {
 	};
 };
 
+export type ROLE_UPDATE = {
+	t: "ROLE_UPDATE";
+	d: {
+		role: ApiPublicRole;
+	};
+};
+
 export type ROLE_DELETE = {
 	t: "ROLE_DELETE";
 	d: {
@@ -234,6 +241,7 @@ export type GATEWAY_EVENT =
 	| GUILD_UPDATE
 	| GUILD_DELETE
 	| ROLE_CREATE
+	| ROLE_UPDATE
 	| ROLE_DELETE
 	| ROLE_MEMBER_ADD
 	| ROLE_MEMBER_LEAVE

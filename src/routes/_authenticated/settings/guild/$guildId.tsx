@@ -27,9 +27,10 @@ const RolesPage = observer(() => {
 	const guild = useGuild();
 	const { $fetch } = getHttpClient();
 
-	if (!guild) return null;
+	const everyoneRole = guild?.mention?.split("@")?.[0];
+	const [selectedRole, setSelectedRole] = useState(everyoneRole);
 
-	const everyoneRole = guild.mention.split("@")[0];
+	if (!guild) return null;
 
 	const createRole = async () => {
 		const { data } = await $fetch.POST("/guild/{guild_id}/roles/", {
@@ -44,6 +45,8 @@ const RolesPage = observer(() => {
 		});
 
 		if (!data) return;
+
+		setSelectedRole(data.id);
 	};
 
 	const sortedRoles = guild.roles.toSorted((a, b) => b.position - a.position);
@@ -59,10 +62,15 @@ const RolesPage = observer(() => {
 				</div>
 
 				<div className="mt-2">
-					<Tabs defaultValue={everyoneRole} orientation="vertical">
-						<TabsList className="min-w-30">
+					<Tabs
+						defaultValue={everyoneRole}
+						orientation="vertical"
+						value={selectedRole}
+						onValueChange={setSelectedRole}
+					>
+						<TabsList className="w-30">
 							{sortedRoles.map((role) => (
-								<TabsTrigger key={role.id} value={role.id}>
+								<TabsTrigger className="truncate" key={role.id} value={role.id}>
 									{role.name}
 								</TabsTrigger>
 							))}

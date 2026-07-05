@@ -173,6 +173,16 @@ export class ShootGatewayClient extends EventEmitter {
 				if (!guild) break;
 
 				guild.roles.push(new Role(parsed.d.role));
+				guild.roles = guild.roles.toSorted((a, b) => b.position - a.position);
+				break;
+			}
+			case "ROLE_UPDATE": {
+				const guild = app.getGuild(parsed.d.role.guild);
+				if (!guild) break;
+
+				guild.roles = guild.roles.filter((x) => x.id !== parsed.d.role.id);
+				guild.roles.push(new Role(parsed.d.role));
+				guild.roles = guild.roles.toSorted((a, b) => b.position - a.position);
 				break;
 			}
 			case "ROLE_DELETE": {
@@ -180,6 +190,7 @@ export class ShootGatewayClient extends EventEmitter {
 				if (!guild) break;
 
 				guild.roles = guild.roles.filter((x) => x.id !== parsed.d.role_id);
+				guild.roles = guild.roles.toSorted((a, b) => b.position - a.position);
 				break;
 			}
 			case "GUILD_DELETE": {
