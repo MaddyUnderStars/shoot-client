@@ -122,7 +122,7 @@ export const SettingsSidebar = () => {
 					<SidebarGroupContent>
 						<SidebarMenu>
 							{guilds.map((guild) => (
-								<SidebarMenuButton asChild>
+								<SidebarMenuButton asChild key={guild.mention}>
 									<Link
 										onClick={() => sidebar.setOpenMobile(false)}
 										to="/settings/guild/$guildId"

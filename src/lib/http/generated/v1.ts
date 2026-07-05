@@ -3,1766 +3,1823 @@
  * Do not make direct changes to the file.
  */
 
-import type { ActorMention } from "@/lib/client/common/actor";
-
 export interface paths {
-	"/upload/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put: {
-			parameters: {
-				query: {
-					t: string;
-				};
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/auth/register": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						username: string;
-						password: string;
-						email?: string;
-						/** @description Instance registration invite */
-						invite?: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							token: string;
-						};
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/auth/login": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						username: string;
-						password: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							token: string;
-							user: components["schemas"]["PublicUser"];
-						};
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/invite/{invite_code}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					invite_code: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					invite_code: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/@me/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PrivateUser"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						display_name?: string;
-						summary?: string;
-						current_password?: string;
-						password?: string;
-						/** Format: email */
-						email?: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		trace?: never;
-	};
-	"/users/@me/guild/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicGuild"][];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/@me/guild/{guild_id}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/@me/channels/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicChannel"][];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/@me/push/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							name: string;
-							/** Format: date-time */
-							created: string;
-						}[];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name: string;
-						/** Format: uri */
-						endpoint: string;
-						p256dh: string;
-						auth: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				204: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": PathsUsersMePushPostResponses204ContentApplicationJson;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/@me/push/{name}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					name: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				202: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": PathsUsersMePushNameDeleteResponses202ContentApplicationJson;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/{user_id}/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					user_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicUser"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/{user_id}/channels/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					user_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicChannel"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/users/{user_id}/relationship/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					user_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PrivateRelationship"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					user_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						type?: components["schemas"]["RelationshipType"];
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PrivateRelationship"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					user_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/guild/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path?: never;
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicGuild"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/guild/{guild_id}/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicGuild"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name?: string;
-						summary?: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		trace?: never;
-	};
-	"/guild/{guild_id}/invite": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						/** Format: date-time */
-						expiry?: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							code: string;
-							guild: components["schemas"]["ActorMention"];
-							/** Format: date-time */
-							expires: string;
-						};
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/role/{role_id}/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					role_id: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicRole"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					role_id: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					role_id: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name?: string;
-						allow?: components["schemas"]["Permission"][];
-						deny?: components["schemas"]["Permission"][];
-						position?: number;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicRole"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		trace?: never;
-	};
-	"/guild/{guild_id}/channel/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicGuildTextChannel"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/guild/{guild_id}/roles/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name: string;
-						/** @default [
-						 *       0
-						 *     ] */
-						allow?: components["schemas"]["Permission"][];
-						/** @default [
-						 *       0
-						 *     ] */
-						deny?: components["schemas"]["Permission"][];
-						position?: number;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicRole"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/guild/{guild_id}/members/{user_id}/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					guild_id: components["schemas"]["ActorMention"];
-					user_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						nickname?: string | null;
-						roles?: string[];
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		trace?: never;
-	};
-	"/channel/{channel_id}/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicGuildTextChannel"] | components["schemas"]["PublicDmChannel"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						name: string;
-					};
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		trace?: never;
-	};
-	"/channel/{channel_id}/messages/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: {
-					limit?: number;
-					order?: PathsChannelChannel_idMessagesGetParametersQueryOrder | PathsChannelChannel_idMessagesGetParametersQueryOrder;
-					after?: string;
-					before?: string;
-					around?: string;
-					query?: string;
-				};
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["MessagesResponse"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": components["schemas"]["MessageCreateRequest"];
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicMessage"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/channel/{channel_id}/call/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							token: string;
-							ip: string;
-						};
-					};
-				};
-				202: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": PathsUsersMePushNameDeleteResponses202ContentApplicationJson;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/channel/{channel_id}/attachments/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: {
-				content: {
-					"application/json": {
-						/** @description Client defined ID for cross referencing attachments to output endpoints. Can be any value. Must be unique */
-						id: string;
-						/** @description User defined file name */
-						name: string;
-						md5: string;
-						mime: string;
-						/** @description Size in bytes */
-						size: number;
-						width?: number;
-						height?: number;
-					}[];
-				};
-			};
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": {
-							id: string;
-							hash: string;
-							url: string;
-						}[];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/channel/{channel_id}/attachments/{hash}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					hash: string;
-					channel_id: components["schemas"]["ActorMention"];
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/channel/{channel_id}/messages/{message_id}/": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-					message_id: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": components["schemas"]["PublicMessage"];
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		put?: never;
-		post?: never;
-		delete: {
-			parameters: {
-				query?: never;
-				header?: never;
-				path: {
-					channel_id: components["schemas"]["ActorMention"];
-					message_id: string;
-				};
-				cookie?: never;
-			};
-			requestBody?: never;
-			responses: {
-				200: {
-					headers: {
-						[name: string]: unknown;
-					};
-					content: {
-						"application/json": Record<string, never>;
-					};
-				};
-				400: components["responses"]["BadRequest"];
-				401: components["responses"]["Unauthorised"];
-				404: components["responses"]["NotFound"];
-				500: components["responses"]["InternalServerError"];
-			};
-		};
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
+    "/upload/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query: {
+                    t: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        username: string;
+                        password: string;
+                        email?: string;
+                        /** @description Instance registration invite */
+                        invite?: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            token: string;
+                        };
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        username: string;
+                        password: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            token: string;
+                            user: components["schemas"]["PublicUser"];
+                        };
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/invite/{invite_code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    invite_code: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    invite_code: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/@me/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PrivateUser"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        display_name?: string;
+                        summary?: string;
+                        current_password?: string;
+                        password?: string;
+                        /** Format: email */
+                        email?: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        trace?: never;
+    };
+    "/users/@me/guild/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuild"][];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/@me/guild/{guild_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/@me/channels/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicChannel"][];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/@me/push/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            name: string;
+                            /** Format: date-time */
+                            created: string;
+                        }[];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        /** Format: uri */
+                        endpoint: string;
+                        p256dh: string;
+                        auth: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": PathsUsersMePushPostResponses204ContentApplicationJson;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/@me/push/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": PathsUsersMePushNameDeleteResponses202ContentApplicationJson;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicUser"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}/channels/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicChannel"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}/relationship/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PrivateRelationship"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        type?: components["schemas"]["RelationshipType"];
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PrivateRelationship"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    user_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuild"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/{guild_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuild"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        summary?: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        trace?: never;
+    };
+    "/guild/{guild_id}/invite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: date-time */
+                        expiry?: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            code: string;
+                            guild: components["schemas"]["ActorMention"];
+                            /** Format: date-time */
+                            expires: string;
+                        };
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/role/{role_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicRole"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        allow?: components["schemas"]["Permission"][];
+                        deny?: components["schemas"]["Permission"][];
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicRole"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        trace?: never;
+    };
+    "/guild/{guild_id}/channel/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuildTextChannel"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/{guild_id}/roles/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        /**
+                         * @default [
+                         *       0
+                         *     ]
+                         */
+                        allow?: components["schemas"]["Permission"][];
+                        /**
+                         * @default [
+                         *       0
+                         *     ]
+                         */
+                        deny?: components["schemas"]["Permission"][];
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicRole"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/{guild_id}/members/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: {
+                    page?: number | null;
+                    limit?: number;
+                    order?: PathsGuildGuild_idMembersGetParametersQueryOrderAnyOf0 | PathsGuildGuild_idMembersGetParametersQueryOrderAnyOf1;
+                    username?: string;
+                    role?: string;
+                };
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            members: {
+                                /** Format: uuid */
+                                id: string;
+                                nickname: string;
+                                user: components["schemas"]["PublicUser"];
+                                roles: string[];
+                            }[];
+                            total: number;
+                        };
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/guild/{guild_id}/members/{user_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    guild_id: components["schemas"]["ActorMention"];
+                    user_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        nickname?: string | null;
+                        roles?: string[];
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        trace?: never;
+    };
+    "/channel/{channel_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicGuildTextChannel"] | components["schemas"]["PublicDmChannel"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                    };
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        trace?: never;
+    };
+    "/channel/{channel_id}/messages/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: {
+                    limit?: number;
+                    order?: PathsGuildGuild_idMembersGetParametersQueryOrderAnyOf0 | PathsGuildGuild_idMembersGetParametersQueryOrderAnyOf1;
+                    after?: string;
+                    before?: string;
+                    around?: string;
+                    query?: string;
+                };
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MessagesResponse"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["MessageCreateRequest"];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicMessage"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channel/{channel_id}/call/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            token: string;
+                            ip: string;
+                        };
+                    };
+                };
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": PathsUsersMePushNameDeleteResponses202ContentApplicationJson;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channel/{channel_id}/attachments/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** @description Client defined ID for cross referencing attachments to output endpoints. Can be any value. Must be unique */
+                        id: string;
+                        /** @description User defined file name */
+                        name: string;
+                        md5: string;
+                        mime: string;
+                        /** @description Size in bytes */
+                        size: number;
+                        width?: number;
+                        height?: number;
+                    }[];
+                };
+            };
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            id: string;
+                            hash: string;
+                            url: string;
+                        }[];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channel/{channel_id}/attachments/{hash}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    hash: string;
+                    channel_id: components["schemas"]["ActorMention"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/channel/{channel_id}/messages/{message_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                    message_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PublicMessage"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    channel_id: components["schemas"]["ActorMention"];
+                    message_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": Record<string, never>;
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorised"];
+                404: components["responses"]["NotFound"];
+                500: components["responses"]["InternalServerError"];
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-	schemas: {
-		HttpError: {
-			message: string;
-			code: number;
-			detail?: {
-				body?: {
-					message: string;
-					code: string;
-					path: string[];
-				}[];
-				param?: {
-					message: string;
-					code: string;
-					path: string[];
-				}[];
-				query?: {
-					message: string;
-					code: string;
-					path: string[];
-				}[];
-			};
-		};
-		PublicUser: {
-			mention: components["schemas"]["ActorMention"];
-			name: string;
-			summary: string;
-			display_name: string;
-			/** Format: uri */
-			avatar?: string;
-			/** Format: uri */
-			banner?: string;
-		};
-		ActorMention: ActorMention;
-		PrivateUser: components["schemas"]["PublicUser"] & {
-			email: string;
-		};
-		PublicGuild: {
-			mention: components["schemas"]["ActorMention"];
-			name: string;
-			channels?: components["schemas"]["PublicGuildTextChannel"][];
-			roles?: components["schemas"]["PublicRole"][];
-		};
-		PublicGuildTextChannel: components["schemas"]["PublicChannel"] & {
-			guild?: components["schemas"]["ActorMention"];
-		};
-		PublicChannel: {
-			mention: components["schemas"]["ActorMention"];
-			name: string;
-		};
-		PublicRole: {
-			/** Format: uuid */
-			id: string;
-			name: string;
-			allow: components["schemas"]["Permission"][];
-			deny: components["schemas"]["Permission"][];
-			guild: components["schemas"]["ActorMention"];
-			position: number;
-		};
-		/** @enum {integer} */
-		Permission: Permission;
-		PrivateRelationship: {
-			/** Format: date-time */
-			created: string;
-			user: components["schemas"]["PublicUser"];
-			type: components["schemas"]["RelationshipType"];
-		};
-		/** @enum {integer} */
-		RelationshipType: RelationshipType;
-		PublicDmChannel: components["schemas"]["PublicChannel"] & {
-			owner: components["schemas"]["ActorMention"];
-			recipients: components["schemas"]["ActorMention"][];
-		};
-		PublicMessage: {
-			/** Format: uuid */
-			id: string;
-			content: string;
-			/** Format: date-time */
-			published: string;
-			/** Format: date-time */
-			updated: string;
-			author_id: components["schemas"]["ActorMention"];
-			channel_id: components["schemas"]["ActorMention"];
-			files: components["schemas"]["PublicAttachment"][];
-			embeds: components["schemas"]["PublicEmbed"][];
-		};
-		PublicAttachment: {
-			name: string;
-			hash: string;
-			type: string;
-			size: number;
-			width?: number | null;
-			height?: number | null;
-		};
-		PublicEmbed: {
-			/** Format: uri */
-			target: string;
-			/** Format: date-time */
-			created_at: string;
-			/** @enum {integer} */
-			type: PublicEmbedType;
-			title?: string;
-			description?: string;
-			images: {
-				/** Format: uri */
-				url: string;
-				width?: number;
-				height?: number;
-				alt?: string;
-			}[];
-			videos: {
-				/** Format: uri */
-				url: string;
-				width?: number;
-				height?: number;
-				alt?: string;
-			}[];
-			thumbnail?: {
-				/** Format: uri */
-				url: string;
-				width?: number;
-				height?: number;
-				alt?: string;
-			};
-			author?: {
-				name?: string;
-				url?: string;
-			};
-			footer?: {
-				text?: string;
-				icon?: string;
-			};
-			provider?: {
-				name?: string;
-				url?: string;
-			};
-		};
-		MessageCreateRequest: {
-			content?: string;
-			files?: {
-				name: string;
-				hash: string;
-			}[];
-			/** Format: uuid */
-			nonce?: string;
-		};
-		MessagesResponse: {
-			messages: components["schemas"]["PublicMessage"][];
-			authors: {
-				[key: string]: components["schemas"]["PublicUser"];
-			};
-		};
-	};
-	responses: {
-		/** @description Bad request */
-		BadRequest: {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": components["schemas"]["HttpError"];
-			};
-		};
-		/** @description The requested resource was not found */
-		NotFound: {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": components["schemas"]["HttpError"];
-			};
-		};
-		/** @description Unauthorised */
-		Unauthorised: {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": components["schemas"]["HttpError"];
-			};
-		};
-		/** @description Internal server error */
-		InternalServerError: {
-			headers: {
-				[name: string]: unknown;
-			};
-			content: {
-				"application/json": components["schemas"]["HttpError"];
-			};
-		};
-	};
-	parameters: never;
-	requestBodies: never;
-	headers: never;
-	pathItems: never;
+    schemas: {
+        HttpError: {
+            message: string;
+            code: number;
+            detail?: {
+                body?: {
+                    message: string;
+                    code: string;
+                    path: string[];
+                }[];
+                param?: {
+                    message: string;
+                    code: string;
+                    path: string[];
+                }[];
+                query?: {
+                    message: string;
+                    code: string;
+                    path: string[];
+                }[];
+            };
+        };
+        PublicUser: {
+            mention: components["schemas"]["ActorMention"];
+            name: string;
+            summary: string;
+            display_name: string;
+            /** Format: uri */
+            avatar?: string;
+            /** Format: uri */
+            banner?: string;
+        };
+        ActorMention: string;
+        PrivateUser: components["schemas"]["PublicUser"] & {
+            email: string;
+        };
+        PublicGuild: {
+            mention: components["schemas"]["ActorMention"];
+            name: string;
+            channels?: components["schemas"]["PublicGuildTextChannel"][];
+            roles?: components["schemas"]["PublicRole"][];
+        };
+        PublicGuildTextChannel: components["schemas"]["PublicChannel"] & {
+            guild?: components["schemas"]["ActorMention"];
+        };
+        PublicChannel: {
+            mention: components["schemas"]["ActorMention"];
+            name: string;
+        };
+        PublicRole: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            allow: components["schemas"]["Permission"][];
+            deny: components["schemas"]["Permission"][];
+            guild: components["schemas"]["ActorMention"];
+            position: number;
+        };
+        /** @enum {integer} */
+        Permission: Permission;
+        PrivateRelationship: {
+            /** Format: date-time */
+            created: string;
+            user: components["schemas"]["PublicUser"];
+            type: components["schemas"]["RelationshipType"];
+        };
+        /** @enum {integer} */
+        RelationshipType: RelationshipType;
+        PublicDmChannel: components["schemas"]["PublicChannel"] & {
+            owner: components["schemas"]["ActorMention"];
+            recipients: components["schemas"]["ActorMention"][];
+        };
+        PublicMessage: {
+            /** Format: uuid */
+            id: string;
+            content: string;
+            /** Format: date-time */
+            published: string;
+            /** Format: date-time */
+            updated: string;
+            author_id: components["schemas"]["ActorMention"];
+            channel_id: components["schemas"]["ActorMention"];
+            files: components["schemas"]["PublicAttachment"][];
+            embeds: components["schemas"]["PublicEmbed"][];
+        };
+        PublicAttachment: {
+            name: string;
+            hash: string;
+            type: string;
+            size: number;
+            width?: number | null;
+            height?: number | null;
+        };
+        PublicEmbed: {
+            /** Format: uri */
+            target: string;
+            /** Format: date-time */
+            created_at: string;
+            /** @enum {integer} */
+            type: PublicEmbedType;
+            title?: string;
+            description?: string;
+            images: {
+                /** Format: uri */
+                url: string;
+                width?: number;
+                height?: number;
+                alt?: string;
+            }[];
+            videos: {
+                /** Format: uri */
+                url: string;
+                width?: number;
+                height?: number;
+                alt?: string;
+            }[];
+            thumbnail?: {
+                /** Format: uri */
+                url: string;
+                width?: number;
+                height?: number;
+                alt?: string;
+            };
+            author?: {
+                name?: string;
+                url?: string;
+            };
+            footer?: {
+                text?: string;
+                icon?: string;
+            };
+            provider?: {
+                name?: string;
+                url?: string;
+            };
+        };
+        MessageCreateRequest: {
+            content?: string;
+            files?: {
+                name: string;
+                hash: string;
+            }[];
+            /** Format: uuid */
+            nonce?: string;
+        };
+        MessagesResponse: {
+            messages: components["schemas"]["PublicMessage"][];
+            authors: {
+                [key: string]: components["schemas"]["PublicUser"];
+            };
+        };
+    };
+    responses: {
+        /** @description Bad request */
+        BadRequest: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["HttpError"];
+            };
+        };
+        /** @description The requested resource was not found */
+        NotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["HttpError"];
+            };
+        };
+        /** @description Unauthorised */
+        Unauthorised: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["HttpError"];
+            };
+        };
+        /** @description Internal server error */
+        InternalServerError: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["HttpError"];
+            };
+        };
+    };
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
 export type $defs = Record<string, never>;
 export enum PathsUsersMePushPostResponses204ContentApplicationJson {
-	No_Content = "No Content"
+    No_Content = "No Content"
 }
 export enum PathsUsersMePushNameDeleteResponses202ContentApplicationJson {
-	Accepted = "Accepted"
+    Accepted = "Accepted"
 }
-export enum PathsChannelChannel_idMessagesGetParametersQueryOrder {
-	ASC = "ASC"
+export enum PathsGuildGuild_idMembersGetParametersQueryOrderAnyOf0 {
+    ASC = "ASC"
 }
-export enum PathsChannelChannel_idMessagesGetParametersQueryOrder {
-	DESC = "DESC"
+export enum PathsGuildGuild_idMembersGetParametersQueryOrderAnyOf1 {
+    DESC = "DESC"
 }
 export enum Permission {
-	NONE = 0,
-	OWNER = 1,
-	ADMIN = 2,
-	SEND_MESSAGES = 3,
-	MANAGE_CHANNELS = 4,
-	VIEW_CHANNEL = 5,
-	CALL_CHANNEL = 6,
-	MANAGE_GUILD = 7,
-	MANAGE_INVITES = 8,
-	CREATE_INVITE = 9,
-	UPLOAD = 10,
-	MANAGE_MESSAGES = 11,
-	MANAGE_MEMBERS = 12
+    NONE = 0,
+    OWNER = 1,
+    ADMIN = 2,
+    SEND_MESSAGES = 3,
+    MANAGE_CHANNELS = 4,
+    VIEW_CHANNEL = 5,
+    CALL_CHANNEL = 6,
+    MANAGE_GUILD = 7,
+    MANAGE_INVITES = 8,
+    CREATE_INVITE = 9,
+    UPLOAD = 10,
+    MANAGE_MESSAGES = 11,
+    MANAGE_MEMBERS = 12
 }
 export enum RelationshipType {
-	pending = 0,
-	accepted = 1,
-	blocked = 2
+    pending = 0,
+    accepted = 1,
+    blocked = 2
 }
 export enum PublicEmbedType {
-	link = 0,
-	photo = 1,
-	video = 2,
-	rich = 3
+    link = 0,
+    photo = 1,
+    video = 2,
+    rich = 3
 }
 export type operations = Record<string, never>;
