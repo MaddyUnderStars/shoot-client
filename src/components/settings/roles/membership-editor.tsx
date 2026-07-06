@@ -122,7 +122,7 @@ export const MembershipEditor = observer(() => {
 		})) || [];
 
 	return (
-		<div className="p-4">
+		<div>
 			<DataTable
 				columns={MemberColumns}
 				data={members}

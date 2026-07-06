@@ -17,6 +17,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedChannelRouteImport } from './routes/_authenticated/channel'
 import { Route as AuthenticatedChannelAtmeRouteImport } from './routes/_authenticated/channel/@me'
 import { Route as AuthenticatedChannelChannelIdRouteImport } from './routes/_authenticated/channel/$channelId'
+import { Route as AuthenticatedChannelGuildIdIndexRouteImport } from './routes/_authenticated/channel/$guildId/index'
 import { Route as AuthenticatedSettingsVoiceDevicesRouteImport } from './routes/_authenticated/settings/voice/devices'
 import { Route as AuthenticatedSettingsGuildGuildIdRouteImport } from './routes/_authenticated/settings/guild/$guildId'
 import { Route as AuthenticatedSettingsAppThemeRouteImport } from './routes/_authenticated/settings/app/theme'
@@ -65,6 +66,12 @@ const AuthenticatedChannelChannelIdRoute =
   AuthenticatedChannelChannelIdRouteImport.update({
     id: '/$channelId',
     path: '/$channelId',
+    getParentRoute: () => AuthenticatedChannelRoute,
+  } as any)
+const AuthenticatedChannelGuildIdIndexRoute =
+  AuthenticatedChannelGuildIdIndexRouteImport.update({
+    id: '/$guildId/',
+    path: '/$guildId/',
     getParentRoute: () => AuthenticatedChannelRoute,
   } as any)
 const AuthenticatedSettingsVoiceDevicesRoute =
@@ -130,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/settings/app/theme': typeof AuthenticatedSettingsAppThemeRoute
   '/settings/guild/$guildId': typeof AuthenticatedSettingsGuildGuildIdRoute
   '/settings/voice/devices': typeof AuthenticatedSettingsVoiceDevicesRoute
+  '/channel/$guildId/': typeof AuthenticatedChannelGuildIdIndexRoute
   '/channel/$guildId/$channelId/$messageId': typeof AuthenticatedChannelGuildIdChannelIdMessageIdRoute
   '/channel/$guildId/$channelId/': typeof AuthenticatedChannelGuildIdChannelIdIndexRoute
 }
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/settings/app/theme': typeof AuthenticatedSettingsAppThemeRoute
   '/settings/guild/$guildId': typeof AuthenticatedSettingsGuildGuildIdRoute
   '/settings/voice/devices': typeof AuthenticatedSettingsVoiceDevicesRoute
+  '/channel/$guildId': typeof AuthenticatedChannelGuildIdIndexRoute
   '/channel/$guildId/$channelId/$messageId': typeof AuthenticatedChannelGuildIdChannelIdMessageIdRoute
   '/channel/$guildId/$channelId': typeof AuthenticatedChannelGuildIdChannelIdIndexRoute
 }
@@ -166,6 +175,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/app/theme': typeof AuthenticatedSettingsAppThemeRoute
   '/_authenticated/settings/guild/$guildId': typeof AuthenticatedSettingsGuildGuildIdRoute
   '/_authenticated/settings/voice/devices': typeof AuthenticatedSettingsVoiceDevicesRoute
+  '/_authenticated/channel/$guildId/': typeof AuthenticatedChannelGuildIdIndexRoute
   '/_authenticated/channel/$guildId/$channelId/$messageId': typeof AuthenticatedChannelGuildIdChannelIdMessageIdRoute
   '/_authenticated/channel/$guildId/$channelId/': typeof AuthenticatedChannelGuildIdChannelIdIndexRoute
 }
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/settings/app/theme'
     | '/settings/guild/$guildId'
     | '/settings/voice/devices'
+    | '/channel/$guildId/'
     | '/channel/$guildId/$channelId/$messageId'
     | '/channel/$guildId/$channelId/'
   fileRoutesByTo: FileRoutesByTo
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/settings/app/theme'
     | '/settings/guild/$guildId'
     | '/settings/voice/devices'
+    | '/channel/$guildId'
     | '/channel/$guildId/$channelId/$messageId'
     | '/channel/$guildId/$channelId'
   id:
@@ -220,6 +232,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/app/theme'
     | '/_authenticated/settings/guild/$guildId'
     | '/_authenticated/settings/voice/devices'
+    | '/_authenticated/channel/$guildId/'
     | '/_authenticated/channel/$guildId/$channelId/$messageId'
     | '/_authenticated/channel/$guildId/$channelId/'
   fileRoutesById: FileRoutesById
@@ -289,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedChannelChannelIdRouteImport
       parentRoute: typeof AuthenticatedChannelRoute
     }
+    '/_authenticated/channel/$guildId/': {
+      id: '/_authenticated/channel/$guildId/'
+      path: '/$guildId'
+      fullPath: '/channel/$guildId/'
+      preLoaderRoute: typeof AuthenticatedChannelGuildIdIndexRouteImport
+      parentRoute: typeof AuthenticatedChannelRoute
+    }
     '/_authenticated/settings/voice/devices': {
       id: '/_authenticated/settings/voice/devices'
       path: '/voice/devices'
@@ -351,6 +371,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedChannelRouteChildren {
   AuthenticatedChannelChannelIdRoute: typeof AuthenticatedChannelChannelIdRoute
   AuthenticatedChannelAtmeRoute: typeof AuthenticatedChannelAtmeRoute
+  AuthenticatedChannelGuildIdIndexRoute: typeof AuthenticatedChannelGuildIdIndexRoute
   AuthenticatedChannelGuildIdChannelIdMessageIdRoute: typeof AuthenticatedChannelGuildIdChannelIdMessageIdRoute
   AuthenticatedChannelGuildIdChannelIdIndexRoute: typeof AuthenticatedChannelGuildIdChannelIdIndexRoute
 }
@@ -358,6 +379,7 @@ interface AuthenticatedChannelRouteChildren {
 const AuthenticatedChannelRouteChildren: AuthenticatedChannelRouteChildren = {
   AuthenticatedChannelChannelIdRoute: AuthenticatedChannelChannelIdRoute,
   AuthenticatedChannelAtmeRoute: AuthenticatedChannelAtmeRoute,
+  AuthenticatedChannelGuildIdIndexRoute: AuthenticatedChannelGuildIdIndexRoute,
   AuthenticatedChannelGuildIdChannelIdMessageIdRoute:
     AuthenticatedChannelGuildIdChannelIdMessageIdRoute,
   AuthenticatedChannelGuildIdChannelIdIndexRoute:

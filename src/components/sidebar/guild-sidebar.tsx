@@ -29,7 +29,7 @@ const GuildSidebarListItem = ({ guild }: { guild: Guild }) => (
 				to="/channel/$guildId/$channelId"
 				params={{
 					guildId: guild.mention,
-					channelId: guild.channels[0]!.mention, // TODO
+					channelId: guild.channels[0]?.mention ?? "",
 				}}
 			>
 				<GuildIcon guild={guild} />
@@ -44,7 +44,7 @@ const GuildsSidebarList = observer(() => {
 	return (
 		<SidebarGroupContent>
 			{guilds.map((guild) => (
-				<SidebarMenu key={guild.mention} className="mt-[--spacing(2)]">
+				<SidebarMenu key={guild.mention} className="mt-2">
 					<GuildSidebarListItem guild={guild} />
 				</SidebarMenu>
 			))}

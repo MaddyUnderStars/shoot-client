@@ -2,6 +2,14 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import { TriCheckbox, TriCheckboxValue } from "@/components/ui/tricheckbox";
 import type { Guild } from "@/lib/client/entity/guild";
 import { Role } from "@/lib/client/entity/role";
@@ -15,11 +23,13 @@ export const RoleEditor = ({ role, guild }: { role: Role; guild: Guild }) => {
 
 	const [value, setValue] = useState<Role>(role);
 
+	const [isLoading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
 	const isEveryone = role.id === guild.mention.split("@")[0];
 
 	const deleteRole = async () => {
+		setLoading(true);
 		setError(null);
 		const res = await $fetch.DELETE("/role/{role_id}/", {
 			params: {
@@ -29,12 +39,15 @@ export const RoleEditor = ({ role, guild }: { role: Role; guild: Guild }) => {
 			},
 		});
 
+		setLoading(false);
+
 		if (res.error) {
 			setError(res.error.message);
 		}
 	};
 
 	const saveRole = async () => {
+		setLoading(true);
 		setError(null);
 		const res = await $fetch.PATCH("/role/{role_id}/", {
 			params: {
@@ -44,6 +57,8 @@ export const RoleEditor = ({ role, guild }: { role: Role; guild: Guild }) => {
 			},
 			body: value,
 		});
+
+		setLoading(false);
 
 		if (res.error) {
 			setError(res.error.message);
@@ -89,15 +104,15 @@ export const RoleEditor = ({ role, guild }: { role: Role; guild: Guild }) => {
 				</Alert>
 			)}
 
-			<table className="w-full">
-				<thead>
-					<tr>
-						<th className="px-6 py-3">Permission</th>
-						<th className="py-3">State</th>
-					</tr>
-				</thead>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Permission</TableHead>
+						<TableHead>State</TableHead>
+					</TableRow>
+				</TableHeader>
 
-				<tbody>
+				<TableBody>
 					{CLEAN_PERMISSIONS.map(([perm, text]) => {
 						const checked = value.allow.includes(perm)
 							? TriCheckboxValue.allowed
@@ -106,27 +121,33 @@ export const RoleEditor = ({ role, guild }: { role: Role; guild: Guild }) => {
 								: TriCheckboxValue.neutral;
 
 						return (
-							<tr key={perm}>
-								<td className="px-6 capitalize py-1">{text}</td>
-								<td className="py-1 w-20">
+							<TableRow key={perm}>
+								<TableCell className="capitalize">{text}</TableCell>
+								<TableCell>
 									<TriCheckbox
 										defaultValue={checked}
 										onChange={onChange.bind(perm)}
 									/>
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						);
 					})}
-				</tbody>
-			</table>
+				</TableBody>
+			</Table>
 
 			{!error ? null : <div className="text-destructive">{error}</div>}
 
 			<div className="flex gap-2">
-				<Button variant="destructive" onClick={deleteRole} disabled={isEveryone}>
+				<Button
+					variant="destructive"
+					onClick={deleteRole}
+					disabled={isEveryone || isLoading}
+				>
 					Delete
 				</Button>
-				<Button onClick={saveRole}>Save</Button>
+				<Button onClick={saveRole} disabled={isLoading}>
+					Save
+				</Button>
 			</div>
 		</div>
 	);

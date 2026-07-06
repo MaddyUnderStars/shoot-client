@@ -1,4 +1,5 @@
 import { SettingsHeader } from "@/components/settings-header";
+import { ChannelSettings } from "@/components/settings/channel-settings";
 import { MembershipEditor } from "@/components/settings/roles/membership-editor";
 import { RoleSettings } from "@/components/settings/roles/role-settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,6 +31,7 @@ function RouteComponent() {
 				<TabsList>
 					<TabsTrigger value="roles">Roles</TabsTrigger>
 					<TabsTrigger value="members">Membership</TabsTrigger>
+					<TabsTrigger value="channels">Channels</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="roles">
@@ -38,6 +40,10 @@ function RouteComponent() {
 
 				<TabsContent value="members">
 					<MembershipEditor />
+				</TabsContent>
+
+				<TabsContent value="channels">
+					<ChannelSettings />
 				</TabsContent>
 			</Tabs>
 		</>
