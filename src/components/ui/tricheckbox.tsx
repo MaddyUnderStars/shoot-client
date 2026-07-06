@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { useRef, type ChangeEventHandler } from "react";
+import { CheckIcon, MinusIcon, XIcon } from "lucide-react";
+import { useRef, type ChangeEventHandler, type RefObject } from "react";
 
 export enum TriCheckboxValue {
 	neutral = 0,
@@ -40,31 +41,66 @@ export const TriCheckbox = ({
 	};
 
 	return (
-		<fieldset>
-			<input
-				className={cn(TriCheckboxClasses, "checked:bg-destructive")}
+		<fieldset className="h-6 w-18">
+			<CustomCheckbox
 				ref={denied}
 				type="checkbox"
 				defaultChecked={defaultValue === TriCheckboxValue.denied}
 				onChange={innerOnChange}
-			/>
-			<input
-				className={cn(TriCheckboxClasses, "checked:bg-muted-foreground")}
+			>
+				<XIcon
+					className={cn(
+						TriCheckboxClasses,
+						"peer-checked:bg-destructive text-destructive border",
+					)}
+				/>
+			</CustomCheckbox>
+			<CustomCheckbox
 				ref={neutral}
 				type="checkbox"
 				defaultChecked={defaultValue === TriCheckboxValue.neutral}
 				onChange={innerOnChange}
-			/>
-			<input
-				className={cn(TriCheckboxClasses, "checked:bg-accent")}
+			>
+				<MinusIcon
+					className={cn(
+						TriCheckboxClasses,
+						"peer-checked:bg-muted-foreground text-muted-foreground border-t border-b",
+					)}
+				/>
+			</CustomCheckbox>
+			<CustomCheckbox
 				ref={allowed}
 				defaultChecked={defaultValue === TriCheckboxValue.allowed}
 				type="checkbox"
 				onChange={innerOnChange}
-			/>
+			>
+				<CheckIcon
+					className={cn(TriCheckboxClasses, "peer-checked:bg-accent text-accent border")}
+				/>
+			</CustomCheckbox>
 		</fieldset>
 	);
 };
 
-const TriCheckboxClasses =
-	"cursor-pointer size-6 border appearance-none checked:bg-accent-foreground";
+const CustomCheckbox = ({
+	ref,
+	children,
+	...props
+}: React.InputHTMLAttributes<HTMLInputElement> & { ref?: RefObject<HTMLInputElement | null> }) => {
+	return (
+		<span>
+			<label>
+				<input
+					ref={ref}
+					{...props}
+					className="appearance-none peer relative"
+					type="checkbox"
+				/>
+
+				{children}
+			</label>
+		</span>
+	);
+};
+
+const TriCheckboxClasses = "p-1 size-6 cursor-pointer inline peer-checked:text-white";
