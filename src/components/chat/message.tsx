@@ -77,7 +77,7 @@ export const MessageComponent = ({
 							file={file}
 							channel={message.channel}
 							key={file.hash}
-							className="max-h-100"
+							className="max-h-100 max-w-100"
 						/>
 					))}
 
