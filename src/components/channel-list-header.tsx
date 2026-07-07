@@ -14,6 +14,7 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { SidebarTrigger, useSidebar } from "./ui/sidebar";
+import { Link } from "@tanstack/react-router";
 
 export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 	const isMobile = useIsMobile();
@@ -57,6 +58,14 @@ export const ChannelListHeader = ({ guild }: { guild?: Guild }) => {
 									}}
 								>
 									Create Channel
+								</DropdownMenuItem>
+								<DropdownMenuItem asChild>
+									<Link
+										to="/settings/guild/$guildId"
+										params={{ guildId: guild.mention }}
+									>
+										Guild Settings
+									</Link>
 								</DropdownMenuItem>
 								<DropdownMenuItem
 									variant="destructive"
