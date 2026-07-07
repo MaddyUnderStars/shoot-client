@@ -1,5 +1,5 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { BowArrow, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import type { Guild } from "@/lib/client/entity/guild";
@@ -17,26 +17,34 @@ import {
 	useSidebar,
 } from "../ui/sidebar";
 import { GuildIcon } from "../ui/guild-icon";
+import { cn } from "@/lib/utils";
 
-const GuildSidebarListItem = ({ guild }: { guild: Guild }) => (
-	<SidebarMenuItem>
-		<SidebarMenuButton
-			size="lg"
-			asChild
-			className="p-0 size-8 hover:rounded-sm rounded-lg transition-colors border flex justify-center items-center hover:bg-accent"
-		>
-			<Link
-				to="/channel/$guildId/$channelId"
-				params={{
-					guildId: guild.mention,
-					channelId: guild.channels[0]?.mention ?? "",
-				}}
+const GuildSidebarListItem = ({ guild }: { guild: Guild }) => {
+	const { guildId: active } = useParams({ strict: false });
+
+	return (
+		<SidebarMenuItem>
+			<SidebarMenuButton
+				size="lg"
+				asChild
+				className={cn(
+					"p-0 size-8 hover:rounded-sm rounded-lg transition-colors border flex justify-center items-center hover:bg-accent",
+					active === guild.mention ? "bg-accent" : "",
+				)}
 			>
-				<GuildIcon guild={guild} />
-			</Link>
-		</SidebarMenuButton>
-	</SidebarMenuItem>
-);
+				<Link
+					to="/channel/$guildId/$channelId"
+					params={{
+						guildId: guild.mention,
+						channelId: guild.channels[0]?.mention ?? "",
+					}}
+				>
+					<GuildIcon guild={guild} />
+				</Link>
+			</SidebarMenuButton>
+		</SidebarMenuItem>
+	);
+};
 
 const GuildsSidebarList = observer(() => {
 	const guilds = getAppStore().guilds;
