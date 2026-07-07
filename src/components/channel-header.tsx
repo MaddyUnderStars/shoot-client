@@ -5,10 +5,10 @@ import { getHttpClient } from "@/lib/http/client";
 import { getAppStore } from "@/lib/store/app-store";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
+import type { ReactNode } from "react";
 
 export const ChannelHeader = () => {
 	const channel = useChannel();
-	const isMobile = useIsMobile();
 
 	const { $fetch } = getHttpClient();
 
@@ -38,7 +38,21 @@ export const ChannelHeader = () => {
 		await app.startWebrtc(channel.mention, new URL(ip), token);
 	};
 
-	if (!channel) return undefined;
+	if (!channel) return <HeaderContent name="Not Found" />;
+
+	return (
+		<HeaderContent name={channel.name}>
+			<div className="flex gap-4">
+				<Button size="icon" variant="ghost" onClick={() => startCall()}>
+					<PhoneCall />
+				</Button>
+			</div>
+		</HeaderContent>
+	);
+};
+
+const HeaderContent = ({ name, children }: { name: string; children?: ReactNode }) => {
+	const isMobile = useIsMobile();
 
 	return (
 		<div className="bg-sidebar pt-[env(safe-area-inset-top)] w-full">
@@ -51,15 +65,11 @@ export const ChannelHeader = () => {
 					)}
 
 					<span>
-						<Hash size={16} className="inline" /> {channel.name}
+						<Hash size={16} className="inline" /> {name}
 					</span>
 				</h1>
 
-				<div className="flex gap-4">
-					<Button size="icon" variant="ghost" onClick={() => startCall()}>
-						<PhoneCall />
-					</Button>
-				</div>
+				{children}
 			</div>
 		</div>
 	);

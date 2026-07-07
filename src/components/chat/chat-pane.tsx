@@ -11,11 +11,16 @@ export const ChatPane = () => {
 	const guild = useGuild();
 	const channel = useChannel();
 
+	let child = <NoChannel />;
+
+	if (channel) child = <MainPane channel={channel} />;
+	else if (!guild) child = <FriendsPane />;
+
 	return (
 		<div className="w-full flex flex-col h-dvh">
 			<ChannelHeader />
 
-			{guild ? !channel ? <NoChannel /> : <MainPane channel={channel} /> : <FriendsPane />}
+			{child}
 		</div>
 	);
 };
