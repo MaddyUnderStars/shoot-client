@@ -162,6 +162,15 @@ export class ShootGatewayClient extends EventEmitter {
 
 				break;
 			}
+			case "CHANNEL_DELETE": {
+				const channelId = parsed.d.channel;
+
+				app.dmChannels = app.dmChannels.filter((x) => x.mention !== channelId);
+				for (const guild of app.guilds) {
+					guild.channels = guild.channels.filter((x) => x.mention !== channelId);
+				}
+				break;
+			}
 			case "GUILD_CREATE": {
 				const rawGuild = parsed.d.guild;
 
