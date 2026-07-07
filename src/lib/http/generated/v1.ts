@@ -1629,6 +1629,7 @@ export interface components {
 		PublicGuild: {
 			mention: components["schemas"]["ActorMention"];
 			name: string;
+			summary?: string;
 			channels?: components["schemas"]["PublicGuildTextChannel"][];
 			roles?: components["schemas"]["PublicRole"][];
 		};

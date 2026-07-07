@@ -30,6 +30,7 @@ export const GuildSettings = observer(() => {
 		resolver: zodResolver(GuildEditSchema),
 		defaultValues: {
 			name: guild?.name,
+			summary: guild?.summary,
 		},
 	});
 	const [isLoading, setLoading] = useState(false);

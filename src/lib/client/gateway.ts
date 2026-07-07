@@ -177,6 +177,16 @@ export class ShootGatewayClient extends EventEmitter {
 				app.guilds.push(new Guild(rawGuild));
 				break;
 			}
+			case "GUILD_UPDATE": {
+				const rawGuild = parsed.d.guild;
+
+				const guild = app.getGuild(rawGuild.mention!);
+				if (!guild) break;
+
+				if (rawGuild.name) guild.name = rawGuild.name;
+				guild.summary = rawGuild.summary;
+				break;
+			}
 			case "ROLE_CREATE": {
 				const guild = app.getGuild(parsed.d.role.guild);
 				if (!guild) break;

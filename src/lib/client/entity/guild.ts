@@ -10,6 +10,8 @@ export class Guild extends Actor implements ApiPublicGuild {
 
 	roles: Role[];
 
+	summary?: string;
+
 	public getChannel = (mention: ActorMention) => {
 		return this.channels.find((x) => x.mention === mention);
 	};
@@ -32,6 +34,7 @@ export class Guild extends Actor implements ApiPublicGuild {
 
 		this.channels = opts.channels?.map((x) => new GuildChannel(x, opts.mention)) ?? [];
 		this.roles = opts.roles?.map((x) => new Role(x)) ?? [];
+		this.summary = opts.summary;
 
 		makeObservable(this, {
 			channels: observable,
