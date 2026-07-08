@@ -8,8 +8,11 @@ import { observer } from "mobx-react-lite";
 import type React from "react";
 import { getAppStore } from "./lib/store/app-store";
 import { routeTree } from "./routeTree.gen";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const history = import.meta.env.VITE_USE_HASH_ROUTER ? createHashHistory() : createBrowserHistory();
+
+const queryClient = new QueryClient();
 
 const router = createRouter({
 	history,
@@ -18,6 +21,14 @@ const router = createRouter({
 
 	// if we're using hash routing, tanstack router will add the base url to the hash as well
 	basepath: !import.meta.env.VITE_USE_HASH_ROUTER ? import.meta.env.BASE_URL : undefined,
+
+	context: {
+		queryClient,
+	},
+
+	Wrap({ children }) {
+		return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+	},
 });
 
 declare module "@tanstack/react-router" {

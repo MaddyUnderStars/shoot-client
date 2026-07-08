@@ -15,10 +15,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { getHttpClient } from "@/lib/http/client";
-import type { ApiPrivateUser } from "@/lib/http/types";
 
 export const Route = createFileRoute("/_authenticated/settings/account/profile")({
-	component: Wrapper,
+	component: RouteComponent,
+	loader: ({ context: { queryClient } }) => {
+		const { $api } = getHttpClient();
+
+		return queryClient.ensureQueryData($api.queryOptions("get", "/users/@me/"));
+	},
 });
 
 // TODO: email changing requires password validation
@@ -30,20 +34,9 @@ const ProfileEditSchema = z.object({
 	summary: z.string().optional(),
 });
 
-function Wrapper() {
-	const { $api } = getHttpClient();
-
-	const { data, error } = $api.useQuery("get", "/users/@me/");
-
-	if (error || !data) {
-		return <h1>Something went wrong?</h1>;
-	}
-
-	return <RouteComponent user={data} />;
-}
-
-function RouteComponent({ user }: { user: ApiPrivateUser }) {
-	const { $fetch } = getHttpClient();
+function RouteComponent() {
+	const { $fetch, $api } = getHttpClient();
+	const { data: user } = $api.useSuspenseQuery("get", "/users/@me/");
 
 	const form = useForm<z.infer<typeof ProfileEditSchema>>({
 		resolver: zodResolver(ProfileEditSchema),

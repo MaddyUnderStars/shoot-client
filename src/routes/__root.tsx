@@ -1,12 +1,14 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
+import { QueryClient } from "@tanstack/react-query";
+import { createRootRouteWithContext, Outlet, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const queryClient = new QueryClient();
+type RouterContext = {
+	queryClient: QueryClient;
+};
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<RouterContext>()({
 	component: () => {
 		const location = useLocation();
 
@@ -20,13 +22,11 @@ export const Route = createRootRoute({
 		}, [location]);
 
 		return (
-			<QueryClientProvider client={queryClient}>
-				<ThemeProvider>
-					<NiceModal.Provider>
-						<Outlet />
-					</NiceModal.Provider>
-				</ThemeProvider>
-			</QueryClientProvider>
+			<ThemeProvider>
+				<NiceModal.Provider>
+					<Outlet />
+				</NiceModal.Provider>
+			</ThemeProvider>
 		);
 	},
 });
