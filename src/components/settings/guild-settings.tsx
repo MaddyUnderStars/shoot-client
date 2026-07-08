@@ -15,7 +15,7 @@ import { useGuild } from "@/hooks/use-guild";
 import { Input } from "../ui/input";
 import { getHttpClient } from "@/lib/http/client";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const GuildEditSchema = z.object({
 	name: z.string(),
@@ -28,12 +28,22 @@ export const GuildSettings = observer(() => {
 
 	const form = useForm<z.infer<typeof GuildEditSchema>>({
 		resolver: zodResolver(GuildEditSchema),
-		defaultValues: {
-			name: guild?.name,
-			summary: guild?.summary,
-		},
+		defaultValues: useMemo(
+			() => ({
+				name: guild?.name,
+				summary: guild?.summary,
+			}),
+			[guild],
+		),
 	});
 	const [isLoading, setLoading] = useState(false);
+
+	useEffect(() => {
+		form.setValues({
+			name: guild?.name || "",
+			summary: guild?.summary || "",
+		});
+	}, [guild]);
 
 	if (!guild) return null;
 
