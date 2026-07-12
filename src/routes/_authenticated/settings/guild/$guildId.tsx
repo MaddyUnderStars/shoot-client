@@ -12,6 +12,8 @@ export const Route = createFileRoute("/_authenticated/settings/guild/$guildId")(
 });
 
 const setUrl = (value: string) => {
+	if (import.meta.env.VITE_USE_HASH_ROUTER) return;
+
 	window.location.hash = value;
 };
 
@@ -26,7 +28,11 @@ function RouteComponent() {
 
 			<Tabs
 				className="p-4"
-				defaultValue={window.location.hash.replaceAll("#", "") || "guild"}
+				defaultValue={
+					(!import.meta.env.VITE_USE_HASH_ROUTER &&
+						window.location.hash.replaceAll("#", "")) ||
+					"guild"
+				}
 				onValueChange={setUrl}
 			>
 				<TabsList>
