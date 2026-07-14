@@ -39,7 +39,8 @@ export const InstanceValidatorField = ({
 		if (!nodeInfo) {
 			setNodeinfo(undefined);
 			return form.setError("instance", {
-				message: "Offline or misconfigured",
+				message:
+					"Offline or misconfigured. Make sure you connect to a Shoot server, not Mastodon or other software.",
 			});
 		}
 
