@@ -10,10 +10,10 @@ export const UserComponent = ({ user_id }: { user_id: ActorMention }) => {
 
 	return (
 		<>
-			<Avatar className="h-9 w-9 rounded-lg">
+			<Avatar className="h-9 w-9">
 				<AvatarImage src={user.avatar} />
 				<AvatarFallback>
-					<Skeleton className="h-9 w-9 rounded-full" />
+					<Skeleton className="h-9 w-9 rounded-lg" />
 				</AvatarFallback>
 			</Avatar>
 

@@ -45,7 +45,7 @@ export const MessageComponent = ({
 							<Avatar>
 								<AvatarImage src={user?.avatar} />
 								<AvatarFallback>
-									<Skeleton className="h-9 w-9 rounded-full" />
+									<Skeleton className="h-9 w-9 rounded-lg" />
 								</AvatarFallback>
 							</Avatar>
 						</PopoverTrigger>
