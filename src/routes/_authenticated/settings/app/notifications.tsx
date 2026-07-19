@@ -1,8 +1,3 @@
-import {
-	getUnifiedPushDistributor,
-	saveUnifiedPushDistributor,
-	unregisterFromUnifiedPush,
-} from "@sableclient/tauri-plugin-notifications-api";
 import { createFileRoute } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
@@ -23,6 +18,8 @@ import { getSupportedPush } from "@/lib/notifications/index";
 import { getDistributors, subscribeUnifiedPush } from "@/lib/notifications/unifiedpush";
 import { subscribeWebPush } from "@/lib/notifications/webpush";
 import { getAppStore } from "@/lib/store/app-store";
+import { getSavedDistributor, setDistributor, unregisterForPushNotifications } from "@/generated";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/settings/app/notifications")({
 	component: RouteComponent,
@@ -51,27 +48,41 @@ function RouteComponent() {
 const UnifiedPushSettings = observer(() => {
 	const settings = getAppStore().settings;
 
+	const [selectedDistributor, setSelectedDistributor] = useState<string | null>();
 	const [distributors, setDistributors] = useState<string[]>([]);
 	const [defaultDistributor, setDefaultDistributors] = useState<string>();
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		void (async () => {
-			setDistributors((await getDistributors()).distributors);
-			setDefaultDistributors((await getUnifiedPushDistributor()).distributor);
+			setDistributors(await getDistributors());
+			const saved = await getSavedDistributor();
+			setDefaultDistributors(saved);
+			setSelectedDistributor(saved);
 		})();
 	}, []);
 
 	const changeDistributor = async (value: string) => {
 		setDefaultDistributors(value);
-		await saveUnifiedPushDistributor(value);
+		setSelectedDistributor(value);
+		await setDistributor({ args: { distributor: value } });
 	};
 
 	const toggleSubscription = async () => {
-		if (!settings.notifications.enabled) await subscribeUnifiedPush();
-		else {
-			await unregisterFromUnifiedPush();
-			settings.notifications.enabled = false;
+		if (!selectedDistributor) return;
+
+		setLoading(true);
+
+		if (!settings.notifications.enabled) {
+			if (selectedDistributor)
+				await setDistributor({ args: { distributor: selectedDistributor } });
+			await subscribeUnifiedPush();
+		} else {
+			await unregisterForPushNotifications();
+			settings.setSettings({ notifications: { enabled: false } });
 		}
+
+		setLoading(false);
 	};
 
 	if (!distributors || !defaultDistributor) {
@@ -90,7 +101,7 @@ const UnifiedPushSettings = observer(() => {
 				<Label className="mb-2">Distributor</Label>
 				<Select onValueChange={changeDistributor}>
 					<SelectTrigger>
-						<SelectValue placeholder={defaultDistributor} />
+						<SelectValue placeholder={defaultDistributor || "Select a distributor"} />
 					</SelectTrigger>
 
 					<SelectContent>
@@ -106,8 +117,14 @@ const UnifiedPushSettings = observer(() => {
 				</Select>
 			</div>
 
-			<Button onClick={toggleSubscription}>
-				{settings.notifications.enabled ? "Disable" : "Enable"} notifications
+			<Button onClick={toggleSubscription} disabled={loading}>
+				{loading ? (
+					<Loader2 className="animate-spin" />
+				) : settings.notifications.enabled ? (
+					"Disable notifications"
+				) : (
+					"Enable notifications"
+				)}
 			</Button>
 		</div>
 	);

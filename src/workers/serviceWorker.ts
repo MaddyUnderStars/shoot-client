@@ -1,21 +1,7 @@
 // This file is included in the generated service worker
-
-import type { ActorMention } from "../lib/client/common/actor";
+import type { PushNotificationData } from "../lib/notifications/index";
 
 declare var self: ServiceWorkerGlobalScope;
-
-/**
- * https://github.com/MaddyUnderStars/shoot/blob/main/src/push/worker.ts#L23
- */
-type PushNotificationData = {
-	title: string;
-	body: string;
-	sent: number; // timestamp of when notification sent
-	image?: string; // url of image to display
-
-	channel?: ActorMention;
-	author?: ActorMention;
-};
 
 self.addEventListener("push", (event) => {
 	if (!event.data) return;

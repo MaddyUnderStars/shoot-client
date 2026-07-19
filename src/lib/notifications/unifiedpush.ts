@@ -1,7 +1,4 @@
-import {
-	getUnifiedPushDistributors,
-	registerForUnifiedPush,
-} from "@sableclient/tauri-plugin-notifications-api";
+import { registerForPushNotifications, listDistributors } from "@/generated";
 import { getHttpClient } from "../http/client";
 import { getAppStore } from "../store/app-store";
 
@@ -10,9 +7,10 @@ export const subscribeUnifiedPush = async () => {
 
 	const settings = getAppStore().settings;
 
-	const { endpoint, pubKeySet } = await registerForUnifiedPush();
+	const { endpoint, pubKeySet } = await registerForPushNotifications();
 
-	if (!endpoint || !pubKeySet?.auth || !pubKeySet.pubKey) {
+	if (!endpoint || !pubKeySet?.auth || !pubKeySet?.pubKey) {
+		console.error("invalid registration", endpoint, pubKeySet);
 		return false;
 	}
 
@@ -25,11 +23,11 @@ export const subscribeUnifiedPush = async () => {
 		},
 	});
 
-	settings.notifications.enabled = true;
+	settings.setSettings({ notifications: { enabled: true } });
 
 	return true;
 };
 
 export const getDistributors = async () => {
-	return await getUnifiedPushDistributors();
+	return await listDistributors();
 };

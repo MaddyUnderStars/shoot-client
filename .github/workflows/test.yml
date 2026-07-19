@@ -24,10 +24,6 @@ jobs:
               with:
                   node-version: 23
 
-            - uses: pnpm/action-setup@v6
-              with:
-                  version: 10
-
             - name: install deps
               run: npm ci
 

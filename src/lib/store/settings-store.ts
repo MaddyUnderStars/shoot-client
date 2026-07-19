@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import type { DeepPartial } from "react-hook-form";
 
@@ -20,7 +20,12 @@ export class SettingsStore {
 	};
 
 	constructor() {
-		makeAutoObservable(this);
+		makeObservable(this, {
+			voice: observable,
+			ui_density: observable,
+			notifications: observable,
+			setSettings: action,
+		});
 
 		void makePersistable(this, {
 			name: "settings-store",
@@ -40,6 +45,11 @@ export class SettingsStore {
 		if (opts.voice?.noise !== undefined) this.voice.noise = opts.voice.noise;
 		if (opts.voice?.echo !== undefined) this.voice.echo = opts.voice.echo;
 
-		if (opts.ui_density) this.ui_density = opts.ui_density;
+		if (opts.ui_density !== undefined) this.ui_density = opts.ui_density;
+
+		if (opts.notifications?.enabled !== undefined)
+			this.notifications.enabled = opts.notifications.enabled;
+		if (opts.notifications?.device_name !== undefined)
+			this.notifications.device_name = opts.notifications.device_name;
 	};
 }

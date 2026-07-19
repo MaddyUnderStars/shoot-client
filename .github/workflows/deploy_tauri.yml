@@ -49,12 +49,6 @@ jobs:
                   node-version: lts/*
                   cache: "npm"
 
-            # tauri-notifications-plugin requires pnpm for its build step currently
-            # remove this eventually
-            - uses: pnpm/action-setup@v6
-              with:
-                  version: 10
-
             - name: install frontend dependencies
               run: |
                   npm install
