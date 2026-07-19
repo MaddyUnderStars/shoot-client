@@ -12,7 +12,7 @@ export class SettingsStore {
 	};
 
 	// on mobile, make the buttons bigger by default
-	ui_density: number = import.meta.env.VITE_IS_MOBILE_TAURI ? 0.3 : 0.25;
+	ui_density: number = import.meta.env.VITE_IS_MOBILE_TAURI ? 0.27 : 0.25;
 
 	notifications = {
 		enabled: false,

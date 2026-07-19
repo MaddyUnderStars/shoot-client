@@ -29,3 +29,4 @@ dist-ssr
 
 src-tauri/keys
 keystore.properties
+src-tauri/gen/android/buildSrc/.kotlin
