@@ -1,5 +1,8 @@
 {
 	"$schema": "https://schema.tauri.app/config/2",
+	"identifier": "dev.understars.shoot",
+	"productName": "Shoot",
+	"version": "1.2.0",
 	"app": {
 		"security": {
 			"csp": null
@@ -34,8 +37,5 @@
 		],
 		"shortDescription": "Activitypub federated instant messenger",
 		"targets": "all"
-	},
-	"identifier": "dev.understars.shoot",
-	"productName": "Shoot",
-	"version": "1.1.0"
+	}
 }
