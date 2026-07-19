@@ -1,0 +1,7 @@
+{
+	"$schema": "../gen/schemas/mobile-schema.json",
+	"identifier": "mobile-capability",
+	"windows": ["main"],
+	"permissions": ["unifiedpush:default"],
+	"platforms": ["android"]
+}
