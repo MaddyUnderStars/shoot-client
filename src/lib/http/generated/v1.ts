@@ -255,6 +255,8 @@ export interface paths {
 					"application/json": {
 						display_name?: string;
 						summary?: string;
+						avatar?: string;
+						banner?: string;
 						current_password?: string;
 						password?: string;
 						/** Format: email */
@@ -277,6 +279,48 @@ export interface paths {
 				500: components["responses"]["InternalServerError"];
 			};
 		};
+		trace?: never;
+	};
+	"/users/@me/upload/": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path?: never;
+				cookie?: never;
+			};
+			requestBody?: {
+				content: {
+					"application/json": components["schemas"]["AttachmentInitRequest"];
+				};
+			};
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": components["schemas"]["AttachmentInitResponse"];
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
 		trace?: never;
 	};
 	"/users/@me/guild/": {
@@ -700,6 +744,47 @@ export interface paths {
 				500: components["responses"]["InternalServerError"];
 			};
 		};
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/users/{user_id}/attachments/{hash}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: {
+			parameters: {
+				query?: never;
+				header?: never;
+				path: {
+					hash: string;
+					user_id: string;
+				};
+				cookie?: never;
+			};
+			requestBody?: never;
+			responses: {
+				200: {
+					headers: {
+						[name: string]: unknown;
+					};
+					content: {
+						"application/json": Record<string, never>;
+					};
+				};
+				400: components["responses"]["BadRequest"];
+				401: components["responses"]["Unauthorised"];
+				404: components["responses"]["NotFound"];
+				500: components["responses"]["InternalServerError"];
+			};
+		};
+		put?: never;
+		post?: never;
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -1441,18 +1526,7 @@ export interface paths {
 			};
 			requestBody?: {
 				content: {
-					"application/json": {
-						/** @description Client defined ID for cross referencing attachments to output endpoints. Can be any value. Must be unique */
-						id: string;
-						/** @description User defined file name */
-						name: string;
-						md5: string;
-						mime: string;
-						/** @description Size in bytes */
-						size: number;
-						width?: number;
-						height?: number;
-					}[];
+					"application/json": components["schemas"]["AttachmentInitRequest"];
 				};
 			};
 			responses: {
@@ -1461,11 +1535,7 @@ export interface paths {
 						[name: string]: unknown;
 					};
 					content: {
-						"application/json": {
-							id: string;
-							hash: string;
-							url: string;
-						}[];
+						"application/json": components["schemas"]["AttachmentInitResponse"];
 					};
 				};
 				400: components["responses"]["BadRequest"];
@@ -1626,6 +1696,23 @@ export interface components {
 		PrivateUser: components["schemas"]["PublicUser"] & {
 			email: string;
 		};
+		AttachmentInitResponse: {
+			id: string;
+			hash: string;
+			url: string;
+		}[];
+		AttachmentInitRequest: {
+			/** @description Client defined ID for cross referencing attachments to output endpoints. Can be any value. Must be unique */
+			id: string;
+			/** @description User defined file name */
+			name: string;
+			md5: string;
+			mime: string;
+			/** @description Size in bytes */
+			size: number;
+			width?: number;
+			height?: number;
+		}[];
 		PublicGuild: {
 			mention: components["schemas"]["ActorMention"];
 			name: string;

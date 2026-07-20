@@ -15,6 +15,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { getHttpClient } from "@/lib/http/client";
+import { FilePreview } from "@/components/chat/file-preview";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { uploadFiles } from "@/lib/http/upload";
 
 export const Route = createFileRoute("/_authenticated/settings/account/profile")({
 	component: RouteComponent,
@@ -32,6 +36,9 @@ const ProfileEditSchema = z.object({
 	// email: z.email().optional(),
 	display_name: z.string().optional(),
 	summary: z.string().optional(),
+
+	avatar: z.instanceof(File).or(z.string()).optional(),
+	banner: z.instanceof(File).or(z.string()).optional(),
 });
 
 function RouteComponent() {
@@ -46,11 +53,32 @@ function RouteComponent() {
 	});
 
 	const updateProfile = async (values: z.infer<typeof ProfileEditSchema>) => {
+		let avatarHash: string | undefined = undefined;
+		if (values.avatar && values.avatar instanceof File) {
+			const ret = await uploadFiles([values.avatar], "@me");
+
+			if (!ret[0]?.hash) throw new Error("Failed to upload avatar");
+
+			avatarHash = ret[0].hash;
+		}
+
+		let bannerHash: string | undefined = undefined;
+		if (values.banner && values.banner instanceof File) {
+			const ret = await uploadFiles([values.banner], "@me");
+
+			if (!ret[0]?.hash) throw new Error("Failed to upload avatar");
+
+			bannerHash = ret[0].hash;
+		}
+
 		const { error } = await $fetch.PATCH("/users/@me/", {
 			body: {
 				display_name: values.display_name ?? undefined,
 				// email: values.email ?? undefined,
 				summary: values.summary ?? undefined,
+
+				avatar: avatarHash,
+				banner: bannerHash,
 			},
 		});
 
@@ -67,6 +95,90 @@ function RouteComponent() {
 			<div className="p-4 max-w-md">
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(updateProfile)} className="space-y-4">
+						<FormField
+							control={form.control}
+							name="avatar"
+							render={({ field }) => {
+								return (
+									<FormItem>
+										<FormLabel className="block cursor-pointer">
+											<div className="mb-3">Avatar</div>
+											<div>
+												<Avatar className="size-20">
+													{field.value instanceof File ? (
+														<FilePreview
+															className="size-20"
+															file={field.value}
+														/>
+													) : (
+														<AvatarImage src={user.avatar} />
+													)}
+													<AvatarFallback>
+														<Skeleton className="size-20 rounded-lg" />
+													</AvatarFallback>
+												</Avatar>
+											</div>
+										</FormLabel>
+										<FormControl>
+											<Input
+												hidden
+												type="file"
+												accept="image/*"
+												onChange={(event) =>
+													field.onChange(
+														event.target.files
+															? event.target.files[0]
+															: undefined,
+													)
+												}
+											/>
+										</FormControl>
+									</FormItem>
+								);
+							}}
+						/>
+
+						<FormField
+							control={form.control}
+							name="banner"
+							render={({ field }) => {
+								return (
+									<FormItem>
+										<FormLabel className="block cursor-pointer">
+											<div className="mb-3">Banner</div>
+											<div>
+												{field.value instanceof File ? (
+													<FilePreview
+														className="max-w-md h-40"
+														file={field.value}
+													/>
+												) : (
+													<img
+														src={user.banner}
+														className="max-w-md h-40"
+													/>
+												)}
+											</div>
+										</FormLabel>
+										<FormControl>
+											<Input
+												hidden
+												type="file"
+												accept="image/*"
+												onChange={(event) =>
+													field.onChange(
+														event.target.files
+															? event.target.files[0]
+															: undefined,
+													)
+												}
+											/>
+										</FormControl>
+									</FormItem>
+								);
+							}}
+						/>
+
 						<FormField
 							control={form.control}
 							name="name"
