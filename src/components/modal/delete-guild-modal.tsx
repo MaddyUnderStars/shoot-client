@@ -2,8 +2,7 @@ import NiceModal, { useModal } from "@ebay/nice-modal-react";
 import { useNavigate } from "@tanstack/react-router";
 import type { Guild } from "@/lib/client/entity/guild";
 import { getHttpClient } from "@/lib/http/client";
-import { ModalCloseButton } from "../modal-close-btn";
-import { ModalContainer } from "../modal-container";
+import { ModalCloseButton, ModalContainer } from "../ui/modal-container";
 import { Button } from "../ui/button";
 import { CardAction, CardContent, CardHeader, CardTitle } from "../ui/card";
 

@@ -22,8 +22,7 @@
 		"noUncheckedIndexedAccess": true,
 		"paths": {
 			"@/*": ["./src/*"]
-		},
-		"experimentalDecorators": true
+		}
 	},
 	"include": ["src"],
 	"exclude": ["src/workers"]

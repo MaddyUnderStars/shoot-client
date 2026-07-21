@@ -12,7 +12,7 @@ import {
 import { Input } from "./ui/input";
 import type { UseFormReturn } from "react-hook-form";
 
-const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
+const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://understars.dev";
 
 const LOCK_INSTANCE = !!import.meta.env.VITE_LOCK_INSTANCE;
 
@@ -39,7 +39,8 @@ export const InstanceValidatorField = ({
 		if (!nodeInfo) {
 			setNodeinfo(undefined);
 			return form.setError("instance", {
-				message: "Offline or misconfigured",
+				message:
+					"Offline or misconfigured. Make sure you connect to a Shoot server, not Mastodon or other software.",
 			});
 		}
 
@@ -84,10 +85,10 @@ export const InstanceValidatorField = ({
 					name="invite"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Invite Token</FormLabel>
+							<FormLabel>Registration Token</FormLabel>
 							<FormDescription>
-								This instance has closed registration. You may use an invite token
-								to join.
+								This instance has closed registration. You may use a registration
+								token to join.
 							</FormDescription>
 							<FormControl>
 								<Input {...field} />

@@ -12,8 +12,9 @@ import { setLogin } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { InstanceValidatorField } from "./instance-validator-field";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { getQualifiedInstanceUrl, resolveHostmetaTemplate } from "@/lib/instance";
 
-const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://chat.understars.dev";
+const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://understars.dev";
 
 const LoginFormSchema = z.object({
 	username: z.string({
@@ -38,8 +39,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 	});
 
 	const onSubmit = async (values: z.infer<typeof LoginFormSchema>) => {
+		const resolved = await resolveHostmetaTemplate(getQualifiedInstanceUrl(values.instance)!);
+
+		if (!resolved) throw new Error("could not find instance");
+
 		const client = createClient<paths>({
-			baseUrl: values.instance,
+			baseUrl: resolved.href,
 		});
 
 		const { data, error } = await client.POST("/auth/login", {
@@ -58,7 +63,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
 		const login = {
 			token: data.token,
-			instance: values.instance,
+			instance: resolved.href,
 		};
 
 		setLogin(login);
@@ -71,7 +76,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 	};
 
 	return (
-		<div className={cn("flex flex-col gap-6", className)} {...props}>
+		<div className={cn("flex flex-col gap-6 w-sm", className)} {...props}>
 			<Card>
 				<CardHeader>
 					<CardTitle>Login</CardTitle>
@@ -114,9 +119,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 								)}
 							/>
 
-							<Button type="submit" className="cursor-pointer">
-								Login
-							</Button>
+							<Button type="submit">Login</Button>
 						</form>
 					</Form>
 				</CardContent>

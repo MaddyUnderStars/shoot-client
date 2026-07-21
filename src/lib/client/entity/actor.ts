@@ -3,8 +3,8 @@ import { splitQualifiedMention } from "@/lib/utils";
 import type { ActorMention } from "../common/actor";
 
 export class Actor {
-	@observable mention: ActorMention;
-	@observable name: string;
+	mention: ActorMention;
+	name: string;
 
 	public get domain() {
 		const mention = splitQualifiedMention(this.mention);
@@ -15,6 +15,9 @@ export class Actor {
 		this.mention = opts.mention;
 		this.name = opts.name;
 
-		makeObservable(this);
+		makeObservable(this, {
+			mention: observable,
+			name: observable,
+		});
 	}
 }

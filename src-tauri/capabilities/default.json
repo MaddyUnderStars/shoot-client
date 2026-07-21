@@ -5,12 +5,12 @@
 	"windows": ["main"],
 	"permissions": [
 		"core:default",
-		"notifications:default",
-		"notifications:allow-unified-push",
-		"notifications:allow-register-for-unified-push",
-		"notifications:allow-unregister-from-unified-push",
-		"notifications:allow-get-unified-push-distributors",
-		"notifications:allow-save-unified-push-distributor",
-		"notifications:allow-get-unified-push-distributor"
+		"opener:allow-open-url",
+		"opener:allow-default-urls",
+		"notification:allow-check-permissions",
+		"notification:allow-create-channel",
+		"notification:allow-list-channels",
+		"notification:allow-notify",
+		"notification:allow-request-permission"
 	]
 }

@@ -9,26 +9,20 @@ import { SettingsStore } from "./settings-store";
 import { UserStore } from "./user-store";
 
 export class AppStore {
-	@observable
 	user: PrivateUser | null = null;
 
-	@observable
 	dmChannels: DmChannel[] = [];
 
-	@observable guilds: Guild[] = [];
+	guilds: Guild[] = [];
 
-	@observable
 	relationships: Relationship[] = [];
 
-	@observable
 	webrtc?: ShootWebrtcClient = undefined;
 
-	@observable
 	settings: SettingsStore = new SettingsStore();
 
-	@observable users = new UserStore();
+	users = new UserStore();
 
-	@action
 	public startWebrtc = (channel: ActorMention, endpoint: URL, token: string) => {
 		if (this.webrtc) {
 			this.webrtc.leave();
@@ -40,13 +34,28 @@ export class AppStore {
 		return webrtc.login();
 	};
 
-	@action public stopWebrtc = () => {
+	public stopWebrtc = () => {
 		this.webrtc?.leave();
 		this.webrtc = undefined;
 	};
 
 	constructor() {
-		makeObservable(this);
+		makeObservable(this, {
+			user: observable,
+			dmChannels: observable,
+			guilds: observable,
+			relationships: observable,
+			webrtc: observable,
+			settings: observable,
+			users: observable,
+			startWebrtc: action,
+			stopWebrtc: action,
+			setRelationships: action,
+			setPrivateUser: action,
+			addDmChannel: action,
+			setDmChannels: action,
+			setGuilds: action,
+		});
 	}
 
 	public getGuild = (mention: ActorMention) => {
@@ -77,23 +86,22 @@ export class AppStore {
 		return undefined;
 	};
 
-	@action public setRelationships = (relationships: Relationship[]) => {
+	public setRelationships = (relationships: Relationship[]) => {
 		this.relationships = relationships;
 	};
 
-	@action
 	public setPrivateUser = (user: PrivateUser) => {
 		this.user = user;
 	};
 
-	@action addDmChannel = (channel: DmChannel) => {
+	addDmChannel = (channel: DmChannel) => {
 		this.dmChannels.push(channel);
 	};
 
-	@action setDmChannels = (channels: DmChannel[]) => {
+	setDmChannels = (channels: DmChannel[]) => {
 		this.dmChannels = channels;
 	};
-	@action setGuilds = (guilds: Guild[]) => {
+	setGuilds = (guilds: Guild[]) => {
 		this.guilds = guilds;
 	};
 }

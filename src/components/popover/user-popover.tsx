@@ -50,25 +50,25 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 		});
 	};
 
+	const isSelf = app.user?.mention === user?.mention;
+
 	if (error || !user) return <PopoverContent>{user_id}</PopoverContent>;
 
 	return (
 		<PopoverContent className="p-0">
-			{!user.banner ? null : <img src={user.banner} width={1100} height={440} />}
+			{!user.banner ? null : <img src={user.banner} className="aspect-110/44" />}
 
 			<div className="flex items-center gap-2 p-4 bg-black/20">
 				<UserComponent user_id={user_id} />
 			</div>
 
-			<div className="p-4 flex flex-col gap-2">
-				<div>{user.summary}</div>
+			{!isSelf && user.summary ? (
+				<div className="p-4 flex flex-col gap-2">
+					<div>{user.summary}</div>
 
-				<div>
-					{app.user?.mention !== user.mention ? (
-						<Button onClick={() => openDm()}>Open DM</Button>
-					) : null}
+					<div>{!isSelf ? <Button onClick={() => openDm()}>Open DM</Button> : null}</div>
 				</div>
-			</div>
+			) : null}
 		</PopoverContent>
 	);
 };

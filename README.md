@@ -5,7 +5,7 @@ Please see the readme of Shoot for further details regarding the project.
 
 ## Installation
 
-To use the app in your browser, go to https://understars.dev/shoot-client
+To use the app in your browser, go to https://shoot.pub
 
 Otherwise, you can [download the app here](http://github.com/MaddyUnderStars/shoot-client/releases/latest) for Linux and Android.
 

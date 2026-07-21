@@ -1,7 +1,7 @@
 import { useUser } from "@/hooks/use-user";
 import type { ActorMention } from "@/lib/client/common/actor";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Skeleton } from "./ui/skeleton";
+import { UserIcon } from "lucide-react";
 
 export const UserComponent = ({ user_id }: { user_id: ActorMention }) => {
 	const { user } = useUser(user_id);
@@ -10,16 +10,10 @@ export const UserComponent = ({ user_id }: { user_id: ActorMention }) => {
 
 	return (
 		<>
-			<Avatar className="h-9 w-9 rounded-lg">
-				<AvatarImage
-					src={
-						user.avatar ||
-						"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png"
-					}
-					alt="Username"
-				/>
+			<Avatar className="h-9 w-9">
+				<AvatarImage src={user.avatar} />
 				<AvatarFallback>
-					<Skeleton className="h-9 w-9 rounded-full" />
+					<UserIcon />
 				</AvatarFallback>
 			</Avatar>
 

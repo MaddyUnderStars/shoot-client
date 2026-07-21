@@ -12,5 +12,5 @@ export const Route = createFileRoute("/_authenticated/channel/$guildId/$channelI
 function RouteComponent() {
 	const params = Route.useParams();
 
-	return <Navigate to="/channel/$guildId/{-$channelId}" params={params}></Navigate>;
+	return <Navigate to="/channel/$guildId/$channelId" params={params}></Navigate>;
 }

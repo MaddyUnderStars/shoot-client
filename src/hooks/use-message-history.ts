@@ -62,13 +62,15 @@ export const useMessageHistory = (channel: ActorMention) => {
 	useEffect(() => {
 		const createListener = (event: MESSAGE_CREATE) => {
 			if (!event) return;
-
-			const msg = new Message(event.d.message);
+			if (event.d.message.channel_id !== channel) return;
 
 			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse[]>) => {
 				return {
 					pages: [
-						{ messages: [msg], authors: {} },
+						{
+							messages: [event.d.message],
+							authors: {},
+						},
 						...data.pages.flat(),
 					] satisfies MessagesResponse[],
 					pageParams: data.pageParams,
@@ -77,6 +79,9 @@ export const useMessageHistory = (channel: ActorMention) => {
 		};
 
 		const deleteListener = (event: MESSAGE_DELETE) => {
+			if (!event) return;
+			if (event.d.channel !== channel) return;
+
 			client.setQueryData(queryKey, (data: InfiniteData<MessagesResponse>) => {
 				const ret = data.pages.map((page) => ({
 					messages: page.messages.filter((msg) => msg.id !== event.d.message_id),

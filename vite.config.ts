@@ -1,12 +1,16 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import react from "@vitejs/plugin-react-swc";
-import { buildSync } from "esbuild";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { build } from "rolldown";
+import { playwright } from "@vitest/browser-playwright";
+import { analyzeHeadWithOrdering, BrowserAdapter } from "@rviscomi/capo.js";
+import { Window } from "happy-dom";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,9 +20,8 @@ export default defineConfig({
 			target: "react",
 			autoCodeSplitting: true,
 		}),
-		react({
-			tsDecorators: true,
-		}),
+		react(),
+		babel({ presets: [reactCompilerPreset()] }),
 		tailwindcss(),
 		VitePWA({
 			workbox: {
@@ -50,13 +53,40 @@ export default defineConfig({
 			apply: "build",
 			enforce: "post",
 			transformIndexHtml: {
-				handler: () => {
-					buildSync({
-						minify: true,
-						bundle: true,
-						entryPoints: [path.join(process.cwd(), "src/workers/serviceWorker.js")],
-						outfile: path.join(process.cwd(), "dist", "serviceWorker.js"),
+				handler: async () => {
+					await build({
+						input: [path.join(process.cwd(), "src/workers/serviceWorker.js")],
+						output: {
+							file: path.join(process.cwd(), "dist", "serviceWorker.js"),
+							minify: true,
+						},
 					});
+				},
+			},
+		},
+		{
+			name: "capo.js",
+			apply: "build",
+			enforce: "post",
+			transformIndexHtml: {
+				handler: function (html) {
+					const window = new Window();
+					const doc = window.document;
+
+					doc.write(html);
+
+					const head = doc.querySelector("head");
+					if (!head) return html;
+
+					const res = analyzeHeadWithOrdering(head, new BrowserAdapter());
+					const sorted = res.weights.toSorted((a, b) => b.weight - a.weight);
+
+					head.innerHTML = "";
+					for (const { element } of sorted) {
+						head.appendChild(element);
+					}
+
+					return doc.documentElement.outerHTML;
 				},
 			},
 		},
@@ -67,7 +97,11 @@ export default defineConfig({
 		},
 	},
 	test: {
-		globals: true,
-		environment: "jsdom",
+		browser: {
+			enabled: true,
+			provider: playwright(),
+			headless: true,
+			instances: [{ browser: "chromium" }, { browser: "firefox" }],
+		},
 	},
 });

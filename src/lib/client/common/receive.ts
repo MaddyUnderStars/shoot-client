@@ -95,6 +95,21 @@ export type ROLE_CREATE = {
 	};
 };
 
+export type ROLE_UPDATE = {
+	t: "ROLE_UPDATE";
+	d: {
+		role: ApiPublicRole;
+	};
+};
+
+export type ROLE_DELETE = {
+	t: "ROLE_DELETE";
+	d: {
+		guild_id: ActorMention;
+		role_id: string;
+	};
+};
+
 export type ROLE_MEMBER_ADD = {
 	t: "ROLE_MEMBER_ADD";
 	d: {
@@ -226,6 +241,8 @@ export type GATEWAY_EVENT =
 	| GUILD_UPDATE
 	| GUILD_DELETE
 	| ROLE_CREATE
+	| ROLE_UPDATE
+	| ROLE_DELETE
 	| ROLE_MEMBER_ADD
 	| ROLE_MEMBER_LEAVE
 	| MEMBER_JOIN

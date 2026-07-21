@@ -1,0 +1,13 @@
+# Automatically generated - DO NOT EDIT!
+
+"$schema" = "../../schemas/schema.json"
+
+[[permission]]
+identifier = "allow-get-saved-distributor"
+description = "Enables the get_saved_distributor command without any pre-configured scope."
+commands.allow = ["get_saved_distributor"]
+
+[[permission]]
+identifier = "deny-get-saved-distributor"
+description = "Denies the get_saved_distributor command without any pre-configured scope."
+commands.deny = ["get_saved_distributor"]

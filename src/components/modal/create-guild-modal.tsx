@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { getHttpClient } from "@/lib/http/client";
 import { capitalise } from "@/lib/utils";
-import { ModalCloseButton } from "../modal-close-btn";
-import { ModalContainer } from "../modal-container";
+import { ModalCloseButton, ModalContainer } from "../ui/modal-container";
 import { Button } from "../ui/button";
 import {
 	CardAction,
@@ -53,9 +52,10 @@ export const CreateGuildModal = NiceModal.create(() => {
 
 		modal.remove();
 		await navigate({
-			to: "/channel/$guildId/{-$channelId}",
+			to: "/channel/$guildId/$channelId",
 			params: {
 				guildId: data.mention,
+				channelId: data.channels![0]!.mention, // TODO
 			},
 		});
 	};
@@ -136,18 +136,12 @@ export const CreateGuildModal = NiceModal.create(() => {
 			<CardFooter className="gap-2 justify-between">
 				<Button
 					variant="outline"
-					className="cursor-pointer"
 					onClick={() => setMode(mode === "create" ? "join" : "create")}
 				>
 					{mode === "create" ? "Join" : "Create"} instead?
 				</Button>
 
-				<Button
-					className="cursor-pointer"
-					variant="default"
-					form="create-or-join-guild-form"
-					type="submit"
-				>
+				<Button variant="default" form="create-or-join-guild-form" type="submit">
 					{mode === "create" ? "Create" : "Join"}
 				</Button>
 			</CardFooter>

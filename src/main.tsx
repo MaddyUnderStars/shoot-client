@@ -10,6 +10,7 @@ import { getSupportedPush } from "./lib/notifications";
 import { subscribeUnifiedPush } from "./lib/notifications/unifiedpush";
 import { subscribeWebPush } from "./lib/notifications/webpush";
 import { getAppStore } from "./lib/store/app-store";
+import { initNotificationListener } from "./lib/notifications/listener";
 
 // If we're logged in, connect to gateway
 const login = getLogin();
@@ -24,6 +25,10 @@ if (login) {
 		else if (supported === "unifiedpush") void subscribeUnifiedPush();
 	}
 }
+
+void initNotificationListener().catch((e) => {
+	console.error("Failed to init notifications", e);
+});
 
 // Render the app
 const rootElement = document.getElementById("root")!;

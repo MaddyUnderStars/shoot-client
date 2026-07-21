@@ -57,7 +57,7 @@ function SidebarProvider({
 	const swipebar = useSwipeBarContext();
 
 	const setOpenMobile = (open: boolean) =>
-		open ? swipebar.openSidebar("left") : swipebar.closeSidebar("left");
+		open ? swipebar.openSidebar("left", {}) : swipebar.closeSidebar("left", {});
 
 	// This is the internal state of the sidebar.
 	// We use openProp and setOpenProp for control from outside the component.
@@ -157,7 +157,7 @@ function Sidebar({
 			<div
 				data-slot="sidebar"
 				className={cn(
-					"bg-sidebar text-sidebar-foreground flex w-(--sidebar-width) flex-col mt-[env(safe-area-inset-top)] mb-[env(safe-area-inset-bottom)]",
+					"bg-sidebar text-sidebar-foreground flex w-(--sidebar-width) flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
 					className,
 				)}
 				{...props}

@@ -1,9 +1,9 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import type { DeepPartial } from "react-hook-form";
 
 export class SettingsStore {
-	@observable voice = {
+	voice = {
 		input_volume: 1,
 		output_volume: 1,
 		agc: true,
@@ -11,15 +11,21 @@ export class SettingsStore {
 		noise: true,
 	};
 
-	@observable ui_density: number = 0.22;
+	// on mobile, make the buttons bigger by default
+	ui_density: number = import.meta.env.VITE_IS_MOBILE_TAURI ? 0.27 : 0.25;
 
-	@observable notifications = {
+	notifications = {
 		enabled: false,
 		device_name: navigator.userAgent,
 	};
 
 	constructor() {
-		makeAutoObservable(this);
+		makeObservable(this, {
+			voice: observable,
+			ui_density: observable,
+			notifications: observable,
+			setSettings: action,
+		});
 
 		void makePersistable(this, {
 			name: "settings-store",
@@ -28,7 +34,6 @@ export class SettingsStore {
 		});
 	}
 
-	@action
 	public setSettings = (opts: DeepPartial<SettingsStore>) => {
 		if (opts.voice?.input_volume !== undefined)
 			this.voice.input_volume = opts.voice.input_volume;
@@ -40,6 +45,11 @@ export class SettingsStore {
 		if (opts.voice?.noise !== undefined) this.voice.noise = opts.voice.noise;
 		if (opts.voice?.echo !== undefined) this.voice.echo = opts.voice.echo;
 
-		if (opts.ui_density) this.ui_density = opts.ui_density;
+		if (opts.ui_density !== undefined) this.ui_density = opts.ui_density;
+
+		if (opts.notifications?.enabled !== undefined)
+			this.notifications.enabled = opts.notifications.enabled;
+		if (opts.notifications?.device_name !== undefined)
+			this.notifications.device_name = opts.notifications.device_name;
 	};
 }

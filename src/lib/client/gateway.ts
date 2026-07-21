@@ -12,6 +12,7 @@ import { PrivateUser } from "./entity/private-user";
 import { Relationship } from "./entity/relationship";
 import type { ClientOptions, InstanceOptions } from "./types";
 import { PublicUser } from "./entity/public-user";
+import { Role } from "./entity/role";
 
 const Log = createLogger("gateway");
 
@@ -161,10 +162,54 @@ export class ShootGatewayClient extends EventEmitter {
 
 				break;
 			}
+			case "CHANNEL_DELETE": {
+				const channelId = parsed.d.channel;
+
+				app.dmChannels = app.dmChannels.filter((x) => x.mention !== channelId);
+				for (const guild of app.guilds) {
+					guild.channels = guild.channels.filter((x) => x.mention !== channelId);
+				}
+				break;
+			}
 			case "GUILD_CREATE": {
 				const rawGuild = parsed.d.guild;
 
 				app.guilds.push(new Guild(rawGuild));
+				break;
+			}
+			case "GUILD_UPDATE": {
+				const rawGuild = parsed.d.guild;
+
+				const guild = app.getGuild(rawGuild.mention!);
+				if (!guild) break;
+
+				if (rawGuild.name) guild.name = rawGuild.name;
+				guild.summary = rawGuild.summary;
+				break;
+			}
+			case "ROLE_CREATE": {
+				const guild = app.getGuild(parsed.d.role.guild);
+				if (!guild) break;
+
+				guild.roles.push(new Role(parsed.d.role));
+				guild.roles = guild.roles.toSorted((a, b) => b.position - a.position);
+				break;
+			}
+			case "ROLE_UPDATE": {
+				const guild = app.getGuild(parsed.d.role.guild);
+				if (!guild) break;
+
+				guild.roles = guild.roles.filter((x) => x.id !== parsed.d.role.id);
+				guild.roles.push(new Role(parsed.d.role));
+				guild.roles = guild.roles.toSorted((a, b) => b.position - a.position);
+				break;
+			}
+			case "ROLE_DELETE": {
+				const guild = app.getGuild(parsed.d.guild_id);
+				if (!guild) break;
+
+				guild.roles = guild.roles.filter((x) => x.id !== parsed.d.role_id);
+				guild.roles = guild.roles.toSorted((a, b) => b.position - a.position);
 				break;
 			}
 			case "GUILD_DELETE": {
@@ -208,6 +253,28 @@ export class ShootGatewayClient extends EventEmitter {
 		}
 
 		if (!this.reconnectTimeout) {
+			// if we're in the background, don't reconnect immediately
+			// as it'll just keep disconnecting
+
+			if (document.hidden) {
+				Log.verbose("We're in the background, discontinuing reconnect attempts");
+
+				document.addEventListener(
+					"visibilitychange",
+					() => {
+						if (document.hidden) return; // hmm
+						if (!this.gwInstance || !this.token) return;
+
+						Log.verbose("We're in foreground again. Reconnecting...");
+
+						this.login({ instance: this.gwInstance, token: this.token });
+					},
+					{ once: true },
+				);
+
+				return;
+			}
+
 			this.reconnectTimeout = setTimeout(
 				() => {
 					Log.verbose(`Trying reconnect attempt ${this.reconnectAttempts}`);

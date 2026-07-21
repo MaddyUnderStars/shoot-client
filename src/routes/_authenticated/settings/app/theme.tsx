@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MessageComponent } from "@/components/message";
+import { MessageComponent } from "@/components/chat/message";
 import { SettingsHeader } from "@/components/settings-header";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -36,8 +36,8 @@ function RouteComponent() {
 				<div className="flex gap-2 mt-4">
 					<p className="text-sm text-muted-foreground">Compact</p>
 					<Slider
-						min={0.19}
-						max={0.26}
+						min={0.2}
+						max={0.3}
 						defaultValue={[settings.ui_density]}
 						step={0.001}
 						onValueChange={(v) => settings.setSettings({ ui_density: v[0] })}

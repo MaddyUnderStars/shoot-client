@@ -1,9 +1,7 @@
 import NiceModal from "@ebay/nice-modal-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { BowArrow, Plus } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import type { Guild } from "@/lib/client/entity/guild";
 import { getAppStore } from "@/lib/store/app-store";
 import { CreateGuildModal } from "../modal/create-guild-modal";
@@ -18,29 +16,35 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "../ui/sidebar";
+import { GuildIcon } from "../ui/guild-icon";
+import { cn } from "@/lib/utils";
 
-const GuildSidebarListItem = React.memo(({ guild }: { guild: Guild }) => (
-	<SidebarMenuItem>
-		<SidebarMenuButton
-			size="lg"
-			asChild
-			className="p-0 size-8 hover:rounded-sm rounded-lg transition-colors border flex justify-center items-center hover:bg-accent"
-		>
-			<Link
-				to="/channel/$guildId/{-$channelId}"
-				params={{
-					guildId: guild.mention,
-					channelId: guild.channels?.[0]?.mention,
-				}}
+const GuildSidebarListItem = ({ guild }: { guild: Guild }) => {
+	const { guildId: active } = useParams({ strict: false });
+
+	return (
+		<SidebarMenuItem>
+			<SidebarMenuButton
+				size="lg"
+				asChild
+				className={cn(
+					"p-0 size-8 hover:rounded-sm rounded-lg transition-colors border flex justify-center items-center hover:bg-accent",
+					active === guild.mention ? "bg-accent" : "",
+				)}
 			>
-				<Avatar className="rounded-none">
-					<AvatarImage />
-					<AvatarFallback className="rounded-none">{guild.initials}</AvatarFallback>
-				</Avatar>
-			</Link>
-		</SidebarMenuButton>
-	</SidebarMenuItem>
-));
+				<Link
+					to="/channel/$guildId/$channelId"
+					params={{
+						guildId: guild.mention,
+						channelId: guild.channels[0]?.mention ?? "",
+					}}
+				>
+					<GuildIcon guild={guild} />
+				</Link>
+			</SidebarMenuButton>
+		</SidebarMenuItem>
+	);
+};
 
 const GuildsSidebarList = observer(() => {
 	const guilds = getAppStore().guilds;
@@ -48,7 +52,7 @@ const GuildsSidebarList = observer(() => {
 	return (
 		<SidebarGroupContent>
 			{guilds.map((guild) => (
-				<SidebarMenu key={guild.mention} className="mt-[--spacing(2)]">
+				<SidebarMenu key={guild.mention} className="mt-2">
 					<GuildSidebarListItem guild={guild} />
 				</SidebarMenu>
 			))}
@@ -62,9 +66,9 @@ export const GuildSidebar = observer(() => {
 	return (
 		<Sidebar
 			collapsible="none"
-			className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r flex items-center"
+			className="w-[calc(var(--sidebar-width-icon)+1px)]! flex items-center"
 		>
-			<SidebarHeader>
+			<SidebarHeader className="border-r">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton
@@ -82,7 +86,7 @@ export const GuildSidebar = observer(() => {
 				</SidebarMenu>
 			</SidebarHeader>
 
-			<SidebarContent>
+			<SidebarContent className="border-r">
 				<SidebarGroup className="pb-0 pt-0">
 					<GuildsSidebarList />
 				</SidebarGroup>

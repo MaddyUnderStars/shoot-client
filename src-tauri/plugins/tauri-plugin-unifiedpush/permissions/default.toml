@@ -1,0 +1,14 @@
+"$schema" = "schemas/schema.json"
+
+[default]
+description = "Default permissions for the UnifiedPush plugin."
+permissions = [
+	"allow-list-distributors",
+	"allow-set-distributor",
+	"allow-register-for-push-notifications",
+	"allow-unregister-for-push-notifications",
+	"allow-set-token",
+	"allow-register-listener",
+	"allow-remove-listener",
+	"allow-get-saved-distributor",
+]

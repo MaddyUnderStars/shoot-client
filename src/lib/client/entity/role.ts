@@ -2,11 +2,10 @@ import { makeObservable, observable } from "mobx";
 import type { ApiPublicRole } from "@/lib/http/types";
 
 export class Role implements ApiPublicRole {
-	@observable id: string;
-	@observable name: string;
-	@observable allow: number[];
-	@observable deny: number[];
-	@observable
+	id: string;
+	name: string;
+	allow: number[];
+	deny: number[];
 	guild: `${string}@${string}`;
 	position: number;
 
@@ -18,6 +17,13 @@ export class Role implements ApiPublicRole {
 		this.guild = opts.guild;
 		this.position = opts.position;
 
-		makeObservable(this);
+		makeObservable(this, {
+			id: observable,
+			name: observable,
+			allow: observable,
+			deny: observable,
+			guild: observable,
+			position: observable,
+		});
 	}
 }

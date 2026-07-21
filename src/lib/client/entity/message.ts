@@ -1,20 +1,17 @@
-import { makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { getHttpClient } from "@/lib/http/client";
 import type { ApiPublicAttachment, ApiPublicEmbed, ApiPublicMessage } from "@/lib/http/types";
 import { type AppStore, getAppStore } from "@/lib/store/app-store";
 import type { ActorMention } from "../common/actor";
 
-export class Message implements ApiPublicMessage {
-	@observable id: string;
-	@observable content: string;
-	@observable published: string;
-	@observable updated: string;
-	@observable author_id: ActorMention;
-	@observable
+export class Message implements Omit<ApiPublicMessage, "published" | "updated"> {
+	id: string;
+	content: string;
+	published: Date;
+	updated: Date;
+	author_id: ActorMention;
 	channel_id: ActorMention;
-	@observable
 	files: ApiPublicAttachment[];
-	@observable
 	embeds: ApiPublicEmbed[];
 
 	private app: AppStore;
@@ -28,14 +25,25 @@ export class Message implements ApiPublicMessage {
 
 		this.id = opts.id;
 		this.content = opts.content;
-		this.published = opts.published;
-		this.updated = opts.updated;
+		this.published = new Date(opts.published);
+		this.updated = new Date(opts.updated);
 		this.author_id = opts.author_id;
 		this.channel_id = opts.channel_id;
 		this.files = opts.files;
 		this.embeds = opts.embeds;
 
-		makeObservable(this);
+		makeObservable(this, {
+			id: observable,
+			content: observable,
+			published: observable,
+			updated: observable,
+			author_id: observable,
+			channel_id: observable,
+			files: observable,
+			embeds: observable,
+			channel: computed,
+			delete: action,
+		});
 	}
 
 	public delete = async () => {

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Hash, PhoneCall } from "lucide-react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGuild } from "@/hooks/use-guild";
 import type { ActorMention } from "@/lib/client/common/actor";
 import type { VOICE_JOIN, VOICE_LEAVE, VOICE_STATE } from "@/lib/client/common/receive";
@@ -28,65 +28,67 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "../ui/sidebar";
+import { useChannel } from "@/hooks/use-channel";
 
-const ChannelSidebarListItem = React.memo(
-	({
-		channel,
-		guild,
-		voice,
-	}: {
-		channel: GuildChannel | DmChannel;
-		guild?: Guild;
-		voice?: PublicUser[];
-	}) => {
-		const sidebar = useSidebar();
+const ChannelSidebarListItem = ({
+	channel,
+	guild,
+	voice,
+}: {
+	channel: GuildChannel | DmChannel;
+	guild?: Guild;
+	voice?: PublicUser[];
+}) => {
+	const sidebar = useSidebar();
+	const selectedChannel = useChannel();
 
-		return (
-			<SidebarMenuItem key={channel.mention}>
-				<SidebarMenuButton>
-					<Link
-						to={guild ? "/channel/$guildId/{-$channelId}" : "/channel/$channelId"}
-						params={(prev) => ({
-							...prev,
-							channelId: channel.mention,
-						})}
-						className="flex flex-1 items-center justify-between"
-						onClick={() => sidebar.setOpenMobile(false)}
-					>
-						{channel.name}
+	const isSelected = selectedChannel?.mention === channel.mention;
 
-						{voice?.length ? (
-							<PhoneCall className="text-green-700" size={14} />
-						) : (
-							<Hash size={14} />
-						)}
-					</Link>
-				</SidebarMenuButton>
+	return (
+		<SidebarMenuItem key={channel.mention}>
+			<SidebarMenuButton
+				className={cn("hover:bg-sidebar-ring", isSelected ? "bg-accent" : "")}
+			>
+				<Link
+					to={guild ? "/channel/$guildId/$channelId" : "/channel/$channelId"}
+					params={(prev) => ({
+						...prev,
+						channelId: channel.mention,
+					})}
+					className="flex flex-1 items-center justify-between"
+					onClick={() => sidebar.setOpenMobile(false)}
+				>
+					{channel.name}
 
-				{!voice?.length ? null : (
-					<ul className="p-2 ms-4">
-						{voice?.map((user) => (
-							<li
-								key={user.mention}
-								className={cn(
-									"before:border-1 before:w-0.5 before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-[-0.5rem]",
-									"relative m-0 pb-4 pl-5 last:pb-0 first:pt-0",
-								)}
-							>
-								<Popover>
-									<PopoverTrigger className="cursor-pointer">
-										{user.display_name}
-									</PopoverTrigger>
-									<UserPopover user={user.mention} />
-								</Popover>
-							</li>
-						))}
-					</ul>
-				)}
-			</SidebarMenuItem>
-		);
-	},
-);
+					{voice?.length ? (
+						<PhoneCall className="text-green-700" size={14} />
+					) : (
+						<Hash size={14} />
+					)}
+				</Link>
+			</SidebarMenuButton>
+
+			{!voice?.length ? null : (
+				<ul className="p-2 ms-4">
+					{voice?.map((user) => (
+						<li
+							key={user.mention}
+							className={cn(
+								"before:border-1 before:w-0.5 before:content-[''] before:absolute before:top-0 before:bottom-0 before:left-[-0.5rem]",
+								"relative m-0 pb-4 pl-5 last:pb-0 first:pt-0",
+							)}
+						>
+							<Popover>
+								<PopoverTrigger>{user.display_name}</PopoverTrigger>
+								<UserPopover user={user.mention} />
+							</Popover>
+						</li>
+					))}
+				</ul>
+			)}
+		</SidebarMenuItem>
+	);
+};
 
 const ChannelSidebarList = observer(() => {
 	const guild = useGuild();

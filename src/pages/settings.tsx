@@ -14,23 +14,27 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { gatewayClient } from "@/lib/client/gateway";
-
-// todo: https://web.dev/articles/push-notifications-subscribing-a-user
+import { getAppStore } from "@/lib/store/app-store";
+import { GuildIcon } from "@/components/ui/guild-icon";
 
 export const SettingsSidebar = () => {
 	const sidebar = useSidebar();
 
 	const navigate = useNavigate();
 
+	const guilds = getAppStore().guilds;
+
+	const previousNav = localStorage.getItem("SAVED_LOCATION_HREF");
+
 	return (
 		<Sidebar>
-			<SidebarContent className="mt-[env(safe-area-inset-top)] mb-[env(safe-area-inset-bottom)]">
+			<SidebarContent className="pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuButton asChild>
 								<Link
-									to="/channel/@me"
+									to={previousNav ?? "/channel/@me"}
 									onClick={() => sidebar.setOpenMobile(false)}
 								>
 									<XIcon />
@@ -112,9 +116,29 @@ export const SettingsSidebar = () => {
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
+
+				<SidebarGroup>
+					<SidebarGroupLabel>Guilds</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							{guilds.map((guild) => (
+								<SidebarMenuButton asChild key={guild.mention}>
+									<Link
+										onClick={() => sidebar.setOpenMobile(false)}
+										to="/settings/guild/$guildId"
+										params={{ guildId: guild.mention }}
+									>
+										<GuildIcon guild={guild} />
+										{guild.name}
+									</Link>
+								</SidebarMenuButton>
+							))}
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
 			</SidebarContent>
 
-			<SidebarFooter className="mt-[env(safe-area-inset-top)]">
+			<SidebarFooter className="pt-[env(safe-area-inset-top)]">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton asChild>
