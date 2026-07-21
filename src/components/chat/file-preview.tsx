@@ -18,9 +18,9 @@ export const FilePreview = ({
 	const [url, setUrl] = useState<string | null>(null);
 	const [object] = useState(file);
 
-	const instance = getLogin()?.instance;
-
 	useEffect(() => {
+		const instance = getLogin()?.instance;
+
 		const src =
 			object instanceof File
 				? URL.createObjectURL(object)
@@ -36,9 +36,8 @@ export const FilePreview = ({
 		return () => {
 			URL.revokeObjectURL(src);
 		};
-	}, [object, channel, instance]);
+	}, [object, channel]);
 
-	if (!instance) return null;
 	if (!url) return null;
 
 	if (file.type?.startsWith("image")) {

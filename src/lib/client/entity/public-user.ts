@@ -6,16 +6,14 @@ export class PublicUser extends Actor implements ApiPublicUser {
 	summary: string;
 	display_name: string;
 	banner?: string;
-	avatar: string;
+	avatar?: string;
 
 	constructor(opts: ApiPublicUser) {
 		super(opts);
 
 		this.summary = opts.summary;
 		this.display_name = opts.display_name;
-		this.avatar =
-			opts.avatar ||
-			"https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png";
+		this.avatar = opts.avatar;
 		this.banner = opts.banner;
 
 		makeObservable(this, {

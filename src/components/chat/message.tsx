@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, UserIcon } from "lucide-react";
 import { useState } from "react";
 import { useUser } from "@/hooks/use-user";
 import type { Message } from "@/lib/client/entity/message";
@@ -16,7 +16,6 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Popover, PopoverTrigger } from "../ui/popover";
-import { Skeleton } from "../ui/skeleton";
 
 export const MessageComponent = ({
 	message,
@@ -45,7 +44,7 @@ export const MessageComponent = ({
 							<Avatar>
 								<AvatarImage src={user?.avatar} />
 								<AvatarFallback>
-									<Skeleton className="h-9 w-9 rounded-lg" />
+									<UserIcon />
 								</AvatarFallback>
 							</Avatar>
 						</PopoverTrigger>
