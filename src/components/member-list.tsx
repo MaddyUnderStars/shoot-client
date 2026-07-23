@@ -58,7 +58,7 @@ export const MemberList = ({ channel, guild }: { channel: Channel; guild?: Guild
 						return (
 							<Popover key={x.user.mention}>
 								<PopoverTrigger>
-									<div className="text-white flex items-center gap-2">
+									<div className="text-sidebar-foreground flex items-center gap-2">
 										<UserComponent user_id={x.user.mention} />
 									</div>
 								</PopoverTrigger>

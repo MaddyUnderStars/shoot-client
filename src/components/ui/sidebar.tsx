@@ -172,7 +172,7 @@ function Sidebar({
 
 		return (
 			<Comp {...props} ToggleComponent={<></>}>
-				<div className="flex h-full w-full">{children}</div>
+				<div className="bg-sidebar flex h-full w-full">{children}</div>
 			</Comp>
 		);
 	}

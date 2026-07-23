@@ -62,9 +62,9 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 				<UserComponent user_id={user_id} />
 			</div>
 
-			{!isSelf && user.summary ? (
+			{!isSelf || user.summary ? (
 				<div className="p-4 flex flex-col gap-2">
-					<div>{user.summary}</div>
+					{user.summary ? <div>{user.summary}</div> : null}
 
 					<div>{!isSelf ? <Button onClick={() => openDm()}>Open DM</Button> : null}</div>
 				</div>

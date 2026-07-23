@@ -138,7 +138,7 @@ export const SettingsSidebar = () => {
 				</SidebarGroup>
 			</SidebarContent>
 
-			<SidebarFooter className="pt-[env(safe-area-inset-top)]">
+			<SidebarFooter className="mt-[env(safe-area-inset-top)]">
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton asChild>
