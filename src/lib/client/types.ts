@@ -5,5 +5,9 @@ export type InstanceOptions = {
 
 export type ClientOptions = {
 	instance: InstanceOptions | string;
-	token: string;
+	tokens: {
+		access: string;
+		refresh: string;
+		expiry: number;
+	};
 };

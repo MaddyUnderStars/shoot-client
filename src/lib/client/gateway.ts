@@ -13,6 +13,7 @@ import { Relationship } from "./entity/relationship";
 import type { ClientOptions, InstanceOptions } from "./types";
 import { PublicUser } from "./entity/public-user";
 import { Role } from "./entity/role";
+import { refreshAuthToken } from "../auth";
 
 const Log = createLogger("gateway");
 
@@ -20,7 +21,7 @@ type Timeout = ReturnType<typeof setTimeout>;
 
 export class ShootGatewayClient extends EventEmitter {
 	private socket: WebSocket | null = null;
-	private token!: string;
+	private token!: ClientOptions["tokens"];
 	private gwInstance!: InstanceOptions;
 
 	private sequence: number = 0;
@@ -55,7 +56,7 @@ export class ShootGatewayClient extends EventEmitter {
 			gateway: gw,
 		};
 
-		this.token = opts.token;
+		this.token = opts.tokens;
 
 		this.socket = new WebSocket(this.gwInstance.gateway);
 
@@ -100,7 +101,7 @@ export class ShootGatewayClient extends EventEmitter {
 		this.heartbeatTimeout = setTimeout(heartbeat, 8000 + jitter(2000));
 	};
 
-	private onOpen = () => {
+	private onOpen = async () => {
 		Log.verbose(`Connected to gateway on ${this.gwInstance.gateway.href}`);
 		this.reconnectAttempts = 0;
 		clearTimeout(this.reconnectTimeout);
@@ -108,9 +109,13 @@ export class ShootGatewayClient extends EventEmitter {
 
 		this.emit("SOCKET_OPEN");
 
+		if (this.token.expiry < Date.now()) {
+			this.token = (await refreshAuthToken()).tokens;
+		}
+
 		this.send({
 			t: "identify",
-			token: this.token,
+			token: this.token.access,
 		});
 	};
 
@@ -267,7 +272,7 @@ export class ShootGatewayClient extends EventEmitter {
 
 						Log.verbose("We're in foreground again. Reconnecting...");
 
-						this.login({ instance: this.gwInstance, token: this.token });
+						this.login({ instance: this.gwInstance, tokens: this.token });
 					},
 					{ once: true },
 				);
@@ -283,7 +288,7 @@ export class ShootGatewayClient extends EventEmitter {
 
 					if (!this.gwInstance || !this.token) return;
 
-					this.login({ instance: this.gwInstance, token: this.token });
+					this.login({ instance: this.gwInstance, tokens: this.token });
 				},
 				1000 * this.reconnectAttempts + jitter(this.reconnectAttempts * 1000),
 			);
