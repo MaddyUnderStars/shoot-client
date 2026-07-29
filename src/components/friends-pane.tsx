@@ -21,6 +21,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { SidebarTrigger } from "./ui/sidebar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 const AddFriendSchema = z.object({
 	mention: ActorMention,
@@ -54,6 +55,19 @@ export const FriendsPane = observer(() => {
 				message: error.message,
 			});
 	};
+
+	const groupedRelationships = Object.groupBy(relationships, (item) => item.type);
+	if (!groupedRelationships[RelationshipType.accepted]) {
+		groupedRelationships[RelationshipType.accepted] = [];
+	}
+
+	if (!groupedRelationships[RelationshipType.pending]) {
+		groupedRelationships[RelationshipType.pending] = [];
+	}
+
+	if (!groupedRelationships[RelationshipType.blocked]) {
+		groupedRelationships[RelationshipType.blocked] = [];
+	}
 
 	return (
 		<div className="bg-sidebar pt-[env(safe-area-inset-top)] flex-1">
@@ -95,11 +109,33 @@ export const FriendsPane = observer(() => {
 					</form>
 				</Form>
 
-				<div className="mt-5">
+				{/* <div className="mt-5">
 					{relationships.map((x) => (
 						<RelationshipComponent rel={x} key={x.user.mention} />
 					))}
-				</div>
+				</div> */}
+
+				<Tabs defaultValue={`${RelationshipType.accepted}`} className="p-2">
+					<TabsList>
+						<TabsTrigger value={`${RelationshipType.accepted}`}>Friends</TabsTrigger>
+						<TabsTrigger value={`${RelationshipType.pending}`}>Pending</TabsTrigger>
+						{/* <TabsTrigger value={`${RelationshipType.blocked}`}>Blocked</TabsTrigger> */}
+					</TabsList>
+
+					{Object.entries(groupedRelationships).map(([type, rels]) => (
+						<TabsContent key={type} value={type}>
+							{rels.length ? (
+								rels.map((x) => (
+									<RelationshipComponent rel={x} key={x.user.mention} />
+								))
+							) : (
+								<div className="p-3">
+									Nothing here! You can add friends using the form above.
+								</div>
+							)}
+						</TabsContent>
+					))}
+				</Tabs>
 			</div>
 		</div>
 	);
