@@ -14,6 +14,9 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Popover, PopoverTrigger } from "./ui/popover";
+import NiceModal from "@ebay/nice-modal-react";
+import { UserProfileModal } from "./modal/user-profile-modal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const RelationshipComponent = ({ rel }: { rel: Relationship }) => {
 	return (
@@ -35,6 +38,7 @@ export const RelationshipComponent = ({ rel }: { rel: Relationship }) => {
 
 const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 	const [open, setOpen] = useState<boolean>();
+	const isMobile = useIsMobile();
 
 	const { $fetch } = getHttpClient();
 
@@ -115,6 +119,15 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 		</DropdownMenuItem>,
 	);
 
+	actions.push(
+		<DropdownMenuItem
+			key="friend-action-view-profile"
+			onClick={() => NiceModal.show(UserProfileModal, { user_id: rel.user.mention })}
+		>
+			View full profile
+		</DropdownMenuItem>,
+	);
+
 	if (rel.type === RelationshipType.pending)
 		actions.push(
 			<DropdownMenuItem key="friend-action-accept" onClick={() => action("accept")}>
@@ -158,7 +171,11 @@ const RelationshipActions = ({ rel }: { rel: Relationship }) => {
 	return (
 		<DropdownMenu onOpenChange={(open) => setOpen(open)}>
 			<DropdownMenuTrigger
-				className={cn(["p-2 bg-accent rounded group-hover:block", open ? "" : "hidden"])}
+				className={cn([
+					"p-2 bg-accent rounded group-hover:block",
+					open ? "" : "hidden",
+					isMobile ? "block" : "",
+				])}
 			>
 				<ChevronDown size={16} />
 			</DropdownMenuTrigger>

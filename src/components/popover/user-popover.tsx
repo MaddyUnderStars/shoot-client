@@ -6,6 +6,8 @@ import { getAppStore } from "@/lib/store/app-store";
 import { Button } from "../ui/button";
 import { PopoverContent } from "../ui/popover";
 import { UserComponent } from "../user";
+import NiceModal from "@ebay/nice-modal-react";
+import { UserProfileModal } from "../modal/user-profile-modal";
 
 export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 	const { $fetch } = getHttpClient();
@@ -66,7 +68,12 @@ export const UserPopover = ({ user: user_id }: { user: ActorMention }) => {
 				<div className="p-4 flex flex-col gap-2">
 					{user.summary ? <div>{user.summary}</div> : null}
 
-					<div>{!isSelf ? <Button onClick={() => openDm()}>Open DM</Button> : null}</div>
+					<div className="flex gap-2">
+						{!isSelf ? <Button onClick={() => openDm()}>Open DM</Button> : null}
+						<Button onClick={() => NiceModal.show(UserProfileModal, { user_id })}>
+							Open Profile
+						</Button>
+					</div>
 				</div>
 			) : null}
 		</PopoverContent>

@@ -22,6 +22,8 @@ import {
 import { Input } from "./ui/input";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import NiceModal from "@ebay/nice-modal-react";
+import { UserProfileModal } from "./modal/user-profile-modal";
 
 const AddFriendSchema = z.object({
 	mention: ActorMention,
@@ -55,6 +57,9 @@ export const FriendsPane = observer(() => {
 				message: error.message,
 			});
 	};
+
+	const openViewModal = () =>
+		NiceModal.show(UserProfileModal, { user_id: form.getValues("mention") });
 
 	const groupedRelationships = Object.groupBy(relationships, (item) => item.type);
 	if (!groupedRelationships[RelationshipType.accepted]) {
@@ -105,15 +110,12 @@ export const FriendsPane = observer(() => {
 							)}
 						/>
 
+						<Button type="button" onClick={openViewModal}>
+							View
+						</Button>
 						<Button type="submit">Add</Button>
 					</form>
 				</Form>
-
-				{/* <div className="mt-5">
-					{relationships.map((x) => (
-						<RelationshipComponent rel={x} key={x.user.mention} />
-					))}
-				</div> */}
 
 				<Tabs defaultValue={`${RelationshipType.accepted}`} className="p-2">
 					<TabsList>

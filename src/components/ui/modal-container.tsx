@@ -1,8 +1,9 @@
 import { useModal } from "@ebay/nice-modal-react";
 import { cn } from "@/lib/utils";
 import { Card } from "./card";
-import { Button } from "./button";
+import { Button, buttonVariants } from "./button";
 import { XIcon } from "lucide-react";
+import type { VariantProps } from "class-variance-authority";
 
 export const ModalContainer = ({ children, ...props }: React.ComponentProps<typeof Card>) => {
 	const modal = useModal();
@@ -23,13 +24,13 @@ export const ModalContainer = ({ children, ...props }: React.ComponentProps<type
 	);
 };
 
-export const ModalCloseButton = () => {
+export const ModalCloseButton = ({ variant }: VariantProps<typeof buttonVariants>) => {
 	const modal = useModal();
 
 	return (
 		<Button
 			className="pointer-events-auto"
-			variant="outline"
+			variant={variant ?? "outline"}
 			type="button"
 			title="Close"
 			onClick={modal.remove}
