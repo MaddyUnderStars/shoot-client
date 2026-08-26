@@ -70,12 +70,14 @@ export class ShootGatewayClient extends EventEmitter {
 	public logout = () => {
 		setLogin(null);
 		this.close();
+		clearTimeout(this.reconnectTimeout);
 	};
 
 	public close = () => {
 		this.socket?.close();
 		this.socket = null;
 		this.isReady = false;
+		clearTimeout(this.heartbeatTimeout);
 	};
 
 	public send = (data: GATEWAY_SEND_PAYLOAD) => {
@@ -103,14 +105,20 @@ export class ShootGatewayClient extends EventEmitter {
 
 	private onOpen = async () => {
 		Log.verbose(`Connected to gateway on ${this.gwInstance.gateway.href}`);
-		this.reconnectAttempts = 0;
 		clearTimeout(this.reconnectTimeout);
 		this.reconnectTimeout = undefined;
 
 		this.emit("SOCKET_OPEN");
 
 		if (this.token.expiry < Date.now()) {
-			this.token = (await refreshAuthToken()).tokens;
+			try {
+				this.token = (await refreshAuthToken()).tokens;
+			} catch {
+				// Refreshing failed for some reason
+				// and so we are forced to log out
+
+				this.logout();
+			}
 		}
 
 		this.send({
@@ -129,6 +137,8 @@ export class ShootGatewayClient extends EventEmitter {
 
 		switch (parsed.t) {
 			case "READY": {
+				this.reconnectAttempts = 0;
+
 				this.startHeartbeat();
 
 				const user = new PrivateUser(parsed.d.user);

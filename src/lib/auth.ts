@@ -14,7 +14,6 @@ export const doOAuthLogin = async (instance: URL) => {
 
 	const parameters: Record<string, string> = {
 		redirect_uri: window.location.origin + "/",
-		scope: "read",
 		code_challenge,
 		code_challenge_method: "S256",
 	};
@@ -41,7 +40,7 @@ export const doOAuthLogin = async (instance: URL) => {
 };
 
 const getConfig = async (instance: URL): Promise<Oauth.Configuration> => {
-	const existing = window.localStorage.getItem("client");
+	const existing = window.localStorage.getItem(`client_${instance.origin}`);
 	if (existing) {
 		const parsed = JSON.parse(existing);
 
@@ -51,7 +50,7 @@ const getConfig = async (instance: URL): Promise<Oauth.Configuration> => {
 	const config = await Oauth.dynamicClientRegistration(
 		instance,
 		{
-			grant_types: ["authorization_code"],
+			grant_types: ["authorization_code", "refresh_token"],
 			client_name: "shoot.pub",
 			redirect_uris: [window.location.origin + "/"],
 		},
@@ -62,7 +61,7 @@ const getConfig = async (instance: URL): Promise<Oauth.Configuration> => {
 	);
 
 	window.localStorage.setItem(
-		"client",
+		`client_${instance.origin}`,
 		JSON.stringify({
 			server: config.serverMetadata(),
 			client: config.clientMetadata(),

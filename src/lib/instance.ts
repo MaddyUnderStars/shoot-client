@@ -9,9 +9,7 @@ export const resolveHostmetaTemplate = async (url: URL, signal?: AbortSignal) =>
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(hostmetaText, "text/xml");
 
-	const template = doc
-		.querySelector("XRD Link[type='application/xrd+xml']")
-		?.getAttribute("template");
+	const template = doc.querySelector("XRD Link[template]")?.getAttribute("template");
 
 	if (!template) throw new Error("Could not resolve host-meta");
 
@@ -36,6 +34,16 @@ export const getQualifiedInstanceUrl = (urlOrName: string) => {
 	return undefined;
 };
 
+const resolveNodeinfo = async (url: URL, signal: AbortSignal) => {
+	const wellknown = await fetch(makeUrl(".well-known/nodeinfo", url), { signal });
+	const wellknownJson = await wellknown.json();
+
+	const href = wellknownJson.links[0].href;
+
+	const nodeinfo = await fetch(href, { signal });
+	return await nodeinfo.json();
+};
+
 // TODO: move this
 let instanceValidationAbort = new AbortController();
 export const validateInstance = async (instance: string) => {
@@ -56,14 +64,8 @@ export const validateInstance = async (instance: string) => {
 		// intentionally blank
 	}
 
-	const nodeInfo = makeUrl("/.well-known/nodeinfo/2.0", url);
-
 	try {
-		const data = await fetch(nodeInfo, {
-			signal: instanceValidationAbort.signal,
-		}).then((x) => x.json());
-
-		return data;
+		return await resolveNodeinfo(url, instanceValidationAbort.signal);
 	} catch {
 		return false;
 	}
