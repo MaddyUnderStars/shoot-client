@@ -16,7 +16,9 @@ pub fn run() {
 
     #[cfg(target_os = "android")]
     {
-        builder = builder.plugin(tauri_plugin_unifiedpush::init());
+        builder = builder
+			.plugin(tauri_plugin_unifiedpush::init())
+			.plugin(tauri_plugin_deep_link::init());
     }
 
     builder

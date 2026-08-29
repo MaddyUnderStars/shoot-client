@@ -37,5 +37,15 @@
 		],
 		"shortDescription": "Activitypub federated instant messenger",
 		"targets": "all"
+	},
+	"plugins": {
+		"deep-link": {
+			"mobile": [
+				{
+					"scheme": ["shoot"],
+					"appLink": false
+				}
+			]
+		}
 	}
 }

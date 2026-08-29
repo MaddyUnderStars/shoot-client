@@ -2,6 +2,6 @@
 	"$schema": "../gen/schemas/mobile-schema.json",
 	"identifier": "mobile-capability",
 	"windows": ["main"],
-	"permissions": ["unifiedpush:default"],
+	"permissions": ["unifiedpush:default", "deep-link:default"],
 	"platforms": ["android"]
 }

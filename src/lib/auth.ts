@@ -1,5 +1,9 @@
 import * as Oauth from "openid-client";
 import { getLogin, setLogin } from "./storage";
+import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
+import { openUrl } from "@tauri-apps/plugin-opener";
+
+const LOGIN_DEEP_LINK = "shoot://login/";
 
 export const doOAuthLogin = async (instance: URL) => {
 	let config;
@@ -13,7 +17,9 @@ export const doOAuthLogin = async (instance: URL) => {
 	const code_challenge = await Oauth.calculatePKCECodeChallenge(code_verifier);
 
 	const parameters: Record<string, string> = {
-		redirect_uri: window.location.origin + "/",
+		redirect_uri: import.meta.env.VITE_IS_MOBILE_TAURI
+			? LOGIN_DEEP_LINK
+			: window.location.origin + "/",
 		code_challenge,
 		code_challenge_method: "S256",
 	};
@@ -52,7 +58,7 @@ const getConfig = async (instance: URL): Promise<Oauth.Configuration> => {
 		{
 			grant_types: ["authorization_code", "refresh_token"],
 			client_name: "shoot.pub",
-			redirect_uris: [window.location.origin + "/"],
+			redirect_uris: [window.location.origin + "/", LOGIN_DEEP_LINK],
 		},
 		undefined,
 		{
@@ -97,8 +103,26 @@ export const refreshAuthToken = async () => {
 };
 
 const doAuthPopup = (url: URL) => {
-	console.log(url);
+	return (import.meta.env.VITE_IS_MOBILE_TAURI ? doAuthMobilePopup : doAuthBrowserPopup)(url);
+};
 
+const doAuthMobilePopup = async (url: URL): Promise<URL> => {
+	const openPromise = openUrl(url);
+
+	const promise = new Promise<URL>((resolve) => {
+		void onOpenUrl((opened) => {
+			if (!opened[0]) return;
+
+			resolve(new URL(opened[0]));
+		});
+	});
+
+	await openPromise;
+
+	return promise;
+};
+
+const doAuthBrowserPopup = (url: URL) => {
 	const width = Math.min(500, Math.floor(window.screen.width * 0.9));
 	const height = Math.min(600, Math.floor(window.screen.height * 0.8));
 
@@ -125,7 +149,6 @@ const pollPopup = (
 		const code = url.searchParams.get("code");
 		if (!code) return;
 
-		console.log(url);
 		resolve(url);
 		popup.close();
 	} catch {

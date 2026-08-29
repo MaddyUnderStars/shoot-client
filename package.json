@@ -25,6 +25,7 @@
 		"@tanstack/react-router-devtools": "^1.128.6",
 		"@tanstack/react-table": "^8.21.3",
 		"@tauri-apps/api": "^2.11.1",
+		"@tauri-apps/plugin-deep-link": "^2.4.9",
 		"@tauri-apps/plugin-notification": "^2.3.3",
 		"@tauri-apps/plugin-opener": "^2.5.4",
 		"class-variance-authority": "^0.7.1",

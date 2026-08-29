@@ -68,6 +68,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
 		await navigation({
 			to: "/channel/@me",
+			replace: true,
 		});
 	};
 
