@@ -81,10 +81,7 @@ export function LoginForm() {
 							Register instead?
 						</Link>
 
-						<p className="pt-2">
-							Shoot does not support the Mastodon API. Please enter Shoot instance
-							below.
-						</p>
+						<p className="pt-2"></p>
 					</CardDescription>
 				</CardHeader>
 				<CardContent>

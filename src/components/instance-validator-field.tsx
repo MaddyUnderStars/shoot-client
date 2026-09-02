@@ -11,6 +11,8 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import type { UseFormReturn } from "react-hook-form";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { InfoIcon } from "lucide-react";
 
 const DEFAULT_INSTANCE = import.meta.env.VITE_DEFAULT_INSTANCE ?? "https://understars.dev";
 
@@ -63,7 +65,18 @@ export const InstanceValidatorField = ({
 								Instance
 								{isValidatingInstance ? <span> - Checking</span> : null}
 							</FormLabel>
-							<FormDescription>Your account provider</FormDescription>
+							<FormDescription className="flex items-center justify-between">
+								<p>Your account provider.</p>
+								<Tooltip>
+									<TooltipTrigger>
+										<InfoIcon className="size-4" />
+									</TooltipTrigger>
+									<TooltipContent>
+										Shoot does not support the Mastodon API. Please enter your
+										Shoot instance below.
+									</TooltipContent>
+								</Tooltip>
+							</FormDescription>
 							<FormControl>
 								<Input
 									placeholder={DEFAULT_INSTANCE}
