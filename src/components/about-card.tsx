@@ -7,7 +7,7 @@ export const AboutCard = () => {
 	return (
 		<Card className="w-sm bg-transparent border-none shadow-none">
 			<CardHeader>
-				<CardTitle className="text-3xl flex gap-4">
+				<CardTitle className="text-3xl flex gap-4 items-center">
 					<div className="size-12">
 						<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-full items-center justify-center rounded-lg">
 							<BowArrow className="size-8" />
