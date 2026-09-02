@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { gatewayClient } from "@/lib/client/gateway";
 import { setLogin } from "@/lib/storage";
-import { cn } from "@/lib/utils";
 import { InstanceValidatorField } from "./instance-validator-field";
 import { Form } from "./ui/form";
 import { getQualifiedInstanceUrl, resolveHostmetaTemplate } from "@/lib/instance";
@@ -21,7 +20,7 @@ const LoginFormSchema = z.object({
 	}),
 });
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+export function LoginForm() {
 	const navigation = useNavigate();
 
 	const form = useForm<z.infer<typeof LoginFormSchema>>({
@@ -73,14 +72,19 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 	};
 
 	return (
-		<div className={cn("flex flex-col gap-6 w-sm", className)} {...props}>
-			<Card>
+		<div className="w-sm">
+			<Card className="gap-3">
 				<CardHeader>
 					<CardTitle>Login</CardTitle>
 					<CardDescription>
 						<Link to="/register" className="underline">
 							Register instead?
 						</Link>
+
+						<p className="pt-2">
+							Shoot does not support the Mastodon API. Please enter Shoot instance
+							below.
+						</p>
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
