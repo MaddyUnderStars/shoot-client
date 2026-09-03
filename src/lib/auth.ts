@@ -95,7 +95,7 @@ export const refreshAuthToken = async () => {
 		tokens: {
 			access: refreshed.access_token,
 			refresh: refreshed.refresh_token,
-			expiry: Date.now() + refreshed.expires_in,
+			expiry: Date.now() + refreshed.expires_in * 1000,
 		},
 	};
 	setLogin(ret);
